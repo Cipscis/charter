@@ -1,0 +1,17 @@
+@import "breakpoints";
+@import "widths";
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: Arial, sans-serif;
+	background: #333;
+	color: #fff;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
