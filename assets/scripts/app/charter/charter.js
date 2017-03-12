@@ -398,7 +398,7 @@ define(
 
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
-				chartData.independentAxis = Charter._createNumericAxis(chartData, axisConfig);
+				chartData.dependentAxis = Charter._createNumericAxis(chartData, axisConfig);
 				chartData = Charter._getValuePercentages(chartData, axisConfig);
 				chartData = Charter._getDisplayValues(chartData, axisConfig);
 
