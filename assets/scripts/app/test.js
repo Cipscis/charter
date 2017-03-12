@@ -74,7 +74,7 @@ require(
 			// d3 time animation stuff
 			chartData = $barChart.data('chartData');
 			var x = d3.scaleLinear()
-				.domain([0, chartData.independentAxis.values[chartData.independentAxis.values.length-1].value])
+				.domain([0, chartData.dependentAxis.values[chartData.dependentAxis.values.length-1].value])
 				.range([0, 100]);
 
 			var update = function (data, titleText) {
