@@ -1,0 +1,30 @@
+.width-a {
+	width: auto;
+}
+.width-1 {
+	width: 100%;
+}
+
+$cols: 5;
+
+@each $bp, $width in $breakpoints {
+	@if $bp == null {
+		@for $i from 2 through $cols {
+			@for $j from 1 to $i {
+				.width-#{$j}-#{$i} {
+					width: percentage($j / $i);
+				}
+			}
+		}
+	} @else {
+		@include bp($bp) {
+			@for $i from 2 through $cols {
+				@for $j from 1 to $i {
+					.width-#{$bp}-#{$j}-#{$i} {
+						width: percentage($j / $i);
+					}
+				}
+			}
+		}
+	}
+}

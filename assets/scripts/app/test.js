@@ -36,7 +36,8 @@ require(
 			};
 
 			$barChart = Charter.createBarChart(chartData, {
-				roundTo: 2000
+				roundTo: 2000,
+				gridlines: 2
 			});
 			$('.js-bar-chart').html($barChart);
 
@@ -54,10 +55,17 @@ require(
 				});
 			}
 
-			$lineGraph = Charter.createLineGraph(chartData, {
-				max: 12000,
-				numTicks: 6
-			});
+			$lineGraph = Charter.createLineGraph(
+				chartData,
+				{
+					values: 3,
+					roundTo: 1000,
+					min: null
+				},
+				{
+					valuesEvery: 4
+				}
+			);
 			$('.js-line-graph').html($lineGraph);
 
 			$table = $(Charter.createTable(rows));
@@ -66,7 +74,7 @@ require(
 			// d3 time animation stuff
 			chartData = $barChart.data('chartData');
 			var x = d3.scaleLinear()
-				.domain([0, chartData.axisValues[chartData.axisValues.length-1].value])
+				.domain([0, chartData.independentAxis.values[chartData.independentAxis.values.length-1].value])
 				.range([0, 100]);
 
 			var update = function (data, titleText) {
