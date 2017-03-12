@@ -1,0 +1,39 @@
+<div class="chart">
+	<span class="chart__title js-chart-title">{{title}}</span>
+
+	<div class="chart__area">
+		<ul class="chart__axis--v">
+			{{#axisValues}}
+				<li class="chart__axis-item js-chart-axis-label">
+					<span class="chart__axis-label">{{displayValue}}</span>
+				</li>
+			{{/axisValues}}
+		</ul>
+
+		<ul class="chart__gridlines--h">
+			{{#axisValues}}
+				<li class="chart__gridlines-item"></li>
+			{{/axisValues}}
+		</ul>
+
+		<ul class="chart__axis--h">
+			{{#data}}
+				<li class="chart__axis-item js-chart-axis-label">
+					<span class="chart__axis-label" style="transform: translateX(-50%) translateY(100%) rotate(90deg);">{{label}}</span>
+				</li>
+			{{/data}}
+		</ul>
+
+		<ul class="chart__gridlines--v">
+			{{#data}}
+				<li class="chart__gridlines-item"></li>
+			{{/data}}
+		</ul>
+
+		<ul class="chart__points">
+			{{#data}}
+				<li class="chart__point" style="bottom: {{percentage}}%; left: {{index}}%;">x</li>
+			{{/data}}
+		</ul>
+	</div>
+</div>

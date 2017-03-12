@@ -1,0 +1,28 @@
+<div class="chart">
+	<span class="chart__title js-chart-title">{{title}}</span>
+
+	<div class="chart__area">
+		<ul class="chart__axis--v">
+			{{#axisValues}}
+				<li class="chart__axis-item js-chart-axis-label">
+					<span class="chart__axis-label">{{displayValue}}</span>
+				</li>
+			{{/axisValues}}
+		</ul>
+
+		<ul class="chart__gridlines--h">
+			{{#axisValues}}
+				<li class="chart__gridlines-item"></li>
+			{{/axisValues}}
+		</ul>
+
+		<ul class="chart__bars--v">
+			{{#data}}
+				<li class="chart__bar">
+					<div class="chart__bar-area js-chart-bar" style="height: {{percentage}}%; background: {{colour}};" title="{{displayValue}}"></div>
+					<span class="chart__bar-label">{{label}}</span>
+				</li>
+			{{/data}}
+		</ul>
+	</div>
+</div>
