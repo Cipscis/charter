@@ -1,0 +1,15 @@
+$breakpoints: (
+	null: 0,
+	s: 425px,
+	md: 768px,
+	l: 1024px,
+	xl: 1440px
+);
+
+@mixin bp($breakpoint) {
+	$width: map-get($breakpoints, $breakpoint);
+
+	@media (min-width: $width) {
+		@content;
+	}
+}

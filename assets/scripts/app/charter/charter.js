@@ -22,8 +22,13 @@ define(
 		lineGraphTemplate,
 		scatterPlotTemplate
 	) {
-		var defaults = {
-			numTicks: 4,
+		var numericAxisDefaults = {
+			values: 4,
+			// When gridlines is set to null, it interhits its value from values
+			gridlines: null,
+
+			toFixed: 0,
+			percentage: false,
 
 			// When roundTo is set to null, it will be set to the power of
 			// 10 at the same order of magnitude as the maximum value
@@ -32,6 +37,14 @@ define(
 			// When min or max are set to null, they will be calculated
 			min: 0,
 			max: null
+		};
+
+		var qualitativeAxisDefaults = {
+			valuesEvery: 1,
+
+			// When gridlinesEvery is set to null,
+			// it inherits its value from valuesEvery
+			gridlinesEvery: null
 		};
 
 		// Expected format of basic chart data:
@@ -46,6 +59,9 @@ define(
 		// }
 
 		var Charter = {
+			/////////////////
+			// CSV PARSING //
+			/////////////////
 			parseCsv: function (csv, callback) {
 				// Parse a CSV file then process the data
 
@@ -104,31 +120,251 @@ define(
 				}
 			},
 
-			_getDisplayNumber: function (number, config) {
-				config = config || {};
-				config = $.extend({}, defaults, config);
+			_getDisplayNumber: function (number, axisConfig) {
+				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
 				if (typeof number !== 'number') {
 					number = Charter._extractNumber(number);
 				}
 
-				if (config.percentage) {
+				if (axisConfig.percentage) {
 					number = number * 100;
 				}
 
-				if (typeof config.toFixed !== 'undefined') {
-					number = number.toFixed(config.toFixed);
-				}
+				number = number.toFixed(axisConfig.toFixed);
 
 				number = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-				if (config.percentage) {
+				if (axisConfig.percentage) {
 					number = number + '%';
 				}
 
 				return number;
 			},
 
+			///////////////////
+			// CREATING AXES //
+			///////////////////
+			_getNumericAxisOptions: function (axisConfig) {
+				axisConfig = axisConfig || {};
+
+				var options = {},
+					prop;
+
+				for (prop in numericAxisDefaults) {
+					options[prop] = numericAxisDefaults[prop];
+				}
+
+				for (prop in axisConfig) {
+					options[prop] = axisConfig[prop];
+				}
+
+				if (options.gridlines === null) {
+					options.gridlines = axisConfig.values;
+				}
+
+				return options;
+			},
+
+			_getQualitativeAxisOptions: function (axisConfig) {
+
+				axisConfig = axisConfig || {};
+
+				var options = {},
+					prop;
+
+				for (prop in qualitativeAxisDefaults) {
+					options[prop] = qualitativeAxisDefaults[prop];
+				}
+
+				for (prop in axisConfig) {
+					options[prop] = axisConfig[prop];
+				}
+
+				if (options.gridlinesEvery === null) {
+					options.gridlinesEvery = axisConfig.valuesEvery;
+				}
+
+				return options;
+			},
+
+			_getRange: function (chartData, axisConfig) {
+				// Get the minimum and maximum value in a chart's data
+				// then round them according to the axisConfig
+
+				axisConfig = Charter._getNumericAxisOptions(axisConfig);
+
+				var i,
+					roundTo,
+					min, max;
+
+				min = max = chartData.data[0].value;
+				for (i = 0; i < chartData.data.length; i++) {
+					min = Math.min(min, chartData.data[i].value);
+					max = Math.max(max, chartData.data[i].value);
+				}
+
+				if (axisConfig.roundTo !== null) {
+					roundTo = axisConfig.roundTo;
+				} else {
+					roundTo = Math.pow(10, Math.floor(Math.log10(max)));
+				}
+
+				if (axisConfig.min !== null) {
+					min = axisConfig.min;
+				} else {
+					min = Math.floor(min / roundTo) * roundTo;
+				}
+
+				if (axisConfig.max !== null) {
+					max = axisConfig.max;
+				} else {
+					max = Math.ceil(max / roundTo) * roundTo;
+				}
+
+				return [min, max];
+			},
+
+			_createNumericAxis: function (chartData, axisConfig) {
+				// Calculates axis range
+				// then creates gridlines
+
+				axisConfig = Charter._getNumericAxisOptions(axisConfig);
+
+				var axis = {
+						values: [],
+						gridlines: []
+					},
+
+					i,
+					value, displayValue,
+					range,
+					max, min;
+
+				range = Charter._getRange(chartData, axisConfig);
+				min = range[0];
+				max = range[1];
+
+				for (i = 0; i <= axisConfig.gridlines; i++) {
+					value = Math.round(((max-min) * i / axisConfig.gridlines) + min);
+					displayValue = Charter._getDisplayNumber(value, axisConfig);
+
+					axis.gridlines.push({
+						value: value,
+						displayValue: displayValue
+					});
+				}
+
+				for (i = 0; i <= axisConfig.values; i++) {
+					value = Math.round(((max-min) * i / axisConfig.values) + min);
+					displayValue = Charter._getDisplayNumber(value, axisConfig);
+
+					axis.values.push({
+						value: value,
+						displayValue: displayValue
+					});
+				}
+
+				return axis;
+			},
+
+			_createQualitativeAxis: function (chartData, axisConfig) {
+				// Creates axis with qualitative values, typically strings
+				// Because the values are qualitative, there can be no interpolation
+
+				axisConfig = Charter._getQualitativeAxisOptions(axisConfig);
+
+				var axis = {
+						values: [],
+						gridlines: []
+					},
+
+					i,
+					displayValue,
+					range,
+					max, min;
+
+				if (axisConfig.gridlinesEvery === 1 || (chartData.data.length % axisConfig.gridlinesEvery) === 1) {
+					// The gridlines will fit perfectly into the data
+
+					for (i = 0; i < chartData.data.length; i += axisConfig.gridlinesEvery) {
+						displayValue = chartData.data[i].label;
+
+						axis.gridlines.push({
+							displayValue: displayValue
+						});
+					}
+				} else {
+					// TODO: Handle this
+					// Somehow have space left over after the last gridline,
+					// depending on the result of chartData.data.length % axisConfig.gridlinesEvery
+				}
+
+				if (axisConfig.valuesEvery === 1 || (chartData.data.length % axisConfig.valuesEvery) === 1) {
+					// The gridlines will fit perfectly into the data
+
+					for (i = 0; i < chartData.data.length; i += axisConfig.valuesEvery) {
+						displayValue = chartData.data[i].label;
+
+						axis.values.push({
+							displayValue: displayValue
+						});
+					}
+				} else {
+					// TODO: Handle this
+					// Somehow have space left over after the last gridline,
+					// depending on the result of chartData.data.length % axisConfig.valuesEvery
+				}
+
+				return axis;
+			},
+
+			_getDisplayNumbers: function (chartData, axisConfig) {
+				var i;
+
+				for (i = 0; i < chartData.data.length; i++) {
+					// Add commas for display values
+					chartData.data[i].displayValue = Charter._getDisplayNumber(chartData.data[i].value, axisConfig);
+				}
+
+				return chartData;
+			},
+
+			_getValuePercentages: function (chartData, axisConfig) {
+				// Calculates the percentage to use for displaying each value
+
+				var i,
+					range,
+					min, max;
+
+				range = Charter._getRange(chartData, axisConfig);
+				min = range[0];
+				max = range[1];
+
+				for (i = 0; i < chartData.data.length; i++) {
+					// Calculate percentage as this is used for height
+					chartData.data[i].percentage = (chartData.data[i].value-min) / (max-min) * 100;
+				}
+
+				return chartData;
+			},
+
+			_getIndependentAxisPercentages: function (chartData, axisConfig) {
+				// Calculates the percentage to position each piece of data on the independent axis
+				// Currently assumes uniform distribution per qualitative axis
+
+				var i;
+
+				for (i = 0; i < chartData.data.length; i++) {
+					chartData.data[i].index = 100 * i / (chartData.data.length-1);
+				}
+
+				return chartData;
+			},
+
+			///////////////////////
+			// CREATING DISPLAYS //
+			///////////////////////
 			createTable: function (rows) {
 				// Create the necessary data structure to build a table of the data
 
@@ -154,145 +390,42 @@ define(
 				return templayed(tableTemplate)(data);
 			},
 
-			_getRange: function (chartData, config) {
-				// Get the minimum and maximum value in a chart's data
-				// then round them according to the config
-
-				config = config || {};
-				config = $.extend({}, defaults, config);
-
-				var i,
-					roundTo,
-					min, max;
-
-				min = max = chartData.data[0].value;
-				for (i = 0; i < chartData.data.length; i++) {
-					min = Math.min(min, chartData.data[i].value);
-					max = Math.max(max, chartData.data[i].value);
-				}
-
-				if (config.roundTo !== null) {
-					roundTo = config.roundTo;
-				} else {
-					roundTo = Math.pow(10, Math.floor(Math.log10(max)));
-				}
-
-				if (config.min !== null) {
-					min = config.min;
-				} else {
-					min = Math.floor(min / roundTo) * roundTo;
-				}
-
-				if (config.max !== null) {
-					max = config.max;
-				} else {
-					max = Math.ceil(max / roundTo) * roundTo;
-				}
-
-				return [min, max];
-			},
-
-			_createAxis: function (chartData, config) {
-				// Takes simple chart data and calculates values to use for axes based on config
-
-				config = config || {};
-				config = $.extend({}, defaults, config);
-
-				var axisValues = [],
-
-					i, value,
-					range,
-					max, min;
-
-				range = Charter._getRange(chartData, config);
-				min = range[0];
-				max = range[1];
-
-				for (i = 0; i <= config.numTicks; i++) {
-					value = Math.round(((max-min) * i / config.numTicks) + min);
-
-					axisValues.push({
-						value: value,
-						displayValue: Charter._getDisplayNumber(value, config)
-					});
-				}
-
-				return axisValues;
-			},
-
-			_getDisplayNumbers: function (chartData, config) {
-				var i;
-
-				for (i = 0; i < chartData.data.length; i++) {
-					// Add commas for display values
-					chartData.data[i].displayValue = Charter._getDisplayNumber(chartData.data[i].value, config);
-				}
-
-				return chartData;
-			},
-
-			_getPercentages: function (chartData, config) {
-				var i,
-					range,
-					min, max;
-
-				range = Charter._getRange(chartData, config);
-				min = range[0];
-				max = range[1];
-
-				for (i = 0; i < chartData.data.length; i++) {
-					// Calculate percentage as this is used for height
-					chartData.data[i].percentage = (chartData.data[i].value-min) / (max-min) * 100;
-				}
-
-				return chartData;
-			},
-
-			createBarChart: function (chartData, config) {
+			createBarChart: function (chartData, axisConfig) {
 				// Takes in basic chart data,
-				// constructs data for axes based on config,
-				// creates display values based on config,
+				// constructs data for independent axis based on axisConfig,
+				// creates display values based on axisConfig,
 				// then uses the combined data to build the markup for a bar chart
 
-				config = config || {};
-				config = $.extend({}, defaults, config);
+				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
-				chartData.axisValues = Charter._createAxis(chartData, config);
-				chartData = Charter._getPercentages(chartData, config);
-				chartData = Charter._getDisplayNumbers(chartData, config);
+				chartData.independentAxis = Charter._createNumericAxis(chartData, axisConfig);
+				chartData = Charter._getValuePercentages(chartData, axisConfig);
+				chartData = Charter._getDisplayNumbers(chartData, axisConfig);
 
-				$chart = $(templayed(config.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
+				$chart = $(templayed(axisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
 				$chart.data('chartData', chartData);
 
 				return $chart;
 			},
 
-			createLineGraph: function (chartData, config) {
+			createLineGraph: function (chartData, independentAxisConfig, dependentAxisConfig) {
 				// Takes in basic chart data,
-				// constructs data for axes based on config,
-				// creates display values based on config,
+				// constructs data for axes based on axisConfig,
+				// creates display values based on axisConfig,
 				// then uses the combined data to build the markup for a line chart
 
-				config = config || {};
-				config = $.extend({}, defaults, config);
-
-				// TODO: Split vertical and horizontal axes
-				// TODO: Get percentage across the graph
-				// TODO: Allow unequally spaced data across the horizontal axis
-				// TODO: Allow the number of horizontal axis labels to be picked
-					// This can't be interpolated, so it should be a factor of the total or
-					// it won't have a label at both the first and last position
+				// TODO: Numeric independent axis
+					// As part of this: allow unequally spaced data across the horizontal axis
 				// TODO: Allow multiple lines
 				// TODO: Legend
 				// TODO: Allow secondary vertical axis
 
-				chartData.axisValues = Charter._createAxis(chartData, config);
-				chartData = Charter._getPercentages(chartData, config);
-				chartData = Charter._getDisplayNumbers(chartData, config);
+				chartData.independentAxis = Charter._createNumericAxis(chartData, independentAxisConfig);
+				chartData.dependentAxis = Charter._createQualitativeAxis(chartData, dependentAxisConfig);
 
-				for (var i = 0; i < chartData.data.length; i++) {
-					chartData.data[i].index = 100 * i / (chartData.data.length-1);
-				}
+				chartData = Charter._getValuePercentages(chartData, independentAxisConfig);
+				chartData = Charter._getIndependentAxisPercentages(chartData, independentAxisConfig);
+				chartData = Charter._getDisplayNumbers(chartData, independentAxisConfig);
 
 				$chart = $(templayed(lineGraphTemplate)(chartData));
 				$chart.data('chartData', chartData);

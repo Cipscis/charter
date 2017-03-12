@@ -1,0 +1,22 @@
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
+* {
+	box-sizing: border-box;
+	transition: all 0.3s;
+}
+
+ul, ol {
+	margin: 0;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+form {
+	margin: 0;
+}

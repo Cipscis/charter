@@ -3,17 +3,17 @@
 
 	<div class="chart__area">
 		<ul class="chart__axis--h">
-			{{#axisValues}}
+			{{#independentAxis.values}}
 				<li class="chart__axis-item js-chart-axis-label">
 					<span class="chart__axis-label">{{displayValue}}</span>
 				</li>
-			{{/axisValues}}
+			{{/independentAxis.values}}
 		</ul>
 
 		<ul class="chart__gridlines--v">
-			{{#axisValues}}
+			{{#independentAxis.gridlines}}
 				<li class="chart__gridlines-item"></li>
-			{{/axisValues}}
+			{{/independentAxis.gridlines}}
 		</ul>
 
 		<ul class="chart__bars--h">

@@ -1,0 +1,53 @@
+$grid-config: (
+	null: 20px,
+	flush: 0,
+	tight: 10px,
+	loose: 40px
+);
+
+@mixin grid($gutter) {
+	@extend %cf;
+
+	padding: 0;
+	list-style: none;
+
+	margin-left: -$gutter;
+	> .grid__item {
+		float: left;
+		padding-left: $gutter;
+	}
+}
+
+@mixin grid-v($gutter) {
+	padding: 0;
+	list-style: none;
+
+	margin-top: -$gutter;
+	> .grid__item {
+		padding-top: $gutter;
+	}
+}
+
+@each $variant, $gutter in $grid-config {
+	@if $variant == null {
+		.grid {
+			@include grid($gutter);
+		}
+		.grid-v {
+			@include grid-v($gutter);
+		}
+	} @else {
+		.grid--#{$variant} {
+			@include grid($gutter);
+		}
+		.grid-v--#{$variant} {
+			@include grid-v($gutter);
+		}
+	}
+}
+
+.grid--rev {
+	> .grid__item {
+		float: right;
+	}
+}
