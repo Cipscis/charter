@@ -64,13 +64,13 @@ require(
 			$('.js-data-table').html($table);
 
 			// d3 time animation stuff
-			/*chartData = $barChart.data('chartData');
+			chartData = $barChart.data('chartData');
 			var x = d3.scaleLinear()
 				.domain([0, chartData.axisValues[chartData.axisValues.length-1].value])
 				.range([0, 100]);
 
 			var update = function (data, titleText) {
-				var chart = d3.select('.js-chart');
+				var chart = d3.select('.js-bar-chart');
 				var bar = chart.selectAll('.js-chart-bar')
 					.data(data);
 
@@ -93,7 +93,7 @@ require(
 				if (i === 0) {
 					window.clearInterval(interval);
 				}
-			}, 1000);*/
+			}, 1000);
 		};
 
 		// Load and process CSV

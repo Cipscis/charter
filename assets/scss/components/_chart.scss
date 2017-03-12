@@ -1,11 +1,11 @@
-$chart-size: 600px;
+$chart-height: 600px;
 $axis-width: 100px;
 $bar-color: #999;
 $axis-color: #ccc;
 $axis-text-size: 16px;
 
 .chart {
-	width: $chart-size;
+	width: 100%;
 	padding: 0 ($axis-width / 2);
 }
 
@@ -21,7 +21,7 @@ $axis-text-size: 16px;
 	position: relative;
 
 	width: 100%;
-	height: $chart-size;
+	height: $chart-height;
 }
 
 //////////
