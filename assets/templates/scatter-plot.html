@@ -3,36 +3,36 @@
 
 	<div class="chart__area">
 		<ul class="chart__axis--v">
-			{{#independentAxis.values}}
+			{{#dependentAxis.values}}
 				<li class="chart__axis-item js-chart-axis-label">
 					<span class="chart__axis-label">{{displayValue}}</span>
+				</li>
+			{{/dependentAxis.values}}
+		</ul>
+
+		<ul class="chart__gridlines--h">
+			{{#dependentAxis.gridlines}}
+				<li class="chart__gridlines-item"></li>
+			{{/dependentAxis.gridlines}}
+		</ul>
+
+		<ul class="chart__axis--h">
+			{{#independentAxis.values}}
+				<li class="chart__axis-item js-chart-axis-label">
+					<span class="chart__axis-label" style="transform: translateX(-50%) translateY(100%) rotate(90deg);">{{displayValue}}</span>
 				</li>
 			{{/independentAxis.values}}
 		</ul>
 
-		<ul class="chart__gridlines--h">
+		<ul class="chart__gridlines--v">
 			{{#independentAxis.gridlines}}
 				<li class="chart__gridlines-item"></li>
 			{{/independentAxis.gridlines}}
 		</ul>
 
-		<ul class="chart__axis--h">
-			{{#data}}
-				<li class="chart__axis-item js-chart-axis-label">
-					<span class="chart__axis-label" style="transform: translateX(-50%) translateY(100%) rotate(90deg);">{{label}}</span>
-				</li>
-			{{/data}}
-		</ul>
-
-		<ul class="chart__gridlines--v">
-			{{#data}}
-				<li class="chart__gridlines-item"></li>
-			{{/data}}
-		</ul>
-
 		<ul class="chart__points">
 			{{#data}}
-				<li class="chart__point" style="bottom: {{percentage}}%; left: {{index}}%;">x</li>
+				<li class="chart__point" style="bottom: {{percentage}}%; left: {{index}}%;" title="{{displayValue}}">x</li>
 			{{/data}}
 		</ul>
 	</div>

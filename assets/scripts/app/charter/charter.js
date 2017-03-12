@@ -319,7 +319,7 @@ define(
 				return axis;
 			},
 
-			_getDisplayNumbers: function (chartData, axisConfig) {
+			_getDisplayValues: function (chartData, axisConfig) {
 				var i;
 
 				for (i = 0; i < chartData.data.length; i++) {
@@ -400,7 +400,7 @@ define(
 
 				chartData.independentAxis = Charter._createNumericAxis(chartData, axisConfig);
 				chartData = Charter._getValuePercentages(chartData, axisConfig);
-				chartData = Charter._getDisplayNumbers(chartData, axisConfig);
+				chartData = Charter._getDisplayValues(chartData, axisConfig);
 
 				$chart = $(templayed(axisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
 				$chart.data('chartData', chartData);
@@ -409,32 +409,42 @@ define(
 			},
 
 			createLineGraph: function (chartData, independentAxisConfig, dependentAxisConfig) {
+				return Charter._create2DChart(chartData, independentAxisConfig, dependentAxisConfig, lineGraphTemplate);
+			},
+
+			createScatterPlot: function (chartData, independentAxisConfig, dependentAxisConfig) {
+				return Charter._create2DChart(chartData, independentAxisConfig, dependentAxisConfig, scatterPlotTemplate);
+			},
+
+			_create2DChart: function (chartData, independentAxisConfig, dependentAxisConfig, template) {
 				// Takes in basic chart data,
 				// constructs data for axes based on axisConfig,
 				// creates display values based on axisConfig,
-				// then uses the combined data to build the markup for a line chart
+				// then uses the combined data to build the markup for the specific chart
 
 				// TODO: Numeric independent axis
 					// As part of this: allow unequally spaced data across the horizontal axis
-				// TODO: Allow multiple lines
+				// TODO: Allow multiple datasets, e.g. multiple lines
 				// TODO: Legend
 				// TODO: Allow secondary vertical axis
 
-				chartData.independentAxis = Charter._createNumericAxis(chartData, independentAxisConfig);
-				chartData.dependentAxis = Charter._createQualitativeAxis(chartData, dependentAxisConfig);
+				// Construct independent qualitative axis and dependent numeric axis
+				chartData.independentAxis = Charter._createQualitativeAxis(chartData, dependentAxisConfig);
+				chartData.dependentAxis = Charter._createNumericAxis(chartData, independentAxisConfig);
 
+				// Calculate percentage values to use for display on each axis
 				chartData = Charter._getValuePercentages(chartData, independentAxisConfig);
 				chartData = Charter._getIndependentAxisPercentages(chartData, independentAxisConfig);
-				chartData = Charter._getDisplayNumbers(chartData, independentAxisConfig);
 
-				$chart = $(templayed(lineGraphTemplate)(chartData));
+				// Create display values to show on axes and tooltips
+				chartData = Charter._getDisplayValues(chartData, independentAxisConfig);
+
+				// Render chart with specified template
+				$chart = $(templayed(template)(chartData));
 				$chart.data('chartData', chartData);
 
 				return $chart;
 			}
-
-			// TODO: createScatterPlot
-				// Will be identical to createLineGraph, but with a different template
 		};
 
 		return Charter;

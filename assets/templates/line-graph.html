@@ -3,31 +3,31 @@
 
 	<div class="chart__area">
 		<ul class="chart__axis--v">
-			{{#independentAxis.values}}
-				<li class="chart__axis-item js-chart-axis-label">
-					<span class="chart__axis-label">{{displayValue}}</span>
-				</li>
-			{{/independentAxis.values}}
-		</ul>
-
-		<ul class="chart__gridlines--h">
-			{{#independentAxis.gridlines}}
-				<li class="chart__gridlines-item"></li>
-			{{/independentAxis.gridlines}}
-		</ul>
-
-		<ul class="chart__axis--h">
 			{{#dependentAxis.values}}
 				<li class="chart__axis-item js-chart-axis-label">
-					<span class="chart__axis-label" style="transform: translateX(-50%) translateY(100%) rotate(90deg);">{{displayValue}}</span>
+					<span class="chart__axis-label">{{displayValue}}</span>
 				</li>
 			{{/dependentAxis.values}}
 		</ul>
 
-		<ul class="chart__gridlines--v">
+		<ul class="chart__gridlines--h">
 			{{#dependentAxis.gridlines}}
 				<li class="chart__gridlines-item"></li>
 			{{/dependentAxis.gridlines}}
+		</ul>
+
+		<ul class="chart__axis--h">
+			{{#independentAxis.values}}
+				<li class="chart__axis-item js-chart-axis-label">
+					<span class="chart__axis-label" style="transform: translateX(-50%) translateY(100%) rotate(90deg);">{{displayValue}}</span>
+				</li>
+			{{/independentAxis.values}}
+		</ul>
+
+		<ul class="chart__gridlines--v">
+			{{#independentAxis.gridlines}}
+				<li class="chart__gridlines-item"></li>
+			{{/independentAxis.gridlines}}
 		</ul>
 
 		<div class="chart__lines-wrapper">
