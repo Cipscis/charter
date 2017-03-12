@@ -1,0 +1,309 @@
+$chart-size: 600px;
+$axis-width: 100px;
+$bar-color: #999;
+$axis-color: #ccc;
+$axis-text-size: 16px;
+
+.chart {
+	width: $chart-size;
+	padding: 0 ($axis-width / 2);
+}
+
+.chart__title {
+	display: block;
+	font-weight: bold;
+	text-align: center;
+
+	padding: 10px 20px;
+}
+
+.chart__area {
+	position: relative;
+
+	width: 100%;
+	height: $chart-size;
+}
+
+//////////
+// AXES //
+//////////
+.chart__axis--v {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column-reverse;
+	align-items: center;
+
+	position: absolute;
+	left: 0;
+	bottom: ($axis-width - ($axis-text-size / 2));
+	top: $axis-text-size / 2;
+	width: $axis-width;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	&:after {
+		content: "";
+		position: absolute;
+		top: $axis-text-size / 2;
+		bottom: $axis-text-size / 2;
+		right: -1px;
+		border-right: 1px solid $axis-color;
+	}
+
+	.chart__axis-item {
+		text-align: right;
+		width: 100%;
+
+		display: flex;
+		align-items: center;
+	}
+
+	.chart__axis-label {
+		display: block;
+		width: 100%;
+		padding: 0 10px 0 0;
+
+		font-size: $axis-text-size;
+		line-height: $axis-text-size;
+	}
+}
+
+.chart__axis--h {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+
+	position: absolute;
+	left: $axis-width;
+	bottom: 0;
+	right: 0;
+	height: $axis-width;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	&:after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: -1px;
+		border-top: 1px solid $axis-color;
+	}
+
+	.chart__axis-item {
+		text-align: center;
+
+		position: relative;
+	}
+
+	.chart__axis-label {
+		display: block;
+		position: absolute;
+		transform: translateX(-50%);
+		padding: 10px 0 0;
+
+		font-size: $axis-text-size;
+		line-height: $axis-text-size;
+	}
+}
+
+///////////////
+// GRIDLINES //
+///////////////
+.chart__gridlines--h {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column-reverse;
+	align-items: center;
+
+	position: absolute;
+	left: $axis-width;
+	bottom: $axis-width;
+	top: $axis-text-size;
+	right: 0;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	.chart__gridlines-item {
+		width: 100%;
+		border-top: 1px solid $axis-color;
+	}
+}
+
+.chart__gridlines--v {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	position: absolute;
+	left: $axis-width;
+	bottom: $axis-width;
+	top: $axis-text-size;
+	right: 0;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	.chart__gridlines-item {
+		height: 100%;
+		border-right: 1px solid $axis-color;
+	}
+}
+
+//////////
+// BARS //
+//////////
+.chart__bars--v {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+
+	position: absolute;
+	left: $axis-width;
+	right: 0;
+	bottom: $axis-width + 1;
+	top: $axis-text-size;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	.chart__bar {
+		position: relative;
+		flex: 1 1 0%;
+	}
+
+	.chart__bar-area {
+		width: 80%;
+		margin: 0 auto;
+		background: $bar-color;
+
+		transition: height 0.5s;
+
+		// height
+	}
+
+	.chart__bar-label {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+
+		transform: translateY(100%);
+		padding-top: 10px;
+
+		width: 100%;
+		text-align: center;
+	}
+}
+
+.chart__bars--h {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	align-items: flex-start;
+
+	position: absolute;
+	left: $axis-width + 1;
+	right: 0;
+	bottom: $axis-width + 1;
+	top: $axis-text-size;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	.chart__bar {
+		position: relative;
+		flex: 1 1 0%;
+		height: 100%;
+		width: 100%;
+
+		display: flex;
+		align-items: center;
+	}
+
+	.chart__bar-area {
+		height: 80%;
+		background: $bar-color;
+
+		transition: width 0.5s;
+
+		// width
+	}
+
+	.chart__bar-label {
+		position: absolute;
+		top: 50%;
+		right: 100%;
+		max-width: $axis-width;
+
+		transform: translateY(-50%);
+		padding-right: 10px;
+	}
+}
+
+////////////
+// POINTS //
+////////////
+.chart__points {
+	position: absolute;
+	left: $axis-width + 1;
+	right: 0;
+	bottom: $axis-width + 1;
+	top: $axis-text-size;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.chart__point {
+	position: absolute;
+	transform: translateX(-50%) translateY(50%);
+
+	// bottom
+	// left
+}
+
+//////////
+// LINE //
+//////////
+.chart__lines-wrapper {
+	position: absolute;
+	left: $axis-width + 1;
+	right: 0;
+	bottom: $axis-width + 1;
+	top: $axis-text-size;
+}
+
+.chart__lines {
+	// <svg viewbox="0 0 100 100" preserveAspectRatio="none">
+	height: 100%;
+	width: 100%;
+}
+
+// <g transform="translate(0, 100) scale(1, -1)">
+
+.chart__line {
+	// polyline
+	fill: none;
+	vector-effect: non-scaling-stroke;
+	stroke-width: 1;
+	stroke-linecap: round;
+	stroke: #fff;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+
+	// points
+}
