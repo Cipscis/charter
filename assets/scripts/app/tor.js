@@ -193,13 +193,13 @@ require(
 				Charter.updateBarChart(
 					$('.js-bar-chart .js-chart')[0],
 					perPop[TOR],
-					TOR + titleSeed
+					'Tactical options' + titleSeed
 				);
 
 				Charter.updateBarChart(
 					$('.js-standardised-bar-chart .js-chart')[0],
 					perPakeha[TOR],
-					TOR + sTitleSeed
+					'Tactical options' + sTitleSeed
 				);
 			};
 
