@@ -64,8 +64,8 @@ require(
 
 			// STEP 1: MANIPULATE DATA
 			//////////////////////////
-			totalTORs = rows[10].slice(1); // Total TOR events for each ethnicity
-			perPopAll = rows[11].slice(1); // Per 100,000 population
+			totalTORs = rows[10].slice(1, 4); // Total TOR events for each ethnicity
+			perPopAll = rows[11].slice(1, 4); // Per 100,000 population
 			population = [];
 
 			// Total events / events per 100,000 population * 100,000
@@ -79,7 +79,7 @@ require(
 				TORTypes.push(rows[i][0]);
 
 				// Percentage of times this option was used per TOR event for each ethnicity
-				perTOR[rows[i][0]] = rows[i].slice(1);
+				perTOR[rows[i][0]] = rows[i].slice(1, 4);
 			}
 
 			total = {};
@@ -157,7 +157,7 @@ require(
 
 			// STEP 4: Create standardised chart
 			////////////////////////////////////
-			var sTitleSeed = ' use by NZ Police, per population, s by Pākehā rate (2014)';
+			var sTitleSeed = ' use by NZ Police, per population, standardised by Pākehā rate (2014)';
 
 			sChartData = {
 				// title: TOR + sTitleSeed,
