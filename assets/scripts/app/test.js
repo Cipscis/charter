@@ -17,7 +17,9 @@ require(
 				row, i,
 
 				$barChart,
+				$horizontalBarChart,
 				$lineGraph,
+				$scatterPlot,
 				$table;
 
 			// Extract data for remand vs. sentenced
@@ -34,12 +36,31 @@ require(
 					}
 				]
 			};
-
 			$barChart = Charter.createBarChart(chartData, {
 				roundTo: 2000,
 				gridlines: 2
 			});
 			$('.js-bar-chart').html($barChart);
+
+			chartData = {
+				title: 'Prisoner Population, ' + rows[1][0],
+				data: [
+					{
+						label: rows[0][3],
+						value: rows[1][3]
+					},
+					{
+						label: rows[0][6],
+						value: rows[1][6]
+					}
+				]
+			};
+			$horizontalBarChart = Charter.createBarChart(chartData, {
+				roundTo: 2000,
+				gridlines: 2,
+				horizontal: true
+			});
+			$('.js-horizontal-bar-chart').html($horizontalBarChart);
 
 			// Extract data for total prisoner population
 			chartData = {
@@ -68,6 +89,19 @@ require(
 			);
 			$('.js-line-graph').html($lineGraph);
 
+			$scatterPlot = Charter.createScatterPlot(
+				chartData,
+				{
+					values: 3,
+					roundTo: 1000,
+					min: null
+				},
+				{
+					valuesEvery: 4
+				}
+			);
+			$('.js-scatter-plot').html($scatterPlot);
+
 			$table = $(Charter.createTable(rows));
 			$('.js-data-table').html($table);
 
@@ -77,25 +111,20 @@ require(
 				.domain([0, chartData.dependentAxis.values[chartData.dependentAxis.values.length-1].value])
 				.range([0, 100]);
 
-			var update = function (data, titleText) {
-				var chart = d3.select('.js-bar-chart');
-				var bar = chart.selectAll('.js-chart-bar')
-					.data(data);
-
-				var title = chart.selectAll('.js-chart-title')
-					.data([titleText]);
-
-				bar
-					.style('height', function (d) { return x(d) + '%'; })
-					.attr('title', function (d) { return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); });
-
-				title
-					.text(function (d) { return 'Prisoner Population, ' + d; });
-			};
-
 			i = 1;
 			var interval = window.setInterval(function () {
-				update([rows[i][3], rows[i][6]], [rows[i][0]]);
+				Charter.updateBarChart(
+					$('.js-bar-chart .js-chart')[0],
+					[rows[i][3], rows[i][6]],
+					['Prisoner Population, ' + rows[i][0]]
+				);
+
+				Charter.updateBarChart(
+					$('.js-horizontal-bar-chart .js-chart')[0],
+					[rows[i][3], rows[i][6]],
+					['Prisoner Population, ' + rows[i][0]]
+				);
+
 				i = (i + 1) % 30;
 
 				if (i === 0) {
