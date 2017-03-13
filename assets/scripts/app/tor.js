@@ -200,22 +200,29 @@ require(
 				var data,
 					chart,
 					bar,
+					tooltip,
 					title,
 
 					standardisedData,
 					standardisedChart,
 					standardisedBar,
+					standardiedData,
 					standardisedTitle;
 
 				data = perPop[TOR];
 				chart = d3.select('.js-bar-chart');
 				bar = chart.selectAll('.js-chart-bar')
 					.data(data);
+				tooltip = chart.selectAll('.js-chart-tooltip')
+					.data(data);
 				title = chart.selectAll('.js-chart-title')
 					.data([TOR]);
+
 				bar
 					.style('height', function (d) { return x(d) + '%'; })
 					.attr('title', function (d) { return Charter.getDisplayNumber(d, axisConfig); });
+				tooltip
+					.text(function (d) { return Charter.getDisplayNumber(d, axisConfig); });
 				// title
 				// 	.text(function (d) { return TOR + titleSeed; });
 
@@ -224,11 +231,16 @@ require(
 				standardisedChart = d3.select('.js-standardised-bar-chart');
 				standardisedBar = standardisedChart.selectAll('.js-chart-bar')
 					.data(standardisedData);
+				standardisedTooltip = standardisedChart.selectAll('.js-chart-tooltip')
+					.data(standardisedData);
 				standardisedTitle = standardisedChart.selectAll('.js-chart-title')
 					.data([TOR]);
+
 				standardisedBar
 					.style('height', function (d) { return sx(d) + '%'; })
 					.attr('title', function (d) { return Charter.getDisplayNumber(d, standardisedAxisConfig); });
+				standardisedTooltip
+					.text(function (d) { return Charter.getDisplayNumber(d, standardisedAxisConfig); });
 				// standardisedTitle
 				// 	.text(function (d) { return TOR + standardisedTitleSeed; });
 			};
