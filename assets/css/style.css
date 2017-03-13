@@ -439,6 +439,42 @@ html {
   background: #999;
 }
 
+@keyframes centreRotate {
+  0% {
+    transform: translateX(-50%) translateY(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50%) rotate(360deg);
+  }
+}
+
+.is-loading {
+  position: relative;
+}
+
+.is-loading:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.is-loading:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 5px solid rgba(255, 255, 255, 0.6);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: 1s centreRotate infinite linear;
+}
+
 .chart {
   width: 100%;
 }
@@ -469,7 +505,7 @@ html {
   align-items: center;
   position: absolute;
   left: 0;
-  bottom: 12px;
+  bottom: 22px;
   top: 8px;
   width: 50px;
   margin: 0;
@@ -509,7 +545,7 @@ html {
   left: 50px;
   bottom: 0;
   right: 0;
-  height: 20px;
+  height: 30px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -545,7 +581,7 @@ html {
   align-items: center;
   position: absolute;
   left: 50px;
-  bottom: 20px;
+  bottom: 30px;
   top: 16px;
   right: 0;
   margin: 0;
@@ -564,7 +600,7 @@ html {
   align-items: center;
   position: absolute;
   left: 50px;
-  bottom: 20px;
+  bottom: 30px;
   top: 16px;
   right: 0;
   margin: 0;
@@ -584,7 +620,7 @@ html {
   position: absolute;
   left: 50px;
   right: 0;
-  bottom: 21px;
+  bottom: 31px;
   top: 16px;
   margin: 0;
   padding: 0;
@@ -641,7 +677,7 @@ html {
   position: absolute;
   left: 51px;
   right: 0;
-  bottom: 21px;
+  bottom: 31px;
   top: 16px;
   margin: 0;
   padding: 0;
@@ -696,7 +732,7 @@ html {
   position: absolute;
   left: 51px;
   right: 0;
-  bottom: 21px;
+  bottom: 31px;
   top: 16px;
   margin: 0;
   padding: 0;
@@ -712,7 +748,7 @@ html {
   position: absolute;
   left: 51px;
   right: 0;
-  bottom: 21px;
+  bottom: 31px;
   top: 16px;
 }
 
