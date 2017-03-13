@@ -1,12 +1,13 @@
-$chart-height: 600px;
-$axis-width: 100px;
-$bar-color: #999;
+$axis-width: 50px;
+$axis-height: 20px;
+
 $axis-color: #ccc;
 $axis-text-size: 16px;
 
+$bar-color: #999;
+
 .chart {
 	width: 100%;
-	padding: 0 ($axis-width / 2);
 }
 
 .chart__title {
@@ -21,7 +22,10 @@ $axis-text-size: 16px;
 	position: relative;
 
 	width: 100%;
-	height: $chart-height;
+	padding-top: 75%;
+	@include bp("md") {
+		padding-top: 50%;
+	}
 }
 
 //////////
@@ -35,7 +39,7 @@ $axis-text-size: 16px;
 
 	position: absolute;
 	left: 0;
-	bottom: ($axis-width - ($axis-text-size / 2));
+	bottom: ($axis-height - ($axis-text-size / 2));
 	top: $axis-text-size / 2;
 	width: $axis-width;
 
@@ -79,7 +83,7 @@ $axis-text-size: 16px;
 	left: $axis-width;
 	bottom: 0;
 	right: 0;
-	height: $axis-width;
+	height: $axis-height;
 
 	margin: 0;
 	padding: 0;
@@ -122,7 +126,7 @@ $axis-text-size: 16px;
 
 	position: absolute;
 	left: $axis-width;
-	bottom: $axis-width;
+	bottom: $axis-height;
 	top: $axis-text-size;
 	right: 0;
 
@@ -143,7 +147,7 @@ $axis-text-size: 16px;
 
 	position: absolute;
 	left: $axis-width;
-	bottom: $axis-width;
+	bottom: $axis-height;
 	top: $axis-text-size;
 	right: 0;
 
@@ -168,7 +172,7 @@ $axis-text-size: 16px;
 	position: absolute;
 	left: $axis-width;
 	right: 0;
-	bottom: $axis-width + 1;
+	bottom: $axis-height + 1;
 	top: $axis-text-size;
 
 	margin: 0;
@@ -181,6 +185,7 @@ $axis-text-size: 16px;
 	}
 
 	.chart__bar-area {
+		position: relative;
 		width: 80%;
 		margin: 0 auto;
 		background: $bar-color;
@@ -201,6 +206,27 @@ $axis-text-size: 16px;
 		width: 100%;
 		text-align: center;
 	}
+
+	.chart__bar-tooltip {
+		display: none;
+
+		position: absolute;
+		top: -5px;
+		left: 50%;
+		transform: translateX(-50%) translateY(-100%);
+
+		padding: 5px;
+		background: #000;
+		color: #fff;
+	}
+
+	.chart__bar-area:focus {
+		outline: none;
+
+		.chart__bar-tooltip {
+			display: block;
+		}
+	}
 }
 
 .chart__bars--h {
@@ -212,7 +238,7 @@ $axis-text-size: 16px;
 	position: absolute;
 	left: $axis-width + 1;
 	right: 0;
-	bottom: $axis-width + 1;
+	bottom: $axis-height + 1;
 	top: $axis-text-size;
 
 	margin: 0;
@@ -230,6 +256,7 @@ $axis-text-size: 16px;
 	}
 
 	.chart__bar-area {
+		position: relative;
 		height: 80%;
 		background: $bar-color;
 
@@ -247,6 +274,27 @@ $axis-text-size: 16px;
 		transform: translateY(-50%);
 		padding-right: 10px;
 	}
+
+	.chart__bar-tooltip {
+		display: none;
+
+		position: absolute;
+		right: -5px;
+		top: 50%;
+		transform: translateY(-50%) translateX(100%);
+
+		padding: 5px;
+		background: #000;
+		color: #fff;
+	}
+
+	.chart__bar-area:focus {
+		outline: none;
+
+		.chart__bar-tooltip {
+			display: block;
+		}
+	}
 }
 
 ////////////
@@ -256,7 +304,7 @@ $axis-text-size: 16px;
 	position: absolute;
 	left: $axis-width + 1;
 	right: 0;
-	bottom: $axis-width + 1;
+	bottom: $axis-height + 1;
 	top: $axis-text-size;
 
 	margin: 0;
@@ -279,7 +327,7 @@ $axis-text-size: 16px;
 	position: absolute;
 	left: $axis-width + 1;
 	right: 0;
-	bottom: $axis-width + 1;
+	bottom: $axis-height + 1;
 	top: $axis-text-size;
 }
 

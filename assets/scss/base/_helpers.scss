@@ -1,0 +1,19 @@
+.hidden {
+	display: none;
+}
+.show {
+	display: block;
+}
+
+@each $bp, $width in $breakpoints {
+	@if $bp != null {
+		@include bp($bp) {
+			.hidden-#{$bp} {
+				display: none;
+			}
+			.show-#{$bp} {
+				display: block;
+			}
+		}
+	}
+}

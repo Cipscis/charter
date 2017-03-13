@@ -3,23 +3,25 @@
 
 	<div class="chart__area">
 		<ul class="chart__axis--h">
-			{{#independentAxis.values}}
+			{{#dependentAxis.values}}
 				<li class="chart__axis-item js-chart-axis-label">
 					<span class="chart__axis-label">{{displayValue}}</span>
 				</li>
-			{{/independentAxis.values}}
+			{{/dependentAxis.values}}
 		</ul>
 
 		<ul class="chart__gridlines--v">
-			{{#independentAxis.gridlines}}
+			{{#dependentAxis.gridlines}}
 				<li class="chart__gridlines-item"></li>
-			{{/independentAxis.gridlines}}
+			{{/dependentAxis.gridlines}}
 		</ul>
 
 		<ul class="chart__bars--h">
 			{{#data}}
 				<li class="chart__bar">
-					<div class="chart__bar-area js-chart-bar" style="width: {{percentage}}%; background: {{colour}};" title="{{displayValue}}"></div>
+					<div class="chart__bar-area js-chart-bar" style="width: {{percentage}}%; background: {{colour}};" title="{{displayValue}}" tabindex="-1">
+						<span class="chart__bar-tooltip">{{displayValue}}</span>
+					</div>
 					<span class="chart__bar-label">{{label}}</span>
 				</li>
 			{{/data}}
