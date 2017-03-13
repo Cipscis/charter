@@ -153,7 +153,7 @@ require(
 			};
 
 			$barChart = Charter.createBarChart(chartData, axisConfig);
-			$('.js-bar-chart').html($barChart);
+			$('.js-bar-chart').html('').append($barChart);
 
 			// STEP 4: Create standardised chart
 			////////////////////////////////////
@@ -185,64 +185,22 @@ require(
 			};
 
 			$sBarChart = Charter.createBarChart(sChartData, sAxisConfig);
-			$('.js-standardised-bar-chart').html($sBarChart);
+			$('.js-standardised-bar-chart').html('').append($sBarChart);
 
-			// STEP 5: Use D3 to allow updating of data
+			// STEP 5: Allow updating of charts
 			///////////////////////////////////////////
-			x = d3.scaleLinear()
-				.domain([0, chartData.dependentAxis.values[chartData.dependentAxis.values.length-1].value])
-				.range([0, 100]);
-			sx = d3.scaleLinear()
-				.domain([0, sChartData.dependentAxis.values[sChartData.dependentAxis.values.length-1].value])
-				.range([0, 100]);
-
 			update = function (TOR) {
-				var data,
-					chart,
-					bar,
-					tooltip,
-					title,
+				Charter.updateBarChart(
+					$('.js-bar-chart .js-chart')[0],
+					perPop[TOR],
+					TOR + titleSeed
+				);
 
-					sData,
-					sChart,
-					sBar,
-					standardiedData,
-					sTitle;
-
-				data = perPop[TOR];
-				chart = d3.select('.js-bar-chart');
-				bar = chart.selectAll('.js-chart-bar')
-					.data(data);
-				tooltip = chart.selectAll('.js-chart-tooltip')
-					.data(data);
-				title = chart.selectAll('.js-chart-title')
-					.data([TOR]);
-
-				bar
-					.style('height', function (d) { return x(d) + '%'; })
-					.attr('title', function (d) { return Charter.getDisplayNumber(d, axisConfig); });
-				tooltip
-					.text(function (d) { return Charter.getDisplayNumber(d, axisConfig); });
-				// title
-				// 	.text(function (d) { return TOR + titleSeed; });
-
-
-				sData = perPakeha[TOR];
-				sChart = d3.select('.js-standardised-bar-chart');
-				sBar = sChart.selectAll('.js-chart-bar')
-					.data(sData);
-				sTooltip = sChart.selectAll('.js-chart-tooltip')
-					.data(sData);
-				sTitle = sChart.selectAll('.js-chart-title')
-					.data([TOR]);
-
-				sBar
-					.style('height', function (d) { return sx(d) + '%'; })
-					.attr('title', function (d) { return Charter.getDisplayNumber(d, sAxisConfig); });
-				sTooltip
-					.text(function (d) { return Charter.getDisplayNumber(d, sAxisConfig); });
-				// sTitle
-				// 	.text(function (d) { return TOR + sTitleSeed; });
+				Charter.updateBarChart(
+					$('.js-standardised-bar-chart .js-chart')[0],
+					perPakeha[TOR],
+					TOR + sTitleSeed
+				);
 			};
 
 			// STEP 6: Initialise events

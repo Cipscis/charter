@@ -3,6 +3,7 @@ define(
 		'jquery',
 		'templayed',
 		'papaparse',
+		'd3',
 
 		'text!templates/table.html',
 		'text!templates/bar-chart.html',
@@ -15,6 +16,7 @@ define(
 		$,
 		templayed,
 		Papa,
+		d3,
 
 		tableTemplate,
 		barChartTemplate,
@@ -407,6 +409,7 @@ define(
 
 				$chart = $(templayed(axisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
 				$chart.data('chartData', chartData);
+				$chart.data('dependentAxisConfig', axisConfig);
 
 				return $chart;
 			},
@@ -447,6 +450,52 @@ define(
 				$chart.data('chartData', chartData);
 
 				return $chart;
+			},
+
+			////////////
+			// UPDATE //
+			////////////
+			updateBarChart: function (chart, data, titleText) {
+				// Takes a .js-chart DOM element, an array of data values, and titleText
+				// Updates it to reflect the new data and titleText
+
+				// Currently assumes the data will match the current number of bars
+
+				var $chart,
+
+					axisValues, x,
+
+					bars,
+					tooltips,
+					title;
+
+				$chart = $(chart);
+				chartData = $chart.data('chartData');
+				axisConfig = $chart.data('dependentAxisConfig');
+
+				chart = d3.select(chart);
+
+				axisValues = chartData.dependentAxis.values;
+				x = d3.scaleLinear()
+					.domain([axisValues[0].value, axisValues[axisValues.length-1].value])
+					.range([0, 100]);
+
+				bars = chart.selectAll('.js-chart-bar')
+					.data(data);
+				tooltips = chart.selectAll('.js-chart-tooltip')
+					.data(data);
+				title = chart.selectAll('.js-chart-title')
+					.data([titleText]);
+
+				bars
+					.style(axisConfig.horizontal ? 'width' : 'height', function (d) { return x(d) + '%'; })
+					.attr('title', function (d) { return Charter.getDisplayNumber(d, axisConfig); });
+
+				tooltips
+					.text(function (d) { return Charter.getDisplayNumber(d, axisConfig); });
+
+				title
+					.text(function (d) { return titleText; });
 			}
 		};
 
