@@ -260,7 +260,7 @@ require(
 
 		// Load and process CSV
 		$.ajax({
-			url: 'assets/data/Tactical Options 2014 - Raw.csv',
+			url: 'assets/data/Tactical Options 2014 - raw.csv',
 			success: fileLoaded
 		});
 	}
