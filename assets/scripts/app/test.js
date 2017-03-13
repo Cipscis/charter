@@ -106,7 +106,7 @@ require(
 
 		// Load and process CSV
 		$.ajax({
-			url: '/assets/data/Prison Population - raw.csv',
+			url: 'assets/data/Prison Population - raw.csv',
 			success: fileLoaded
 		});
 	}
