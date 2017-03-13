@@ -41,9 +41,9 @@ require(
 				axisConfig,
 				$barChart,
 
-				standardisedChartData,
-				standardisedAxisConfig,
-				$standardisedBarChart,
+				sChartData,
+				sAxisConfig,
+				$sBarChart,
 
 				$table,
 
@@ -157,11 +157,11 @@ require(
 
 			// STEP 4: Create standardised chart
 			////////////////////////////////////
-			var standardisedTitleSeed = ' use by NZ Police, per population, standardised by Pākehā rate (2014)';
+			var sTitleSeed = ' use by NZ Police, per population, s by Pākehā rate (2014)';
 
-			standardisedChartData = {
-				// title: TOR + standardisedTitleSeed,
-				title: 'Tactical options' + standardisedTitleSeed,
+			sChartData = {
+				// title: TOR + sTitleSeed,
+				title: 'Tactical options' + sTitleSeed,
 				data: [
 					{
 						label: 'Pākehā',
@@ -178,14 +178,14 @@ require(
 				]
 			};
 
-			standardisedAxisConfig = {
+			sAxisConfig = {
 				max: 15,
 				values: 3,
 				toFixed: 2
 			};
 
-			$standardisedBarChart = Charter.createBarChart(standardisedChartData, standardisedAxisConfig);
-			$('.js-standardised-bar-chart').html($standardisedBarChart);
+			$sBarChart = Charter.createBarChart(sChartData, sAxisConfig);
+			$('.js-standardised-bar-chart').html($sBarChart);
 
 			// STEP 5: Use D3 to allow updating of data
 			///////////////////////////////////////////
@@ -193,7 +193,7 @@ require(
 				.domain([0, chartData.dependentAxis.values[chartData.dependentAxis.values.length-1].value])
 				.range([0, 100]);
 			sx = d3.scaleLinear()
-				.domain([0, standardisedChartData.dependentAxis.values[standardisedChartData.dependentAxis.values.length-1].value])
+				.domain([0, sChartData.dependentAxis.values[sChartData.dependentAxis.values.length-1].value])
 				.range([0, 100]);
 
 			update = function (TOR) {
@@ -203,11 +203,11 @@ require(
 					tooltip,
 					title,
 
-					standardisedData,
-					standardisedChart,
-					standardisedBar,
+					sData,
+					sChart,
+					sBar,
 					standardiedData,
-					standardisedTitle;
+					sTitle;
 
 				data = perPop[TOR];
 				chart = d3.select('.js-bar-chart');
@@ -227,22 +227,22 @@ require(
 				// 	.text(function (d) { return TOR + titleSeed; });
 
 
-				standardisedData = perPakeha[TOR];
-				standardisedChart = d3.select('.js-standardised-bar-chart');
-				standardisedBar = standardisedChart.selectAll('.js-chart-bar')
-					.data(standardisedData);
-				standardisedTooltip = standardisedChart.selectAll('.js-chart-tooltip')
-					.data(standardisedData);
-				standardisedTitle = standardisedChart.selectAll('.js-chart-title')
+				sData = perPakeha[TOR];
+				sChart = d3.select('.js-standardised-bar-chart');
+				sBar = sChart.selectAll('.js-chart-bar')
+					.data(sData);
+				sTooltip = sChart.selectAll('.js-chart-tooltip')
+					.data(sData);
+				sTitle = sChart.selectAll('.js-chart-title')
 					.data([TOR]);
 
-				standardisedBar
+				sBar
 					.style('height', function (d) { return sx(d) + '%'; })
-					.attr('title', function (d) { return Charter.getDisplayNumber(d, standardisedAxisConfig); });
-				standardisedTooltip
-					.text(function (d) { return Charter.getDisplayNumber(d, standardisedAxisConfig); });
-				// standardisedTitle
-				// 	.text(function (d) { return TOR + standardisedTitleSeed; });
+					.attr('title', function (d) { return Charter.getDisplayNumber(d, sAxisConfig); });
+				sTooltip
+					.text(function (d) { return Charter.getDisplayNumber(d, sAxisConfig); });
+				// sTitle
+				// 	.text(function (d) { return TOR + sTitleSeed; });
 			};
 
 			// STEP 6: Initialise events
