@@ -212,7 +212,9 @@ define(
 				if (axisConfig.roundTo !== null) {
 					roundTo = axisConfig.roundTo;
 				} else {
-					roundTo = Math.pow(10, Math.floor(Math.log10(max)));
+					// log10 not supported in IE, so substitute ln(x)/ln(10)
+					roundTo = ('log10' in Math) ? Math.log10(max) : Math.log(max) / Math.log(10);
+					roundTo = Math.pow(10, Math.floor(max));
 				}
 
 				if (axisConfig.min !== null) {
