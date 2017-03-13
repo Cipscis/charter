@@ -18,6 +18,9 @@ $cols: 5;
 		}
 	} @else {
 		@include bp($bp) {
+			.width-#{$bp}-1 {
+				width: 100%;
+			}
 			@for $i from 2 through $cols {
 				@for $j from 1 to $i {
 					.width-#{$bp}-#{$j}-#{$i} {

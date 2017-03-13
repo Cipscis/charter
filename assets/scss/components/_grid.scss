@@ -16,6 +16,12 @@ $grid-config: (
 		float: left;
 		padding-left: $gutter;
 	}
+
+	&.grid-rev {
+		> .grid__item {
+			float: right;
+		}
+	}
 }
 
 @mixin grid-v($gutter) {

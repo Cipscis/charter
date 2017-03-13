@@ -53,6 +53,9 @@
 }
 
 @media (min-width: 425px) {
+  .width-s-1 {
+    width: 100%;
+  }
   .width-s-1-2 {
     width: 50%;
   }
@@ -86,6 +89,9 @@
 }
 
 @media (min-width: 768px) {
+  .width-md-1 {
+    width: 100%;
+  }
   .width-md-1-2 {
     width: 50%;
   }
@@ -119,6 +125,9 @@
 }
 
 @media (min-width: 1024px) {
+  .width-l-1 {
+    width: 100%;
+  }
   .width-l-1-2 {
     width: 50%;
   }
@@ -152,6 +161,9 @@
 }
 
 @media (min-width: 1440px) {
+  .width-xl-1 {
+    width: 100%;
+  }
   .width-xl-1-2 {
     width: 50%;
   }
@@ -184,6 +196,50 @@
   }
 }
 
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+@media (min-width: 425px) {
+  .hidden-s {
+    display: none;
+  }
+  .show-s {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .hidden-md {
+    display: none;
+  }
+  .show-md {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hidden-l {
+    display: none;
+  }
+  .show-l {
+    display: block;
+  }
+}
+
+@media (min-width: 1440px) {
+  .hidden-xl {
+    display: none;
+  }
+  .show-xl {
+    display: block;
+  }
+}
+
 html, body {
   padding: 0;
   margin: 0;
@@ -191,7 +247,6 @@ html, body {
 
 * {
   box-sizing: border-box;
-  transition: all 0.3s;
 }
 
 ul, ol {
@@ -212,6 +267,10 @@ html {
   color: #fff;
 }
 
+html a {
+  color: #fff;
+}
+
 html {
   font-family: Arial, sans-serif;
 }
@@ -225,6 +284,10 @@ html {
 .grid > .grid__item {
   float: left;
   padding-left: 20px;
+}
+
+.grid.grid-rev > .grid__item {
+  float: right;
 }
 
 .grid-v {
@@ -248,6 +311,10 @@ html {
   padding-left: 0;
 }
 
+.grid--flush.grid-rev > .grid__item {
+  float: right;
+}
+
 .grid-v--flush {
   padding: 0;
   list-style: none;
@@ -267,6 +334,10 @@ html {
 .grid--tight > .grid__item {
   float: left;
   padding-left: 10px;
+}
+
+.grid--tight.grid-rev > .grid__item {
+  float: right;
 }
 
 .grid-v--tight {
@@ -290,6 +361,10 @@ html {
   padding-left: 40px;
 }
 
+.grid--loose.grid-rev > .grid__item {
+  float: right;
+}
+
 .grid-v--loose {
   padding: 0;
   list-style: none;
@@ -304,9 +379,68 @@ html {
   float: right;
 }
 
+.layout {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.tabs {
+  margin: -10px 0 0 -10px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tabs__tab {
+  flex: 1 1 50%;
+  padding: 10px 0 0 10px;
+}
+
+@media (min-width: 768px) {
+  .tabs__tab {
+    flex: 1 1 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tabs__tab {
+    flex: 1 1 0;
+  }
+}
+
+.tabs__input {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+
+.tabs__display {
+  display: block;
+  padding: 10px 5px;
+  text-align: center;
+  background: #666;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+.tabs__display:hover {
+  background: #777;
+}
+
+.tabs__input:checked ~ .tabs__display {
+  background: #999;
+}
+
 .chart {
   width: 100%;
-  padding: 0 50px;
 }
 
 .chart__title {
@@ -319,7 +453,13 @@ html {
 .chart__area {
   position: relative;
   width: 100%;
-  height: 600px;
+  padding-top: 75%;
+}
+
+@media (min-width: 768px) {
+  .chart__area {
+    padding-top: 50%;
+  }
 }
 
 .chart__axis--v {
@@ -329,9 +469,9 @@ html {
   align-items: center;
   position: absolute;
   left: 0;
-  bottom: 92px;
+  bottom: 12px;
   top: 8px;
-  width: 100px;
+  width: 50px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -366,10 +506,10 @@ html {
   justify-content: space-between;
   align-items: flex-start;
   position: absolute;
-  left: 100px;
+  left: 50px;
   bottom: 0;
   right: 0;
-  height: 100px;
+  height: 20px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -404,8 +544,8 @@ html {
   flex-direction: column-reverse;
   align-items: center;
   position: absolute;
-  left: 100px;
-  bottom: 100px;
+  left: 50px;
+  bottom: 20px;
   top: 16px;
   right: 0;
   margin: 0;
@@ -423,8 +563,8 @@ html {
   justify-content: space-between;
   align-items: center;
   position: absolute;
-  left: 100px;
-  bottom: 100px;
+  left: 50px;
+  bottom: 20px;
   top: 16px;
   right: 0;
   margin: 0;
@@ -442,9 +582,9 @@ html {
   justify-content: space-between;
   align-items: flex-end;
   position: absolute;
-  left: 100px;
+  left: 50px;
   right: 0;
-  bottom: 101px;
+  bottom: 21px;
   top: 16px;
   margin: 0;
   padding: 0;
@@ -457,6 +597,7 @@ html {
 }
 
 .chart__bars--v .chart__bar-area {
+  position: relative;
   width: 80%;
   margin: 0 auto;
   background: #999;
@@ -473,15 +614,34 @@ html {
   text-align: center;
 }
 
+.chart__bars--v .chart__bar-tooltip {
+  display: none;
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+  padding: 5px;
+  background: #000;
+  color: #fff;
+}
+
+.chart__bars--v .chart__bar-area:focus {
+  outline: none;
+}
+
+.chart__bars--v .chart__bar-area:focus .chart__bar-tooltip {
+  display: block;
+}
+
 .chart__bars--h {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   align-items: flex-start;
   position: absolute;
-  left: 101px;
+  left: 51px;
   right: 0;
-  bottom: 101px;
+  bottom: 21px;
   top: 16px;
   margin: 0;
   padding: 0;
@@ -498,6 +658,7 @@ html {
 }
 
 .chart__bars--h .chart__bar-area {
+  position: relative;
   height: 80%;
   background: #999;
   transition: width 0.5s;
@@ -507,16 +668,35 @@ html {
   position: absolute;
   top: 50%;
   right: 100%;
-  max-width: 100px;
+  max-width: 50px;
   transform: translateY(-50%);
   padding-right: 10px;
 }
 
+.chart__bars--h .chart__bar-tooltip {
+  display: none;
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%) translateX(100%);
+  padding: 5px;
+  background: #000;
+  color: #fff;
+}
+
+.chart__bars--h .chart__bar-area:focus {
+  outline: none;
+}
+
+.chart__bars--h .chart__bar-area:focus .chart__bar-tooltip {
+  display: block;
+}
+
 .chart__points {
   position: absolute;
-  left: 101px;
+  left: 51px;
   right: 0;
-  bottom: 101px;
+  bottom: 21px;
   top: 16px;
   margin: 0;
   padding: 0;
@@ -530,9 +710,9 @@ html {
 
 .chart__lines-wrapper {
   position: absolute;
-  left: 101px;
+  left: 51px;
   right: 0;
-  bottom: 101px;
+  bottom: 21px;
   top: 16px;
 }
 

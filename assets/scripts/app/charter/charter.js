@@ -120,7 +120,10 @@ define(
 				}
 			},
 
-			_getDisplayNumber: function (number, axisConfig) {
+			getDisplayNumber: function (number, axisConfig) {
+				// TODO: Allow minimum significant figures to be specified,
+				// so toFixed can be calculated for small scales
+
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
 				if (typeof number !== 'number') {
@@ -159,7 +162,7 @@ define(
 					options[prop] = axisConfig[prop];
 				}
 
-				if (options.gridlines === null) {
+				if ((!options.gridlines) && options.gridlines !== 0) {
 					options.gridlines = axisConfig.values;
 				}
 
@@ -181,7 +184,7 @@ define(
 					options[prop] = axisConfig[prop];
 				}
 
-				if (options.gridlinesEvery === null) {
+				if ((!options.gridlinesEvery) && options.gridlinesEvery !== 0) {
 					options.gridlinesEvery = axisConfig.valuesEvery;
 				}
 
@@ -247,7 +250,7 @@ define(
 
 				for (i = 0; i <= axisConfig.gridlines; i++) {
 					value = Math.round(((max-min) * i / axisConfig.gridlines) + min);
-					displayValue = Charter._getDisplayNumber(value, axisConfig);
+					displayValue = Charter.getDisplayNumber(value, axisConfig);
 
 					axis.gridlines.push({
 						value: value,
@@ -257,7 +260,7 @@ define(
 
 				for (i = 0; i <= axisConfig.values; i++) {
 					value = Math.round(((max-min) * i / axisConfig.values) + min);
-					displayValue = Charter._getDisplayNumber(value, axisConfig);
+					displayValue = Charter.getDisplayNumber(value, axisConfig);
 
 					axis.values.push({
 						value: value,
@@ -324,7 +327,7 @@ define(
 
 				for (i = 0; i < chartData.data.length; i++) {
 					// Add commas for display values
-					chartData.data[i].displayValue = Charter._getDisplayNumber(chartData.data[i].value, axisConfig);
+					chartData.data[i].displayValue = Charter.getDisplayNumber(chartData.data[i].value, axisConfig);
 				}
 
 				return chartData;
