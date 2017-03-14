@@ -262,6 +262,10 @@ form {
   margin: 0;
 }
 
+p:last-child {
+  margin-bottom: 0;
+}
+
 html {
   background: #333;
   color: #fff;
