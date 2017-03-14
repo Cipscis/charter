@@ -504,9 +504,10 @@ html {
   flex-direction: column-reverse;
   align-items: center;
   position: absolute;
+  z-index: 2;
   left: 0;
-  bottom: 22px;
-  top: 8px;
+  bottom: 30px;
+  top: 16px;
   width: 50px;
   margin: 0;
   padding: 0;
@@ -516,13 +517,14 @@ html {
 .chart__axis--v:after {
   content: "";
   position: absolute;
-  top: 8px;
-  bottom: 8px;
+  top: 0;
+  bottom: 0;
   right: -1px;
   border-right: 1px solid #ccc;
 }
 
 .chart__axis--v .chart__axis-item {
+  position: absolute;
   text-align: right;
   width: 100%;
   display: flex;
@@ -535,6 +537,7 @@ html {
   padding: 0 10px 0 0;
   font-size: 16px;
   line-height: 16px;
+  transform: translateY(50%);
 }
 
 .chart__axis--h {
@@ -542,6 +545,7 @@ html {
   justify-content: space-between;
   align-items: flex-start;
   position: absolute;
+  z-index: 2;
   left: 50px;
   bottom: 0;
   right: 0;
@@ -561,8 +565,8 @@ html {
 }
 
 .chart__axis--h .chart__axis-item {
+  position: absolute;
   text-align: center;
-  position: relative;
 }
 
 .chart__axis--h .chart__axis-label {
@@ -574,31 +578,13 @@ html {
   line-height: 16px;
 }
 
-.chart__gridlines--h {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column-reverse;
-  align-items: center;
-  position: absolute;
-  left: 50px;
-  bottom: 30px;
-  top: 16px;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.chart__gridlines--h .chart__gridlines-item {
-  width: 100%;
-  border-top: 1px solid #ccc;
-}
-
+.chart__gridlines--h,
 .chart__gridlines--v {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: absolute;
+  z-index: 1;
   left: 50px;
   bottom: 30px;
   top: 16px;
@@ -608,17 +594,31 @@ html {
   list-style: none;
 }
 
-.chart__gridlines--v .chart__gridlines-item {
-  height: 100%;
-  border-right: 1px solid #ccc;
+.chart__gridlines--h {
+  flex-direction: column-reverse;
 }
 
-.chart__bars--v {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+.chart__gridlines--h .chart__gridlines-item {
   position: absolute;
-  left: 50px;
+  left: 1px;
+  right: 1px;
+  border-top: 1px solid #666;
+}
+
+.chart__gridlines--v .chart__gridlines-item {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  border-right: 1px solid #666;
+}
+
+.chart__bars--v,
+.chart__bars--h {
+  display: flex;
+  justify-content: space-bweten;
+  position: absolute;
+  z-index: 3;
+  left: 51px;
   right: 0;
   bottom: 31px;
   top: 16px;
@@ -627,19 +627,46 @@ html {
   list-style: none;
 }
 
-.chart__bars--v .chart__bar {
+.chart__bars--v .chart__bar,
+.chart__bars--h .chart__bar {
   position: relative;
   flex: 1 1 0%;
   height: 100%;
   display: flex;
+}
+
+.chart__bars--v .chart__bar-area,
+.chart__bars--h .chart__bar-area {
+  position: relative;
+  background: #999;
+}
+
+.chart__bars--v .chart__bar-tooltip,
+.chart__bars--h .chart__bar-tooltip {
+  display: none;
+  position: absolute;
+  padding: 5px;
+  background: #000;
+  color: #fff;
+}
+
+.chart__bars--v .chart__bar-area:focus,
+.chart__bars--h .chart__bar-area:focus {
+  outline: none;
+}
+
+.chart__bars--v .chart__bar-area:focus .chart__bar-tooltip,
+.chart__bars--h .chart__bar-area:focus .chart__bar-tooltip {
+  display: block;
+}
+
+.chart__bars--v .chart__bar {
   align-items: flex-end;
 }
 
 .chart__bars--v .chart__bar-area {
-  position: relative;
   width: 80%;
   margin: 0 auto;
-  background: #999;
   transition: height 0.5s;
 }
 
@@ -654,52 +681,22 @@ html {
 }
 
 .chart__bars--v .chart__bar-tooltip {
-  display: none;
-  position: absolute;
   top: -5px;
   left: 50%;
   transform: translateX(-50%) translateY(-100%);
-  padding: 5px;
-  background: #000;
-  color: #fff;
-}
-
-.chart__bars--v .chart__bar-area:focus {
-  outline: none;
-}
-
-.chart__bars--v .chart__bar-area:focus .chart__bar-tooltip {
-  display: block;
 }
 
 .chart__bars--h {
-  display: flex;
-  justify-content: space-between;
   flex-direction: column;
-  align-items: flex-start;
-  position: absolute;
-  left: 51px;
-  right: 0;
-  bottom: 31px;
-  top: 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 
 .chart__bars--h .chart__bar {
-  position: relative;
-  flex: 1 1 0%;
-  height: 100%;
   width: 100%;
-  display: flex;
   align-items: center;
 }
 
 .chart__bars--h .chart__bar-area {
-  position: relative;
   height: 80%;
-  background: #999;
   transition: width 0.5s;
 }
 
@@ -713,26 +710,14 @@ html {
 }
 
 .chart__bars--h .chart__bar-tooltip {
-  display: none;
-  position: absolute;
   right: -5px;
   top: 50%;
   transform: translateY(-50%) translateX(100%);
-  padding: 5px;
-  background: #000;
-  color: #fff;
-}
-
-.chart__bars--h .chart__bar-area:focus {
-  outline: none;
-}
-
-.chart__bars--h .chart__bar-area:focus .chart__bar-tooltip {
-  display: block;
 }
 
 .chart__points {
   position: absolute;
+  z-index: 3;
   left: 51px;
   right: 0;
   bottom: 31px;
@@ -743,12 +728,15 @@ html {
 }
 
 .chart__point {
+  color: #999;
   position: absolute;
   transform: translateX(-50%) translateY(50%);
+  transition: bottom left 0.5s;
 }
 
 .chart__lines-wrapper {
   position: absolute;
+  z-index: 3;
   left: 51px;
   right: 0;
   bottom: 31px;
@@ -765,7 +753,7 @@ html {
   vector-effect: non-scaling-stroke;
   stroke-width: 1;
   stroke-linecap: round;
-  stroke: #fff;
+  stroke: #999;
   position: absolute;
   top: 0;
   left: 0;

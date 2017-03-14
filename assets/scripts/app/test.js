@@ -84,7 +84,7 @@ require(
 					min: null
 				},
 				{
-					valuesEvery: 4
+					valuesEvery: 5
 				}
 			);
 			$('.js-line-graph').html($lineGraph);

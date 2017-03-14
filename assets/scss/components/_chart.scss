@@ -1,10 +1,26 @@
+/////////////
+// COLOURS //
+/////////////
 $axis-width: 50px;
 $axis-height: 30px;
 
 $axis-color: #ccc;
 $axis-text-size: 16px;
+$gridline-color: #666;
 
-$bar-color: #999;
+$data-color: #999;
+
+
+$tooltip-color: #fff;
+$tooltip-bg: #000;
+
+
+///////////////
+// Z-INDICES //
+///////////////
+$z-gridline: 1;
+$z-axis: 2;
+$z-data: 3;
 
 .chart {
 	width: 100%;
@@ -38,9 +54,10 @@ $bar-color: #999;
 	align-items: center;
 
 	position: absolute;
+	z-index: $z-axis;
 	left: 0;
-	bottom: ($axis-height - ($axis-text-size / 2));
-	top: $axis-text-size / 2;
+	bottom: $axis-height;
+	top: $axis-text-size;
 	width: $axis-width;
 
 	margin: 0;
@@ -50,13 +67,14 @@ $bar-color: #999;
 	&:after {
 		content: "";
 		position: absolute;
-		top: $axis-text-size / 2;
-		bottom: $axis-text-size / 2;
+		top: 0;
+		bottom: 0;
 		right: -1px;
 		border-right: 1px solid $axis-color;
 	}
 
 	.chart__axis-item {
+		position: absolute;
 		text-align: right;
 		width: 100%;
 
@@ -71,6 +89,8 @@ $bar-color: #999;
 
 		font-size: $axis-text-size;
 		line-height: $axis-text-size;
+
+		transform: translateY(50%);
 	}
 }
 
@@ -80,6 +100,7 @@ $bar-color: #999;
 	align-items: flex-start;
 
 	position: absolute;
+	z-index: $z-axis;
 	left: $axis-width;
 	bottom: 0;
 	right: 0;
@@ -99,9 +120,8 @@ $bar-color: #999;
 	}
 
 	.chart__axis-item {
+		position: absolute;
 		text-align: center;
-
-		position: relative;
 	}
 
 	.chart__axis-label {
@@ -118,34 +138,14 @@ $bar-color: #999;
 ///////////////
 // GRIDLINES //
 ///////////////
-.chart__gridlines--h {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: column-reverse;
-	align-items: center;
-
-	position: absolute;
-	left: $axis-width;
-	bottom: $axis-height;
-	top: $axis-text-size;
-	right: 0;
-
-	margin: 0;
-	padding: 0;
-	list-style: none;
-
-	.chart__gridlines-item {
-		width: 100%;
-		border-top: 1px solid $axis-color;
-	}
-}
-
+.chart__gridlines--h,
 .chart__gridlines--v {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
 	position: absolute;
+	z-index: $z-gridline;
 	left: $axis-width;
 	bottom: $axis-height;
 	top: $axis-text-size;
@@ -154,23 +154,40 @@ $bar-color: #999;
 	margin: 0;
 	padding: 0;
 	list-style: none;
+}
+
+.chart__gridlines--h {
+	flex-direction: column-reverse;
 
 	.chart__gridlines-item {
-		height: 100%;
-		border-right: 1px solid $axis-color;
+		position: absolute;
+		left: 1px;
+		right: 1px;
+		border-top: 1px solid $gridline-color;
+	}
+}
+
+.chart__gridlines--v {
+
+	.chart__gridlines-item {
+		position: absolute;
+		top: 1px;
+		bottom: 1px;
+		border-right: 1px solid $gridline-color;
 	}
 }
 
 //////////
 // BARS //
 //////////
-.chart__bars--v {
+.chart__bars--v,
+.chart__bars--h {
 	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
+	justify-content: space-bweten;
 
 	position: absolute;
-	left: $axis-width;
+	z-index: $z-data;
+	left: $axis-width + 1;
 	right: 0;
 	bottom: $axis-height + 1;
 	top: $axis-text-size;
@@ -184,17 +201,41 @@ $bar-color: #999;
 		flex: 1 1 0%;
 		height: 100%;
 		display: flex;
-		align-items: flex-end;
 	}
 
 	.chart__bar-area {
 		position: relative;
+		background: $data-color;
+	}
+
+	.chart__bar-tooltip {
+		display: none;
+		position: absolute;
+
+		padding: 5px;
+		background: $tooltip-bg;
+		color: $tooltip-color;
+	}
+
+	.chart__bar-area:focus {
+		outline: none;
+		.chart__bar-tooltip {
+			display: block;
+		}
+	}
+}
+
+.chart__bars--v {
+
+	.chart__bar {
+		align-items: flex-end;
+	}
+
+	.chart__bar-area {
 		width: 80%;
 		margin: 0 auto;
-		background: $bar-color;
 
 		transition: height 0.5s;
-
 		// height
 	}
 
@@ -211,60 +252,24 @@ $bar-color: #999;
 	}
 
 	.chart__bar-tooltip {
-		display: none;
-
-		position: absolute;
 		top: -5px;
 		left: 50%;
 		transform: translateX(-50%) translateY(-100%);
-
-		padding: 5px;
-		background: #000;
-		color: #fff;
-	}
-
-	.chart__bar-area:focus {
-		outline: none;
-
-		.chart__bar-tooltip {
-			display: block;
-		}
 	}
 }
 
 .chart__bars--h {
-	display: flex;
-	justify-content: space-between;
 	flex-direction: column;
-	align-items: flex-start;
-
-	position: absolute;
-	left: $axis-width + 1;
-	right: 0;
-	bottom: $axis-height + 1;
-	top: $axis-text-size;
-
-	margin: 0;
-	padding: 0;
-	list-style: none;
 
 	.chart__bar {
-		position: relative;
-		flex: 1 1 0%;
-		height: 100%;
 		width: 100%;
-
-		display: flex;
 		align-items: center;
 	}
 
 	.chart__bar-area {
-		position: relative;
 		height: 80%;
-		background: $bar-color;
 
 		transition: width 0.5s;
-
 		// width
 	}
 
@@ -279,24 +284,9 @@ $bar-color: #999;
 	}
 
 	.chart__bar-tooltip {
-		display: none;
-
-		position: absolute;
 		right: -5px;
 		top: 50%;
 		transform: translateY(-50%) translateX(100%);
-
-		padding: 5px;
-		background: #000;
-		color: #fff;
-	}
-
-	.chart__bar-area:focus {
-		outline: none;
-
-		.chart__bar-tooltip {
-			display: block;
-		}
 	}
 }
 
@@ -305,6 +295,7 @@ $bar-color: #999;
 ////////////
 .chart__points {
 	position: absolute;
+	z-index: $z-data;
 	left: $axis-width + 1;
 	right: 0;
 	bottom: $axis-height + 1;
@@ -316,9 +307,11 @@ $bar-color: #999;
 }
 
 .chart__point {
+	color: $data-color;
 	position: absolute;
 	transform: translateX(-50%) translateY(50%);
 
+	transition: bottom left 0.5s;
 	// bottom
 	// left
 }
@@ -328,6 +321,7 @@ $bar-color: #999;
 //////////
 .chart__lines-wrapper {
 	position: absolute;
+	z-index: $z-data;
 	left: $axis-width + 1;
 	right: 0;
 	bottom: $axis-height + 1;
@@ -348,7 +342,7 @@ $bar-color: #999;
 	vector-effect: non-scaling-stroke;
 	stroke-width: 1;
 	stroke-linecap: round;
-	stroke: #fff;
+	stroke: $data-color;
 
 	position: absolute;
 	top: 0;

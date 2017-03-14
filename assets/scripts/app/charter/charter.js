@@ -42,11 +42,19 @@ define(
 		};
 
 		var qualitativeAxisDefaults = {
+			// Show every N values on the axis
 			valuesEvery: 1,
+			// Skip N values at the start before showing them
+			// Will typically be less than valuesEvery, used to offset
+			valuesSkip: 0,
 
 			// When gridlinesEvery is set to null,
 			// it inherits its value from valuesEvery
-			gridlinesEvery: null
+			gridlinesEvery: null,
+
+			// When gridlinesSkip is set to null,
+			// it inherits its value from valuesSkip
+			gridlinesSkip: null
 		};
 
 		// Expected format of basic chart data:
@@ -190,7 +198,18 @@ define(
 					options.gridlinesEvery = options.valuesEvery;
 				}
 
+				if ((!options.gridlinesSkip) && options.gridlinesSkip !== 0) {
+					options.gridlinesSkip = options.valuesSkip;
+				}
+
 				return options;
+			},
+
+			_mapToRange: function (value, min, max) {
+				// Takes in a value and maps it to a percentage
+				// between the passed min and max values
+
+				return (value-min) / (max-min) * 100;
 			},
 
 			_getRange: function (chartData, axisConfig) {
@@ -214,7 +233,7 @@ define(
 				} else {
 					// log10 not supported in IE, so substitute ln(x)/ln(10)
 					roundTo = ('log10' in Math) ? Math.log10(max) : Math.log(max) / Math.log(10);
-					roundTo = Math.pow(10, Math.floor(max));
+					roundTo = Math.pow(10, Math.floor(roundTo));
 				}
 
 				if (axisConfig.min !== null) {
@@ -258,7 +277,8 @@ define(
 
 					axis.gridlines.push({
 						value: value,
-						displayValue: displayValue
+						displayValue: displayValue,
+						percentage: Charter._mapToRange(value, min, max)
 					});
 				}
 
@@ -268,7 +288,8 @@ define(
 
 					axis.values.push({
 						value: value,
-						displayValue: displayValue
+						displayValue: displayValue,
+						percentage: Charter._mapToRange(value, min, max)
 					});
 				}
 
@@ -292,38 +313,24 @@ define(
 					max, min;
 
 				if (axisConfig.gridlinesEvery !== 0) {
-					if (axisConfig.gridlinesEvery === 1 || (chartData.data.length % axisConfig.gridlinesEvery) === 1) {
-						// The gridlines will fit perfectly into the data
+					for (i = axisConfig.gridlinesSkip; i < chartData.data.length; i += axisConfig.gridlinesEvery) {
+						displayValue = chartData.data[i].label;
 
-						for (i = 0; i < chartData.data.length; i += axisConfig.gridlinesEvery) {
-							displayValue = chartData.data[i].label;
-
-							axis.gridlines.push({
-								displayValue: displayValue
-							});
-						}
-					} else {
-						// TODO: Handle this
-						// Somehow have space left over after the last gridline,
-						// depending on the result of chartData.data.length % axisConfig.gridlinesEvery
+						axis.gridlines.push({
+							displayValue: displayValue,
+							percentage: i / (chartData.data.length-1) * 100
+						});
 					}
 				}
 
 				if (axisConfig.valuesEvery !== 0) {
-					if (axisConfig.valuesEvery === 1 || (chartData.data.length % axisConfig.valuesEvery) === 1) {
-						// The gridlines will fit perfectly into the data
+					for (i = axisConfig.valuesSkip; i < chartData.data.length; i += axisConfig.valuesEvery) {
+						displayValue = chartData.data[i].label;
 
-						for (i = 0; i < chartData.data.length; i += axisConfig.valuesEvery) {
-							displayValue = chartData.data[i].label;
-
-							axis.values.push({
-								displayValue: displayValue
-							});
-						}
-					} else {
-						// TODO: Handle this
-						// Somehow have space left over after the last gridline,
-						// depending on the result of chartData.data.length % axisConfig.valuesEvery
+						axis.values.push({
+							displayValue: displayValue,
+							percentage: i / (chartData.data.length-1) * 100
+						});
 					}
 				}
 

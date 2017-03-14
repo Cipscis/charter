@@ -4,7 +4,7 @@
 	<div class="chart__area">
 		<ul class="chart__axis--v">
 			{{#dependentAxis.values}}
-				<li class="chart__axis-item js-chart-axis-label">
+				<li class="chart__axis-item js-chart-axis-label" style="bottom: {{percentage}}%;">
 					<span class="chart__axis-label">{{displayValue}}</span>
 				</li>
 			{{/dependentAxis.values}}
@@ -12,8 +12,11 @@
 
 		<ul class="chart__gridlines--h">
 			{{#dependentAxis.gridlines}}
-				<li class="chart__gridlines-item"></li>
+				<li class="chart__gridlines-item" style="bottom: {{percentage}}%;"></li>
 			{{/dependentAxis.gridlines}}
+		</ul>
+
+		<ul class="chart__axis--h">
 		</ul>
 
 		<ul class="chart__bars--v">
