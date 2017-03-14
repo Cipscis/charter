@@ -165,7 +165,7 @@ define(
 				}
 
 				if ((!options.gridlines) && options.gridlines !== 0) {
-					options.gridlines = axisConfig.values;
+					options.gridlines = options.values;
 				}
 
 				return options;
@@ -187,7 +187,7 @@ define(
 				}
 
 				if ((!options.gridlinesEvery) && options.gridlinesEvery !== 0) {
-					options.gridlinesEvery = axisConfig.valuesEvery;
+					options.gridlinesEvery = options.valuesEvery;
 				}
 
 				return options;
@@ -291,36 +291,40 @@ define(
 					range,
 					max, min;
 
-				if (axisConfig.gridlinesEvery === 1 || (chartData.data.length % axisConfig.gridlinesEvery) === 1) {
-					// The gridlines will fit perfectly into the data
+				if (axisConfig.gridlinesEvery !== 0) {
+					if (axisConfig.gridlinesEvery === 1 || (chartData.data.length % axisConfig.gridlinesEvery) === 1) {
+						// The gridlines will fit perfectly into the data
 
-					for (i = 0; i < chartData.data.length; i += axisConfig.gridlinesEvery) {
-						displayValue = chartData.data[i].label;
+						for (i = 0; i < chartData.data.length; i += axisConfig.gridlinesEvery) {
+							displayValue = chartData.data[i].label;
 
-						axis.gridlines.push({
-							displayValue: displayValue
-						});
+							axis.gridlines.push({
+								displayValue: displayValue
+							});
+						}
+					} else {
+						// TODO: Handle this
+						// Somehow have space left over after the last gridline,
+						// depending on the result of chartData.data.length % axisConfig.gridlinesEvery
 					}
-				} else {
-					// TODO: Handle this
-					// Somehow have space left over after the last gridline,
-					// depending on the result of chartData.data.length % axisConfig.gridlinesEvery
 				}
 
-				if (axisConfig.valuesEvery === 1 || (chartData.data.length % axisConfig.valuesEvery) === 1) {
-					// The gridlines will fit perfectly into the data
+				if (axisConfig.valuesEvery !== 0) {
+					if (axisConfig.valuesEvery === 1 || (chartData.data.length % axisConfig.valuesEvery) === 1) {
+						// The gridlines will fit perfectly into the data
 
-					for (i = 0; i < chartData.data.length; i += axisConfig.valuesEvery) {
-						displayValue = chartData.data[i].label;
+						for (i = 0; i < chartData.data.length; i += axisConfig.valuesEvery) {
+							displayValue = chartData.data[i].label;
 
-						axis.values.push({
-							displayValue: displayValue
-						});
+							axis.values.push({
+								displayValue: displayValue
+							});
+						}
+					} else {
+						// TODO: Handle this
+						// Somehow have space left over after the last gridline,
+						// depending on the result of chartData.data.length % axisConfig.valuesEvery
 					}
-				} else {
-					// TODO: Handle this
-					// Somehow have space left over after the last gridline,
-					// depending on the result of chartData.data.length % axisConfig.valuesEvery
 				}
 
 				return axis;
