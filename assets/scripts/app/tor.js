@@ -4,33 +4,10 @@ require(
 		'd3',
 		'templayed',
 
-		'charter/charter'
+		'charter/charter',
+		'mappers/mappers'
 	],
-	function ($, d3, templayed, Charter) {
-		// Mapper functions
-		var timesArray = function (array) {
-			return function (val, index) {
-				return val * array[index];
-			};
-		};
-
-		var overArray = function (array) {
-			return function (val, index) {
-				return val / array[index];
-			};
-		};
-
-		var times = function (number) {
-			return function (val) {
-				return val * number;
-			};
-		};
-
-		var over = function (number) {
-			return function (val) {
-				return val / number;
-			};
-		};
+	function ($, d3, templayed, Charter, Mappers) {
 
 		var fileLoaded = function (csv) {
 			Charter.parseCsv(csv, fileParsed);
@@ -70,7 +47,7 @@ require(
 
 			// Total events / events per 100,000 population * 100,000
 			// = population
-			population = totalTORs.map(overArray(perPopAll)).map(times(100000));
+			population = totalTORs.map(Mappers.overArray(perPopAll)).map(Mappers.times(100000));
 
 			TORTypes = [];
 			perTOR = {};
@@ -86,14 +63,14 @@ require(
 			for (i in perTOR) {
 				// Rate per this type of TOR used * number of TOR events
 				// = number of this type of TOR used
-				total[i] = perTOR[i].map(timesArray(totalTORs));
+				total[i] = perTOR[i].map(Mappers.timesArray(totalTORs));
 			}
 
 			perPop = {};
 			for (i in total) {
 				// Number of times this type of TOR used / population * 100,000
 				// = number of times this type of TOR used per 100,000 population
-				perPop[i] = total[i].map(overArray(population)).map(times(100000));
+				perPop[i] = total[i].map(Mappers.overArray(population)).map(Mappers.times(100000));
 			}
 
 			perPakeha = {};
@@ -101,7 +78,7 @@ require(
 				// Number of times this type of TOR used per 100,000 population /
 				// Number of times this type of TOR used per 100,000 population for Pākehā
 				// = Number of times this type of TOR used relative to Pākehā rate (1.00)
-				perPakeha[i] = perPop[i].map(over(perPop[i][0]));
+				perPakeha[i] = perPop[i].map(Mappers.over(perPop[i][0]));
 			}
 
 			$table = Charter.createTable(rows);

@@ -732,10 +732,21 @@ html {
 }
 
 .chart__point {
-  color: #999;
   position: absolute;
   transform: translateX(-50%) translateY(50%);
   transition: bottom left 0.5s;
+}
+
+.chart__point:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 2px solid #999;
 }
 
 .chart__lines-wrapper {
