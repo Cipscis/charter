@@ -59,11 +59,18 @@ define(
 
 		// Expected format of basic chart data:
 		// {
-		//	title: 'Title',
-		// 	data: [
+		// 	title: 'Title',
+		// 	labels: ['Label 1', 'Label 2'],
+		// 	dataSeries: [
 		// 		{
-		// 			label: 'Label 1',
-		// 			value: 1
+		// 			dataPoints: [
+		// 				{
+		// 					value: 1
+		// 				},
+		// 				{
+		// 					value: 2
+		// 				}
+		// 			]
 		// 		}
 		// 	]
 		// }
@@ -212,20 +219,38 @@ define(
 				return (value-min) / (max-min) * 100;
 			},
 
-			_getRange: function (chartData, axisConfig) {
+			_getRange: function (dataSeries, axisConfig) {
 				// Get the minimum and maximum value in a chart's data
 				// then round them according to the axisConfig
 
+				var i,
+					ranges = [],
+					finalRange = [];
+
+				for (i = 0; i < dataSeries.length; i++) {
+					ranges.push(Charter._getRangeSingle(dataSeries[i], axisConfig));
+				}
+
+				finalRange = [ranges[0][0], ranges[0][1]];
+				for (i = 1; i < ranges.length; i++) {
+					finalRange[0] = Math.min(finalRange[0], ranges[i][0]);
+					finalRange[1] = Math.max(finalRange[1], ranges[i][1]);
+				}
+
+				return finalRange;
+			},
+
+			_getRangeSingle: function (dataSeries, axisConfig) {
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
 				var i,
 					roundTo,
 					min, max;
 
-				min = max = chartData.data[0].value;
-				for (i = 0; i < chartData.data.length; i++) {
-					min = Math.min(min, chartData.data[i].value);
-					max = Math.max(max, chartData.data[i].value);
+				min = max = dataSeries.dataPoints[0].value;
+				for (i = 0; i < dataSeries.dataPoints.length; i++) {
+					min = Math.min(min, dataSeries.dataPoints[i].value);
+					max = Math.max(max, dataSeries.dataPoints[i].value);
 				}
 
 				if (axisConfig.roundTo !== null) {
@@ -267,7 +292,7 @@ define(
 					range,
 					max, min;
 
-				range = Charter._getRange(chartData, axisConfig);
+				range = Charter._getRange(chartData.dataSeries, axisConfig);
 				min = range[0];
 				max = range[1];
 
@@ -313,23 +338,23 @@ define(
 					max, min;
 
 				if (axisConfig.gridlinesEvery !== 0) {
-					for (i = axisConfig.gridlinesSkip; i < chartData.data.length; i += axisConfig.gridlinesEvery) {
-						displayValue = chartData.data[i].label;
+					for (i = axisConfig.gridlinesSkip; i < chartData.labels.length; i += axisConfig.gridlinesEvery) {
+						displayValue = chartData.labels[i];
 
 						axis.gridlines.push({
 							displayValue: displayValue,
-							percentage: i / (chartData.data.length-1) * 100
+							percentage: i / (chartData.labels.length-1) * 100
 						});
 					}
 				}
 
 				if (axisConfig.valuesEvery !== 0) {
-					for (i = axisConfig.valuesSkip; i < chartData.data.length; i += axisConfig.valuesEvery) {
-						displayValue = chartData.data[i].label;
+					for (i = axisConfig.valuesSkip; i < chartData.labels.length; i += axisConfig.valuesEvery) {
+						displayValue = chartData.labels[i];
 
 						axis.values.push({
 							displayValue: displayValue,
-							percentage: i / (chartData.data.length-1) * 100
+							percentage: i / (chartData.labels.length-1) * 100
 						});
 					}
 				}
@@ -338,11 +363,17 @@ define(
 			},
 
 			_getDisplayValues: function (chartData, axisConfig) {
-				var i;
+				var i, j,
+					dataSeries, dataPoint;
 
-				for (i = 0; i < chartData.data.length; i++) {
-					// Add commas for display values
-					chartData.data[i].displayValue = Charter.getDisplayNumber(chartData.data[i].value, axisConfig);
+				for (i = 0; i < chartData.dataSeries.length; i++) {
+					dataSeries = chartData.dataSeries[i];
+					for (j = 0; j < dataSeries.dataPoints.length; j++) {
+						dataPoint = dataSeries.dataPoints[j];
+
+						// Add commas for display values
+						dataPoint.displayValue = Charter.getDisplayNumber(dataPoint.value, axisConfig);
+					}
 				}
 
 				return chartData;
@@ -351,17 +382,21 @@ define(
 			_getValuePercentages: function (chartData, axisConfig) {
 				// Calculates the percentage to use for displaying each value
 
-				var i,
+				var i, j,
 					range,
-					min, max;
+					min, max,
+					dataSeries, dataPoint;
 
-				range = Charter._getRange(chartData, axisConfig);
+				range = Charter._getRange(chartData.dataSeries, axisConfig);
 				min = range[0];
 				max = range[1];
 
-				for (i = 0; i < chartData.data.length; i++) {
-					// Calculate percentage as this is used for height
-					chartData.data[i].percentage = (chartData.data[i].value-min) / (max-min) * 100;
+				for (i = 0; i < chartData.dataSeries.length; i++) {
+					dataSeries = chartData.dataSeries[i];
+					for (j = 0; j < dataSeries.dataPoints.length; j++) {
+						dataPoint = dataSeries.dataPoints[j];
+						dataPoint.percentage = (dataPoint.value-min) / (max-min) * 100;
+					}
 				}
 
 				return chartData;
@@ -371,10 +406,15 @@ define(
 				// Calculates the percentage to position each piece of data on the independent axis
 				// Currently assumes uniform distribution per qualitative axis
 
-				var i;
+				var i, j,
+					dataSeries, dataPoint;
 
-				for (i = 0; i < chartData.data.length; i++) {
-					chartData.data[i].index = 100 * i / (chartData.data.length-1);
+				for (i = 0; i < chartData.dataSeries.length; i++) {
+					dataSeries = chartData.dataSeries[i];
+					for (j = 0; j < dataSeries.dataPoints.length; j++) {
+						dataPoint = dataSeries.dataPoints[j];
+						dataPoint.index = 100 * j / (dataSeries.dataPoints.length-1);
+					}
 				}
 
 				return chartData;
@@ -414,6 +454,8 @@ define(
 				// creates display values based on axisConfig,
 				// then uses the combined data to build the markup for a bar chart
 
+				// Bar charts should only have a single dataSeries
+
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
 				chartData.dependentAxis = Charter._createNumericAxis(chartData, axisConfig);
@@ -443,7 +485,6 @@ define(
 
 				// TODO: Numeric independent axis
 					// As part of this: allow unequally spaced data across the horizontal axis
-				// TODO: Allow multiple datasets, e.g. multiple lines
 				// TODO: Legend
 				// TODO: Allow secondary vertical axis
 

@@ -20,14 +20,16 @@
 		</ul>
 
 		<ul class="chart__bars--v">
-			{{#data}}
-				<li class="chart__bar">
-					<div class="chart__bar-area js-chart-bar" style="height: {{percentage}}%; background: {{colour}};" title="{{displayValue}}" tabindex="-1">
-						<span class="chart__bar-tooltip js-chart-tooltip">{{displayValue}}</span>
-					</div>
-					<span class="chart__bar-label">{{label}}</span>
-				</li>
-			{{/data}}
+			{{#dataSeries}}
+				{{#dataPoints}}
+					<li class="chart__bar">
+						<div class="chart__bar-area js-chart-bar" style="height: {{percentage}}%; background: {{colour}};" title="{{displayValue}}" tabindex="-1">
+							<span class="chart__bar-tooltip js-chart-tooltip">{{displayValue}}</span>
+						</div>
+						<span class="chart__bar-label">{{label}}</span>
+					</li>
+				{{/dataPoints}}
+			{{/dataSeries}}
 		</ul>
 	</div>
 </div>

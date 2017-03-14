@@ -25,14 +25,17 @@ require(
 			// Extract data for remand vs. sentenced
 			chartData = {
 				title: 'Prisoner Population, ' + rows[1][0],
-				data: [
+				labels: [rows[0][3], rows[0][6]],
+				dataSeries: [
 					{
-						label: rows[0][3],
-						value: rows[1][3]
-					},
-					{
-						label: rows[0][6],
-						value: rows[1][6]
+						dataPoints: [
+							{
+								value: rows[1][3]
+							},
+							{
+								value: rows[1][6]
+							}
+						]
 					}
 				]
 			};
@@ -44,14 +47,17 @@ require(
 
 			chartData = {
 				title: 'Prisoner Population, ' + rows[1][0],
-				data: [
+				labels: [rows[0][3], rows[0][6]],
+				dataSeries: [
 					{
-						label: rows[0][3],
-						value: rows[1][3]
-					},
-					{
-						label: rows[0][6],
-						value: rows[1][6]
+						dataPoints: [
+							{
+								value: rows[1][3]
+							},
+							{
+								value: rows[1][6]
+							}
+						]
 					}
 				]
 			};
@@ -65,13 +71,17 @@ require(
 			// Extract data for total prisoner population
 			chartData = {
 				title: 'Prisoner Population',
-				data: [
+				labels: [],
+				dataSeries: [
+					{
+						dataPoints: []
+					}
 				]
 			};
 
 			for (i = 1; i < 30; i++) {
-				chartData.data.push({
-					label: rows[i][0],
+				chartData.labels.push(rows[i][0]);
+				chartData.dataSeries[0].dataPoints.push({
 					value: rows[i][9]
 				});
 			}
