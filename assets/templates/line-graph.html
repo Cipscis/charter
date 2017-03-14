@@ -33,7 +33,9 @@
 		<div class="chart__lines-wrapper">
 			<svg class="chart__lines" viewBox="0 0 100 100" preserveAspectRatio="none">
 				<g transform="translate(0, 100) scale(1, -1)">
-					<polyline class="chart__line" points="{{#data}}{{index}},{{percentage}} {{/data}}" style="stroke: {{color}};"></polyline>
+					{{#dataSeries}}
+						<polyline class="chart__line" points="{{#dataPoints}}{{index}},{{percentage}} {{/dataPoints}}" style="stroke: {{color}};"></polyline>
+					{{/dataSeries}}
 				</g>
 			</svg>
 		</div>

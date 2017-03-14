@@ -31,9 +31,11 @@
 		</ul>
 
 		<ul class="chart__points">
-			{{#data}}
-				<li class="chart__point" style="bottom: {{percentage}}%; left: {{index}}%;" title="{{displayValue}}"></li>
-			{{/data}}
+			{{#dataSeries}}
+				{{#dataPoints}}
+					<li class="chart__point" style="bottom: {{percentage}}%; left: {{index}}%;" title="{{displayValue}}"></li>
+				{{/dataPoints}}
+			{{/dataSeries}}
 		</ul>
 	</div>
 </div>

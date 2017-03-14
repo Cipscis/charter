@@ -108,18 +108,20 @@ require(
 			chartData = {
 				// title: TOR + titleSeed,
 				title: 'Tactical options' + titleSeed,
-				data: [
+				labels: ['Pākehā', 'Māori', 'Pacific'],
+				dataSeries: [
 					{
-						label: 'Pākehā',
-						value: 0
-					},
-					{
-						label: 'Māori',
-						value: 0
-					},
-					{
-						label: 'Pacific',
-						value: 0
+						dataPoints: [
+							{
+								value: 0
+							},
+							{
+								value: 0
+							},
+							{
+								value: 0
+							}
+						]
 					}
 				]
 			};
@@ -139,18 +141,20 @@ require(
 			sChartData = {
 				// title: TOR + sTitleSeed,
 				title: 'Tactical options' + sTitleSeed,
-				data: [
+				labels: ['Pākehā', 'Māori', 'Pacific'],
+				dataSeries: [
 					{
-						label: 'Pākehā',
-						value: 0
-					},
-					{
-						label: 'Māori',
-						value: 0
-					},
-					{
-						label: 'Pacific',
-						value: 0
+						dataPoints: [
+							{
+								value: 0
+							},
+							{
+								value: 0
+							},
+							{
+								value: 0
+							}
+						]
 					}
 				]
 			};
