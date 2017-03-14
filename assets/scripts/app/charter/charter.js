@@ -272,7 +272,7 @@ define(
 				max = range[1];
 
 				for (i = 0; i <= axisConfig.gridlines; i++) {
-					value = Math.round(((max-min) * i / axisConfig.gridlines) + min);
+					value = ((max-min) * i / axisConfig.gridlines) + min;
 					displayValue = Charter.getDisplayNumber(value, axisConfig);
 
 					axis.gridlines.push({
@@ -283,7 +283,7 @@ define(
 				}
 
 				for (i = 0; i <= axisConfig.values; i++) {
-					value = Math.round(((max-min) * i / axisConfig.values) + min);
+					value = ((max-min) * i / axisConfig.values) + min;
 					displayValue = Charter.getDisplayNumber(value, axisConfig);
 
 					axis.values.push({

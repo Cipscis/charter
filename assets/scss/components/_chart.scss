@@ -307,13 +307,26 @@ $z-data: 3;
 }
 
 .chart__point {
-	color: $data-color;
 	position: absolute;
 	transform: translateX(-50%) translateY(50%);
 
 	transition: bottom left 0.5s;
 	// bottom
 	// left
+
+	&:before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-50%);
+
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+
+		border: 2px solid $data-color;
+	}
 }
 
 //////////
