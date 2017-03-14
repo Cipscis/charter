@@ -134,15 +134,15 @@ require(
 				data: [
 					{
 						label: 'Pākehā',
-						value: perPop[TOR][0]
+						value: 0
 					},
 					{
 						label: 'Māori',
-						value: perPop[TOR][1]
+						value: 0
 					},
 					{
 						label: 'Pacific',
-						value: perPop[TOR][2]
+						value: 0
 					}
 				]
 			};
@@ -165,15 +165,15 @@ require(
 				data: [
 					{
 						label: 'Pākehā',
-						value: perPakeha[TOR][0]
+						value: 0
 					},
 					{
 						label: 'Māori',
-						value: perPakeha[TOR][1]
+						value: 0
 					},
 					{
 						label: 'Pacific',
-						value: perPakeha[TOR][2]
+						value: 0
 					}
 				]
 			};
@@ -225,7 +225,9 @@ require(
 
 			// STEP 7: Simulate selecting first option
 			//////////////////////////////////////////
-			$('.js-tor').eq(0).prop('checked', 'checked').trigger('change');
+			window.setTimeout(function () {
+				$('.js-tor').eq(0).prop('checked', 'checked').trigger('change');
+			}, 100);
 		};
 
 		// Load and process CSV
