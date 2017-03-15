@@ -373,6 +373,7 @@ define(
 
 						// Add commas for display values
 						dataPoint.displayValue = Charter.getDisplayNumber(dataPoint.value, axisConfig);
+						dataPoint.label = chartData.labels[j];
 					}
 				}
 
