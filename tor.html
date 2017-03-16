@@ -38,17 +38,51 @@
 
 	<div class="layout">
 		<div class="grid grid-v">
+			<!-- CONTROLS START -->
 			<div class="grid__item width-1 width-md-1-4 width-l-1">
-				<div class="js-tor-options">
+				<div class="grid grid-v">
+					<div class="grid__item width-1">
+						<div class="js-year-options">
+							<div class="hidden-md">
+								<select class="tabs__display width-1 js-year-select">
+									<option value="2014">2014</option>
+									<option value="2016">2016 July-December</option>
+								</select>
+							</div>
 
-					<ul class="tabs">
-						<li class="tabs__tab">
-							<span class="tabs__display is-loading">&nbsp;</span>
-						</li>
-					</ul>
+							<div class="hidden show-md">
+								<ul class="tabs">
+									<li class="tabs__tab">
+										<label>
+											<input type="radio" class="tabs__input js-year" name="year" value="2014" checked />
+											<span class="tabs__display">2014</span>
+										</label>
+									</li>
+									<li class="tabs__tab">
+										<label>
+											<input type="radio" class="tabs__input js-year" name="year" value="2016" />
+											<span class="tabs__display">2016 July-December</span>
+										</label>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="grid__item width-1">
+						<div class="js-tor-options">
+							<ul class="tabs">
+								<li class="tabs__tab">
+									<span class="tabs__display is-loading">&nbsp;</span>
+								</li>
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
+			<!-- CONTROLS END -->
 
+			<!-- GRAPHS START -->
 			<div class="grid__item width-1 width-md-3-4 width-l-1">
 				<div class="grid--loose grid-rev grid-v">
 					<div class="grid__item width-1 width-l-1-2">
@@ -59,12 +93,8 @@
 							</div>
 						</div>
 
-						<p><b>Per population, standardised by Pākehā rate</b></p>
-						<p>These figures are scaled by the per population rate for Pākehā, which allows it to be compared with with per population rates for Māori and Pacific people.</p>
-
-						<p>For example, Māori were 6.12 times as likely as Pākehā on a per population basis to have had handcuffs/restraints used on them by NZ Police in a reportable use of tactical options in 2014.</p>
-
-						<p>The Pākehā rate is always 1.00 after scaling, so as you select different tactical options you'll see that bar never changes height.</p>
+						<p><h3>Per population, standardised by Pākehā rate</h3></p>
+						<p>These figures are scaled by the per population rate for Pākehā, which allows it to be compared with with per population rates for Māori and Pacific people. The Pākehā rate is always 1.00 after scaling, so as you select different tactical options you'll see that bar never changes height.</p>
 					</div>
 
 					<div class="grid__item width-1 width-l-1-2">
@@ -75,17 +105,36 @@
 							</div>
 						</div>
 
-						<p><b>Per 100,000 population</b></p>
-						<p>These figures are per 100,000 population for the stated ethnicity. For example, 24 per 100,000 people who are Pākehā had handcuffs/restraints used on them by NZ Police in a reportable use of tactical options in 2014.</p>
+						<p><h3>Per 100,000 population</h3></p>
+						<p>These figures are per 100,000 population for the stated ethnicity.</p>
 					</div>
 				</div>
 			</div>
+			<!-- GRAPHS END -->
 
+			<!-- NOTES START -->
 			<div class="grid__item width-1">
-				<p>* Values have been calculated from statistics in this report: <a href="http://www.police.govt.nz/sites/default/files/publications/annual-tactical-options-research-report-3.pdf" target="_blank">NZ Police Annual Tactical Options Research Report #3</a></p>
+				<h3>2014 Data</h3>
 
-				<p>Firearm and TASER events include both "shows" and discharges.</p>
+				<p>Values for 2014 have been calculated from statistics in this report: <a href="http://www.police.govt.nz/sites/default/files/publications/annual-tactical-options-research-report-3.pdf" target="_blank">NZ Police Annual Tactical Options Research Report #3</a></p>
+
+				<p>The "per 100,000 population" values from 2014 have been halved to make them directly comparable with data from the 6 month period of July-December 2016.</p>
+
+				<h3>July-December 2016 Data</h3>
+
+				<p>Values for July-December 2016 have been calculated from raw data released by NZ Police in response to a request made by Emmy Rākete under the Official Information Act: <a href="https://fyi.org.nz/request/5039-tactical-options-research-report#incoming-17868" target="_blank">Tactical options research report</a></p>
+
+				<p>The raw data has been released because the time period for submitting Tactical Options Reports for this period has finished. However, 11% of these reported events have not completed NZ Police's two-stage review process.</p>
+
+				<p>The raw data released for July-December has had some information withheld for privacy reasons, such as the exact date of the event and the name of the reporter, though none of this information is relevant to the data presented in this visualisation. Also, the raw data has not been processed by NZ Police to fix mistakes that may be found such as errors in data entry. NZ Police have requested that the data be presented alongside a proviso that "<i>this information is raw data which has not been checked and which is therefore incomplete and unreliable</i>".</p>
+
+				<p>The "per 100,000 population" values for 2016 have been calculated using numbers from the 2013 census provided by Stats NZ: <a href="http://www.stats.govt.nz/Census/2013-census/profile-and-summary-reports/quickstats-about-national-highlights/cultural-diversity.aspx" target="_blank">2013 Census QuickStats about national highlights</a></p>
+
+				<h3>Firearms and tasers</h3>
+
+				<p>Firearm and taser events include both "shows" and discharges.</p>
 			</div>
+			<!-- GRAPHS END -->
 
 		</div>
 	</div>

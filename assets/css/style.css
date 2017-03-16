@@ -277,6 +277,7 @@ html a {
 
 html {
   font-family: Arial, sans-serif;
+  line-height: 1.2;
 }
 
 .grid {
@@ -643,6 +644,21 @@ html {
 .chart__bars--h .chart__bar-area {
   position: relative;
   background: #999;
+  cursor: pointer;
+}
+
+.chart__bars--v .chart__bar-area:hover,
+.chart__bars--v .chart__bar-area:focus,
+.chart__bars--h .chart__bar-area:hover,
+.chart__bars--h .chart__bar-area:focus {
+  outline: none;
+}
+
+.chart__bars--v .chart__bar-area:hover .chart__bar-tooltip,
+.chart__bars--v .chart__bar-area:focus .chart__bar-tooltip,
+.chart__bars--h .chart__bar-area:hover .chart__bar-tooltip,
+.chart__bars--h .chart__bar-area:focus .chart__bar-tooltip {
+  display: block;
 }
 
 .chart__bars--v .chart__bar-tooltip,
@@ -652,16 +668,6 @@ html {
   padding: 5px;
   background: #000;
   color: #fff;
-}
-
-.chart__bars--v .chart__bar-area:focus,
-.chart__bars--h .chart__bar-area:focus {
-  outline: none;
-}
-
-.chart__bars--v .chart__bar-area:focus .chart__bar-tooltip,
-.chart__bars--h .chart__bar-area:focus .chart__bar-tooltip {
-  display: block;
 }
 
 .chart__bars--v .chart__bar {
