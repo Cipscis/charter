@@ -206,6 +206,15 @@ $z-data: 3;
 	.chart__bar-area {
 		position: relative;
 		background: $data-color;
+
+		cursor: pointer;
+		&:hover,
+		&:focus {
+			outline: none;
+			.chart__bar-tooltip {
+				display: block;
+			}
+		}
 	}
 
 	.chart__bar-tooltip {
@@ -215,13 +224,6 @@ $z-data: 3;
 		padding: 5px;
 		background: $tooltip-bg;
 		color: $tooltip-color;
-	}
-
-	.chart__bar-area:focus {
-		outline: none;
-		.chart__bar-tooltip {
-			display: block;
-		}
 	}
 }
 

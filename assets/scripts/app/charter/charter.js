@@ -537,20 +537,23 @@ define(
 
 				bars = chart.selectAll('.js-chart-bar')
 					.data(data);
-				tooltips = chart.selectAll('.js-chart-tooltip')
-					.data(data);
-				title = chart.selectAll('.js-chart-title')
-					.data([titleText]);
-
 				bars
 					.style(axisConfig.horizontal ? 'width' : 'height', function (d) { return x(d) + '%'; })
 					.attr('title', function (d) { return Charter.getDisplayNumber(d, axisConfig); });
 
+
+				tooltips = chart.selectAll('.js-chart-tooltip')
+					.data(data);
 				tooltips
 					.text(function (d) { return Charter.getDisplayNumber(d, axisConfig); });
 
-				title
-					.text(function (d) { return titleText; });
+
+				if (titleText) {
+					title = chart.selectAll('.js-chart-title')
+						.data([titleText]);
+					title
+						.text(function (d) { return titleText; });
+				}
 			}
 		};
 
