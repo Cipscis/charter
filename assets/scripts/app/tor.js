@@ -24,8 +24,8 @@ require(
 
 			// Define relevant spreadsheet parameters
 			headerRows = 2;
-			cols.ETHNICITY = getRowNumber('K');
-			cols.TACTICS = getRowNumber('M');
+			cols.ETHNICITY = getColNumber('K');
+			cols.TACTICS = getColNumber('M');
 
 			// Aliases are hard-coded, used to combine several entries into one filter group
 			aliases.ETHNICITY = [
@@ -69,6 +69,9 @@ require(
 			for (i in enums) {
 				collectEnums(rows, enums[i], cols[i]);
 			}
+
+			// Remove header rows
+			rows = rows.slice(2);
 
 			/////////////////////////////////////////////
 			/////////////////////////////////////////////
@@ -334,7 +337,7 @@ require(
 			}, 100);
 		};
 
-		var getRowNumber = function (rowName) {
+		var getColNumber = function (rowName) {
 			// Takes in a string like "CE" and converts it to a row number
 
 			var alphabet,
