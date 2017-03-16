@@ -24,8 +24,8 @@ require(
 
 			// Define relevant spreadsheet parameters
 			headerRows = 2;
-			cols.ETHNICITY = 10;
-			cols.TACTICS = 12;
+			cols.ETHNICITY = getRowNumber('K');
+			cols.TACTICS = getRowNumber('M');
 
 			// Aliases are hard-coded, used to combine several entries into one filter group
 			aliases.ETHNICITY = [
@@ -67,22 +67,20 @@ require(
 			enums.ETHNICITY = [];
 			enums.TACTICS = [];
 			for (i in enums) {
-				for (j = headerRows; j < rows.length; j++) {
-					row = rows[j];
-					if (row[cols[i]] instanceof Array) {
-						for (k = 0; k < row[cols[i]].length; k++) {
-							if (enums[i].indexOf(row[cols[i]][k]) === -1) {
-								enums[i].push(row[cols[i]][k]);
-							}
-						}
-					} else {
-						if (enums[i].indexOf(row[cols[i]]) === -1) {
-							enums[i].push(row[cols[i]]);
-						}
-					}
-				}
+				collectEnums(rows, enums[i], cols[i]);
 			}
 
+			/////////////////////////////////////////////
+			/////////////////////////////////////////////
+			//// EXPLORATORY ANALYSIS SECTION BEGINS ////
+			/////////////////////////////////////////////
+			/////////////////////////////////////////////
+
+			///////////////////////////////////////////
+			///////////////////////////////////////////
+			//// EXPLORATORY ANALYSIS SECTION ENDS ////
+			///////////////////////////////////////////
+			///////////////////////////////////////////
 
 			// Introduce ethnicity population data
 			//////////////////////////////////////
@@ -336,6 +334,56 @@ require(
 			}, 100);
 		};
 
+		var getRowNumber = function (rowName) {
+			// Takes in a string like "CE" and converts it to a row number
+
+			var alphabet,
+				i, char,
+				rowNumber;
+
+			alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+			rowNumber = 0;
+
+			for (i = 0; i < rowName.length; i++) {
+				char = rowName.toUpperCase()[i];
+
+				rowNumber += (alphabet.indexOf(char) + 1) * Math.pow(alphabet.length, rowName.length - (i+1));
+			}
+
+			rowNumber -= 1; // Adjust for 0-based counting
+
+			return rowNumber;
+		};
+
+		var collectEnums = function (rows, enumsArr, col1, col2, colN) {
+			// Go through all cells in a given set of columns
+			// and add all unique entries found to enumsArr
+
+			var i, row,
+				j, col,
+				k, value,
+				cols = Array.prototype.slice.call(arguments, 2);
+
+			for (i = headerRows; i < rows.length; i++) {
+				row = rows[i];
+				for (j = 0; j < cols.length; j++) {
+					col = cols[j];
+
+					if (row[col] instanceof Array) {
+						for (k = 0; k < row[col].length; k++) {
+							if ((row[col][k] !== '') && (enumsArr.indexOf(row[col][k]) === -1)) {
+								enumsArr.push(row[col][k]);
+							}
+						}
+					} else {
+						if ((row[col] !== '') && (enumsArr.indexOf(row[col]) === -1)) {
+							enumsArr.push(row[col]);
+						}
+					}
+				}
+			}
+		};
+
 		var matchAlias = function (cell, value, aliasSet) {
 			// Checks if the value of a cell matches the value passed,
 			// optionally taking one or more sets of aliases to match
@@ -376,8 +424,9 @@ require(
 			return false;
 		};
 
-		var filterRows = function (rows, colIndex, values) {
+		var filterRows = function (rows, andToggle, colIndex, values) {
 			// Takes in a rows object (imported from csv),
+			// a boolean specifying whether it's an "and" or an "or" filter,
 			// and any number of pairs (at least one) of
 			// the index of the column to consider, and an array of values
 
@@ -385,18 +434,26 @@ require(
 			// specified contains a value in the array of values given
 			// for all column and value pairs
 
-			var filteredRows = [],
+			var and = andToggle,
+				startAt = 2,
+
+				filteredRows = [],
 				filters, isMatch,
 				i, row,
 				j, filter;
 
-			if ((arguments.length < 3) || (((arguments.length-1) % 2) !== 0)) {
-				console.error('An invalid set of arguments was passed to filterRows');
-				return [];
+			if ((arguments.length < 4) || (((arguments.length-2) % 2) !== 0)) {
+				// Assume "andToggle" has not been passed
+				and = true;
+				startAt = 1;
+				if ((arguments.length < 3) || (((arguments.length-1) % 2) !== 0)) {
+					console.error('An invalid set of arguments was passed to filterRows');
+					return [];
+				}
 			}
 
 			filters = [];
-			for (i = 1; i < arguments.length-1; i += 2) {
+			for (i = startAt; i < arguments.length-1; i += 2) {
 				filters.push({
 					colIndex: arguments[i],
 					values: arguments[i+1]
@@ -407,15 +464,19 @@ require(
 				values = [values];
 			}
 
-			for (i = headerRows; i < rows.length; i++) {
+			for (i = 0; i < rows.length; i++) {
 				row = rows[i];
 
-				isMatch = true;
+				isMatch = !!and;
 
 				for (j = 0; j < filters.length; j++) {
 					filter = filters[j];
 
-					isMatch = isMatch && applyFilter(row, filter.colIndex, filter.values);
+					if (and) {
+						isMatch = isMatch && applyFilter(row, filter.colIndex, filter.values);
+					} else {
+						isMatch = isMatch || applyFilter(row, filter.colIndex, filter.values);
+					}
 				}
 
 				if (isMatch) {
@@ -426,11 +487,37 @@ require(
 			return filteredRows;
 		};
 
+		var filterRowsAnd = function (rows, colIndex, values) {
+			var args = Array.prototype.slice.apply(arguments);
+
+			args = args.slice(1);
+			args.splice(0, 0, true);
+			args.splice(0, 0, rows);
+
+			return filterRows.apply(this, args);
+		};
+
+		var filterRowsOr = function (rows, colIndex, values) {
+			var args = Array.prototype.slice.apply(arguments);
+
+			args = args.slice(1);
+			args.splice(0, 0, false);
+			args.splice(0, 0, rows);
+
+			return filterRows.apply(this, args);
+		};
+
 		var applyFilter = function (row, colIndex, values) {
 			var cell,
 				i, cellValues, cellValue,
 				k, value;
 
+			// Allow functions to be passed as filter tests
+			if (values instanceof Function) {
+				return values(row[colIndex]);
+			}
+
+			// If one or more values is passed, test it against aliases
 			if (!(values instanceof Array)) {
 				values = [values];
 			}
