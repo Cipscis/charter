@@ -36,6 +36,7 @@ require(
 				// Specify columns of interest
 				// Enums will be gathered for columns specified here
 				cols.ETHNICITY = Analyser.getColNumber('K');
+				cols.SUBJECT_ARMED = Analyser.getColNumber('L');
 				cols.TACTICS = Analyser.getColNumber('M');
 
 				cols.TASER_USAGE_COUNT = Analyser.getColNumber('CR');
@@ -101,7 +102,7 @@ require(
 				// Inside a function so it can be collapsed in the editor
 
 				// Remove header rows
-				rows = rows.slice(headerRows);
+				headerRows = rows.splice(0, headerRows);
 
 				// Convert cells that are lists into arrays
 				for (i = 0; i < rows.length; i++) {
