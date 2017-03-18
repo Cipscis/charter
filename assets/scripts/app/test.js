@@ -254,7 +254,7 @@ require(
 						['Prisoner Population, ' + rows[i][cols.DATE]]
 					);
 
-					i = (i + 1) % 30;
+					i = (i + 1) % rows.length;
 
 					if (i === 0) {
 						window.clearInterval(interval);
