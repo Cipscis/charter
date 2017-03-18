@@ -24,6 +24,19 @@ define(
 				return rowNumber;
 			},
 
+			getCol: function (rows, colNum) {
+				var i, row,
+					col;
+
+				col = [];
+				for (i = 0; i < rows.length; i++) {
+					row = rows[i];
+					col.push(row[colNum]);
+				}
+
+				return col;
+			},
+
 			collectEnums: function (rows, enumsArr, col1, col2, colN) {
 				// Go through all cells in a given set of columns
 				// and add all unique entries found to enumsArr

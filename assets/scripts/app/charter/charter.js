@@ -63,14 +63,9 @@ define(
 		// 	labels: ['Label 1', 'Label 2'],
 		// 	dataSeries: [
 		// 		{
-		// 			dataPoints: [
-		// 				{
-		// 					value: 1
-		// 				},
-		// 				{
-		// 					value: 2
-		// 				}
-		// 			]
+		//			name: 'Series Name',
+		// 			color: '#fff',
+		// 			dataPoints: [1, 2]
 		// 		}
 		// 	]
 		// }
@@ -424,23 +419,30 @@ define(
 			///////////////////////////
 			// PROCESSING DATASERIES //
 			///////////////////////////
-			_processDataPoints: function (dataPoints) {
-				// Takes in an array of points, and outputs an array of
-				// objects with the value property set to the corresponding
-				// value in dataPoints
+			_processDataSeries: function (dataSeries) {
+				// Takes in an array of dataSeries from chartData
 
-				var i, dataPoint,
+				var i, series,
+					j, dataPoint,
+					objArray;
+
+				for (i = 0; i < dataSeries.length; i++) {
+					series = dataSeries[i];
 					objArray = [];
 
-				for (i = 0; i < dataPoints.length; i++) {
-					dataPoint = dataPoints[i];
+					for (j = 0; j < series.dataPoints.length; j++) {
+						dataPoint = series.dataPoints[j];
 
-					objArray.push({
-						value: dataPoint
-					});
+						objArray.push({
+							value: dataPoint,
+							color: series.color
+						});
+					}
+
+					dataSeries[i].dataPoints = objArray;
 				}
 
-				return objArray;
+				return dataSeries;
 			},
 
 			///////////////////////
@@ -479,13 +481,7 @@ define(
 
 				// Bar charts should only have a single dataSeries
 
-				var i, dataSeries;
-
-				for (i = 0; i < chartData.dataSeries.length; i++) {
-					dataSeries = chartData.dataSeries[i];
-
-					dataSeries.dataPoints = Charter._processDataPoints(dataSeries.dataPoints);
-				}
+				dataSeries = Charter._processDataSeries(chartData.dataSeries);
 
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
@@ -521,11 +517,7 @@ define(
 
 				var i, dataSeries;
 
-				for (i = 0; i < chartData.dataSeries.length; i++) {
-					dataSeries = chartData.dataSeries[i];
-
-					dataSeries.dataPoints = Charter._processDataPoints(dataSeries.dataPoints);
-				}
+				dataSeries = Charter._processDataSeries(chartData.dataSeries);
 
 				// Construct independent qualitative axis and dependent numeric axis
 				chartData.independentAxis = Charter._createQualitativeAxis(chartData, dependentAxisConfig);

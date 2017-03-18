@@ -39,5 +39,14 @@
 				</g>
 			</svg>
 		</div>
+
+		{{#showLegend}}
+			<dl class="chart__legend">
+				{{#dataSeries}}
+					<dt class="chart__legend-name">{{name}}</dt>
+					<dd class="chart__legend-indicator" style="background-color: {{color}};"></dd>
+				{{/dataSeries}}
+			</dl>
+		{{/showLegend}}
 	</div>
 </div>

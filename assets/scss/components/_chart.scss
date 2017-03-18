@@ -21,6 +21,7 @@ $tooltip-bg: #000;
 $z-gridline: 1;
 $z-axis: 2;
 $z-data: 3;
+$z-legend: 4;
 
 .chart {
 	width: 100%;
@@ -177,6 +178,43 @@ $z-data: 3;
 	}
 }
 
+////////////
+// LEGEND //
+////////////
+.chart__legend {
+	position: absolute;
+	z-index: $z-legend;
+	top: ($axis-text-size * 1.5);
+	right: 0;
+
+	margin: 0;
+
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+.chart__legend-name {
+	clear: left;
+	float: right;
+
+	width: calc(100% - #{$axis-text-size});
+	padding-left: $axis-text-size / 2;
+	margin-bottom: $axis-text-size / 2;
+}
+
+.chart__legend-indicator {
+	float: left;
+	margin: 0;
+	background: $data-color;
+
+	width: $axis-text-size;
+	height: $axis-text-size;
+	margin-bottom: $axis-text-size / 2;
+}
+
 //////////
 // BARS //
 //////////
@@ -309,26 +347,19 @@ $z-data: 3;
 }
 
 .chart__point {
+	display: block;
 	position: absolute;
 	transform: translateX(-50%) translateY(50%);
 
-	transition: bottom left 0.5s;
+	transition: all 0.5s;
 	// bottom
 	// left
 
-	&:before {
-		content: "";
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translateX(-50%) translateY(-50%);
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
 
-		width: 5px;
-		height: 5px;
-		border-radius: 50%;
-
-		border: 2px solid $data-color;
-	}
+	border: 2px solid $data-color;
 }
 
 //////////
