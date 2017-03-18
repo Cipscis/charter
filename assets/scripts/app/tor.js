@@ -292,17 +292,7 @@ require(
 					labels: enums.ETHNICITY,
 					dataSeries: [
 						{
-							dataPoints: [
-								{
-									value: 0
-								},
-								{
-									value: 0
-								},
-								{
-									value: 0
-								}
-							]
+							dataPoints: [0, 0, 0]
 						}
 					]
 				};
@@ -322,17 +312,7 @@ require(
 					labels: enums.ETHNICITY,
 					dataSeries: [
 						{
-							dataPoints: [
-								{
-									value: 0
-								},
-								{
-									value: 0
-								},
-								{
-									value: 0
-								}
-							]
+							dataPoints: [0, 0, 0]
 						}
 					]
 				};

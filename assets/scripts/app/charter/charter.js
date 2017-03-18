@@ -421,6 +421,28 @@ define(
 				return chartData;
 			},
 
+			///////////////////////////
+			// PROCESSING DATASERIES //
+			///////////////////////////
+			_processDataPoints: function (dataPoints) {
+				// Takes in an array of points, and outputs an array of
+				// objects with the value property set to the corresponding
+				// value in dataPoints
+
+				var i, dataPoint,
+					objArray = [];
+
+				for (i = 0; i < dataPoints.length; i++) {
+					dataPoint = dataPoints[i];
+
+					objArray.push({
+						value: dataPoint
+					});
+				}
+
+				return objArray;
+			},
+
 			///////////////////////
 			// CREATING DISPLAYS //
 			///////////////////////
@@ -457,6 +479,14 @@ define(
 
 				// Bar charts should only have a single dataSeries
 
+				var i, dataSeries;
+
+				for (i = 0; i < chartData.dataSeries.length; i++) {
+					dataSeries = chartData.dataSeries[i];
+
+					dataSeries.dataPoints = Charter._processDataPoints(dataSeries.dataPoints);
+				}
+
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
 				chartData.dependentAxis = Charter._createNumericAxis(chartData, axisConfig);
@@ -488,6 +518,14 @@ define(
 					// As part of this: allow unequally spaced data across the horizontal axis
 				// TODO: Legend
 				// TODO: Allow secondary vertical axis
+
+				var i, dataSeries;
+
+				for (i = 0; i < chartData.dataSeries.length; i++) {
+					dataSeries = chartData.dataSeries[i];
+
+					dataSeries.dataPoints = Charter._processDataPoints(dataSeries.dataPoints);
+				}
 
 				// Construct independent qualitative axis and dependent numeric axis
 				chartData.independentAxis = Charter._createQualitativeAxis(chartData, dependentAxisConfig);

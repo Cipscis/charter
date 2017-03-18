@@ -28,14 +28,7 @@ require(
 				labels: [rows[0][3], rows[0][6]],
 				dataSeries: [
 					{
-						dataPoints: [
-							{
-								value: rows[1][3]
-							},
-							{
-								value: rows[1][6]
-							}
-						]
+						dataPoints: [rows[1][3], rows[1][6]]
 					}
 				]
 			};
@@ -50,14 +43,7 @@ require(
 				labels: [rows[0][3], rows[0][6]],
 				dataSeries: [
 					{
-						dataPoints: [
-							{
-								value: rows[1][3]
-							},
-							{
-								value: rows[1][6]
-							}
-						]
+						dataPoints: [rows[1][3], rows[1][6]]
 					}
 				]
 			};
@@ -81,9 +67,7 @@ require(
 
 			for (i = 1; i < 30; i++) {
 				chartData.labels.push(rows[i][0]);
-				chartData.dataSeries[0].dataPoints.push({
-					value: rows[i][9]
-				});
+				chartData.dataSeries[0].dataPoints.push(rows[i][9]);
 			}
 
 			$lineGraph = Charter.createLineGraph(
@@ -99,6 +83,21 @@ require(
 			);
 			$('.js-line-graph').html($lineGraph);
 
+			// Extract data for total prisoner population
+			chartData = {
+				title: 'Prisoner Population',
+				labels: [],
+				dataSeries: [
+					{
+						dataPoints: []
+					}
+				]
+			};
+
+			for (i = 1; i < 30; i++) {
+				chartData.labels.push(rows[i][0]);
+				chartData.dataSeries[0].dataPoints.push(rows[i][9]);
+			}
 			$scatterPlot = Charter.createScatterPlot(
 				chartData,
 				{
