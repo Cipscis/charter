@@ -9,7 +9,7 @@ define(
 			return s + v;
 		};
 
-		var diffSquared = function (diffValue) {
+		var sumDiffSquared = function (diffValue) {
 			return function (s, v, i, arr) {
 				return s + Math.pow(v - diffValue, 2);
 			};
@@ -30,7 +30,7 @@ define(
 
 				mean = Stats.mean(values);
 
-				variance = values.reduce(diffSquared(mean), 0);
+				variance = values.reduce(sumDiffSquared(mean), 0);
 				variance = variance / (values.length - 1);
 
 				return variance;
@@ -41,13 +41,16 @@ define(
 				return Math.sqrt(Stats.variance(values));
 			},
 
-			pcc: function (y, x) {
-				// Pearson Correlation Coefficient
+			r: function (y, x) {
+				// Calculates the Pearson Correlation Coefficient
+				// between two equal length arrays of values
+				// The order of inputs doesn't matter
+
 				var xSum, ySum,
 					xy, xySum,
 					xx, xxSum,
 					yy, yySum,
-					pcc;
+					r;
 
 				xSum = x.reduce(sum, 0);
 				ySum = y.reduce(sum, 0);
@@ -61,12 +64,21 @@ define(
 				yy = y.map(Mappers.timesArray(y));
 				yySum = yy.reduce(sum, 0);
 
-				pcc = ((x.length * xySum) - (xSum * ySum)) / Math.sqrt(((x.length * xxSum) - Math.pow(xSum, 2)) * ((x.length * yySum) - Math.pow(ySum, 2)));
+				r = ((x.length * xySum) - (xSum * ySum)) / Math.sqrt(((x.length * xxSum) - Math.pow(xSum, 2)) * ((x.length * yySum) - Math.pow(ySum, 2)));
 
-				return pcc;
+				return r;
 			},
 
 			linearLeastSquares: function (y, x) {
+				// Takes in an array of values y, and optionally
+				// an equal length array of values x (if x is
+				// undefined it will be calculated as an even
+				// distribution from 0 to 100 of equal length to y)
+				// and calculates the corresponding y values for a
+				// linear least squares regression fit, returning
+				// an array of these values for the corresponding
+				// values given in or calculated for x
+
 				var i, fitY,
 
 					r,
@@ -82,7 +94,7 @@ define(
 					}
 				}
 
-				r = Stats.pcc(y, x);
+				r = Stats.r(y, x);
 				sdY = Stats.sd(y);
 				sdX = Stats.sd(x);
 				yMean = Stats.mean(y);
@@ -97,6 +109,16 @@ define(
 				}
 
 				return fitY;
+			},
+
+			r2: function (y, rY) {
+				// Accepts two equal length arrays of values:
+				// y: the data points, and rY: the regression points
+				// (order technically doesn't matter)
+
+				// Calculates the r^2 of a regression model
+
+				return Math.pow(Stats.r(y, rY), 2);
 			}
 		};
 

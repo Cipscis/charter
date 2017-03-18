@@ -60,6 +60,7 @@ define(
 		// Expected format of basic chart data:
 		// {
 		// 	title: 'Title',
+		//	showLegend: true,
 		// 	labels: ['Label 1', 'Label 2'],
 		// 	dataSeries: [
 		// 		{
