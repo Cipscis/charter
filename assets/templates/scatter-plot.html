@@ -33,9 +33,18 @@
 		<ul class="chart__points">
 			{{#dataSeries}}
 				{{#dataPoints}}
-					<li class="chart__point" style="bottom: {{percentage}}%; left: {{index}}%;" title="{{displayValue}}"></li>
+					<li class="chart__point" style="bottom: {{percentage}}%; left: {{index}}%; border-color: {{color}}" title="{{displayValue}}"></li>
 				{{/dataPoints}}
 			{{/dataSeries}}
 		</ul>
+
+		{{#showLegend}}
+			<dl class="chart__legend">
+				{{#dataSeries}}
+					<dt class="chart__legend-name">{{name}}</dt>
+					<dd class="chart__legend-indicator" style="background-color: {{color}};"></dd>
+				{{/dataSeries}}
+			</dl>
+		{{/showLegend}}
 	</div>
 </div>
