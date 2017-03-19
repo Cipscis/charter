@@ -72,44 +72,10 @@ define(
 		// }
 
 		var Charter = {
-			/////////////////
-			// CSV PARSING //
-			/////////////////
-			parseCsv: function (csv, callback) {
-				// Parse a CSV file then process the data
-
-				Papa.parse(csv, {
-					complete: Charter._csvParsed(callback)
-				});
-			},
-
-			_csvParsed: function (callback) {
-				// Convert strings to numbers where appropriate,
-				// then pass the data to a callback function
-
-				return function (csv) {
-					Charter._extractCellNumbers(csv.data);
-
-					if (callback && typeof callback === 'function') {
-						callback(csv.data);
-					}
-				};
-			},
-
-			_extractCellNumbers: function (csv) {
-				// Use _extractNumber on each cell
-
-				var i, j;
-
-				for (i = 0; i < csv.length; i++) {
-					for (j = 0; j < csv[i].length; j++) {
-						csv[i][j] = Charter._extractNumber(csv[i][j]);
-					}
-				}
-			},
-
 			_extractNumber: function (string) {
 				// Convert strings to numbers where possible
+				// TODO: find a better solution than duplicating this code from analyser
+				// it doesn't seem like enough to set up a new dependency though
 
 				var val = string.replace(/,|%$/g, ''),
 					length;
