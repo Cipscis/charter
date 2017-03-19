@@ -75,7 +75,7 @@ define(
 				config.cols = config.cols || {};
 				config.aliases = config.aliases || {};
 				config.arrayCols = config.arrayCols || {};
-				config.enumsMap = {};
+				config.enumsMap = config.enumsMap || {};
 
 				output.cols = config.cols;
 				output.filters = Analyser.getAliasFilters(config.aliases);
