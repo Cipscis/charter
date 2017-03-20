@@ -4,6 +4,10 @@
   clear: both;
 }
 
+.width-0 {
+  width: 0%;
+}
+
 .width-a {
   width: auto;
 }
@@ -52,7 +56,33 @@
   width: 80%;
 }
 
+.width-1-6 {
+  width: 16.66667%;
+}
+
+.width-2-6 {
+  width: 33.33333%;
+}
+
+.width-3-6 {
+  width: 50%;
+}
+
+.width-4-6 {
+  width: 66.66667%;
+}
+
+.width-5-6 {
+  width: 83.33333%;
+}
+
 @media (min-width: 425px) {
+  .width-s-0 {
+    width: 0%;
+  }
+  .width-s-a {
+    width: auto;
+  }
   .width-s-1 {
     width: 100%;
   }
@@ -86,9 +116,30 @@
   .width-s-4-5 {
     width: 80%;
   }
+  .width-s-1-6 {
+    width: 16.66667%;
+  }
+  .width-s-2-6 {
+    width: 33.33333%;
+  }
+  .width-s-3-6 {
+    width: 50%;
+  }
+  .width-s-4-6 {
+    width: 66.66667%;
+  }
+  .width-s-5-6 {
+    width: 83.33333%;
+  }
 }
 
 @media (min-width: 768px) {
+  .width-md-0 {
+    width: 0%;
+  }
+  .width-md-a {
+    width: auto;
+  }
   .width-md-1 {
     width: 100%;
   }
@@ -122,9 +173,30 @@
   .width-md-4-5 {
     width: 80%;
   }
+  .width-md-1-6 {
+    width: 16.66667%;
+  }
+  .width-md-2-6 {
+    width: 33.33333%;
+  }
+  .width-md-3-6 {
+    width: 50%;
+  }
+  .width-md-4-6 {
+    width: 66.66667%;
+  }
+  .width-md-5-6 {
+    width: 83.33333%;
+  }
 }
 
 @media (min-width: 1024px) {
+  .width-l-0 {
+    width: 0%;
+  }
+  .width-l-a {
+    width: auto;
+  }
   .width-l-1 {
     width: 100%;
   }
@@ -158,9 +230,30 @@
   .width-l-4-5 {
     width: 80%;
   }
+  .width-l-1-6 {
+    width: 16.66667%;
+  }
+  .width-l-2-6 {
+    width: 33.33333%;
+  }
+  .width-l-3-6 {
+    width: 50%;
+  }
+  .width-l-4-6 {
+    width: 66.66667%;
+  }
+  .width-l-5-6 {
+    width: 83.33333%;
+  }
 }
 
 @media (min-width: 1440px) {
+  .width-xl-0 {
+    width: 0%;
+  }
+  .width-xl-a {
+    width: auto;
+  }
   .width-xl-1 {
     width: 100%;
   }
@@ -193,6 +286,21 @@
   }
   .width-xl-4-5 {
     width: 80%;
+  }
+  .width-xl-1-6 {
+    width: 16.66667%;
+  }
+  .width-xl-2-6 {
+    width: 33.33333%;
+  }
+  .width-xl-3-6 {
+    width: 50%;
+  }
+  .width-xl-4-6 {
+    width: 66.66667%;
+  }
+  .width-xl-5-6 {
+    width: 83.33333%;
   }
 }
 

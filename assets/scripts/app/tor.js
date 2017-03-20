@@ -74,6 +74,65 @@ require(
 		Analyser.loadFile('assets/data/Tactical Options 2016 - raw.csv', config, fileProcessed);
 
 		var exploratoryAnalysis = function (config) {
+			var rows = config.rows,
+				cols = config.cols,
+				enums = config.enums,
+				filterRows = config.filters.filterRows,
+				filterRowsOr = config.filters.filterRowsOr;
+
+			var byTactics = {};
+			for (var i = 0; i < enums.TACTICS.length; i++) {
+				byTactics[enums.TACTICS[i]] = filterRows(rows,
+					cols.TACTICS, enums.TACTICS[i]
+				);
+				console.log(enums.TACTICS[i], (byTactics[enums.TACTICS[i]].length / rows.length * 100).toFixed(1));
+			}
+
+			var injuries = rows.reduce(function (s, v, i, arr) {
+				return s + v[cols.INJURIES];
+			}, 0);
+			console.log(injuries);
+
+			console.log(enums.INCIDENT_TYPE);
+			var attemptedSuicides = filterRows(rows,
+				cols.INCIDENT_TYPE, '1x - attempt suicide'
+			);
+			console.log(attemptedSuicides.length);
+			var attemptedSuicideTasers = filterRows(attemptedSuicides,
+				cols.TACTICS, 'Taser'
+			);
+			console.log(attemptedSuicideTasers.length);
+			var attemptedSuicideTasersDischarge = filterRowsOr(attemptedSuicideTasers,
+				cols.TASER_METHOD_1, 'Discharge',
+				cols.TASER_METHOD_2, 'Discharge',
+				cols.TASER_METHOD_3, 'Discharge'
+			);
+			console.log(attemptedSuicideTasersDischarge.length);
+			console.table(Analyser.createSubTable(attemptedSuicideTasersDischarge, cols));
+
+			var under14 = filterRows(rows,
+				cols.AGE, function (age) { return age < 14; }
+			);
+			console.log('Under 14: ', under14.length);
+			var from14to16 = filterRows(rows,
+				cols.AGE, function (age) { return age >= 14 && age <= 16; }
+			);
+			console.log('14-16: ', from14to16.length);
+
+			var numTacticalOptions = 0;
+			for (i = 0; i < rows.length; i++) {
+				var row = rows[i];
+				numTacticalOptions += row[cols.TACTICS].length;
+			}
+			console.log('Num tactical options deployed (excluding communication): ', numTacticalOptions);
+			console.log('Num TOR events: ', rows.length);
+
+			var taserDischarges = filterRowsOr(rows,
+				cols.TASER_METHOD_1, 'Discharge',
+				cols.TASER_METHOD_2, 'Discharge',
+				cols.TASER_METHOD_3, 'Discharge'
+			);
+			console.log(taserDischarges.length);
 		};
 
 		var buildVisualisation = function (config) {
