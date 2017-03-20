@@ -216,6 +216,7 @@ require(
 			var chartData = {
 				title: 'Tactical options use by NZ Police, per 100,000 population',
 				labels: enums.ETHNICITY,
+				showTooltips: true,
 				dataSeries: [
 					{
 						dataPoints: [0, 0, 0]
