@@ -42,16 +42,6 @@
 			<div class="grid__item width-1 width-md-1-4 width-l-1">
 				<div class="grid grid-v">
 					<div class="grid__item width-1">
-						<div class="js-tor-options">
-							<ul class="tabs">
-								<li class="tabs__tab">
-									<span class="tabs__display is-loading">&nbsp;</span>
-								</li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="grid__item width-1">
 						<div class="js-year-options">
 							<div class="hidden-md">
 								<select class="tabs__display width-1 js-year-select">
@@ -61,21 +51,37 @@
 							</div>
 
 							<div class="hidden show-md">
-								<ul class="tabs">
-									<li class="tabs__tab">
-										<label>
-											<input type="radio" class="tabs__input js-year" name="year" value="2014" />
-											<span class="tabs__display">2014</span>
-										</label>
-									</li>
-									<li class="tabs__tab">
-										<label>
-											<input type="radio" class="tabs__input js-year" name="year" value="2016" checked />
-											<span class="tabs__display">2016 July-December</span>
-										</label>
-									</li>
-								</ul>
+								<div class="grid">
+									<div class="grid__item width-1-6">&nbsp;</div>
+									<div class="grid__item width-2-3">
+										<ul class="tabs">
+											<li class="tabs__tab">
+												<label>
+													<input type="radio" class="tabs__input js-year" name="year" value="2014" />
+													<span class="tabs__display">2014</span>
+												</label>
+											</li>
+											<li class="tabs__tab">
+												<label>
+													<input type="radio" class="tabs__input js-year" name="year" value="2016" checked />
+													<span class="tabs__display">2016 July-December</span>
+												</label>
+											</li>
+										</ul>
+									</div>
+									<div class="grid__item width-1-6">&nbsp;</div>
+								</div>
 							</div>
+						</div>
+					</div>
+
+					<div class="grid__item width-1">
+						<div class="js-tor-options">
+							<ul class="tabs">
+								<li class="tabs__tab">
+									<span class="tabs__display is-loading">&nbsp;</span>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
