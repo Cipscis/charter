@@ -680,16 +680,26 @@ html {
 
 .chart__bars--v .chart__bar-area:hover,
 .chart__bars--v .chart__bar-area:focus,
+.show-tooltips .chart__bars--v .chart__bar-area,
 .chart__bars--h .chart__bar-area:hover,
-.chart__bars--h .chart__bar-area:focus {
+.chart__bars--h .chart__bar-area:focus,
+.show-tooltips .chart__bars--h .chart__bar-area {
   outline: none;
 }
 
 .chart__bars--v .chart__bar-area:hover .chart__bar-tooltip,
 .chart__bars--v .chart__bar-area:focus .chart__bar-tooltip,
+.show-tooltips .chart__bars--v .chart__bar-area .chart__bar-tooltip,
 .chart__bars--h .chart__bar-area:hover .chart__bar-tooltip,
-.chart__bars--h .chart__bar-area:focus .chart__bar-tooltip {
+.chart__bars--h .chart__bar-area:focus .chart__bar-tooltip,
+.show-tooltips .chart__bars--h .chart__bar-area .chart__bar-tooltip {
   display: block;
+}
+
+.show-tooltips .chart__bars--v .chart__bar-area,
+.show-tooltips .chart__bars--h .chart__bar-area {
+  cursor: default;
+  cursor: unset;
 }
 
 .chart__bars--v .chart__bar-tooltip,
