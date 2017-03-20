@@ -10,6 +10,8 @@ require(
 	function ($, d3, templayed, Charter, Analyser) {
 
 		var cols = {
+			AGE: Analyser.getColNumber('I'),
+			GENDER: Analyser.getColNumber('J'),
 			ETHNICITY: Analyser.getColNumber('K'),
 			SUBJECT_ARMED: Analyser.getColNumber('L'),
 			TACTICS: Analyser.getColNumber('M'),
@@ -17,7 +19,10 @@ require(
 			TASER_USAGE_COUNT: Analyser.getColNumber('CR'),
 			TASER_METHOD_1: Analyser.getColNumber('CU'),
 			TASER_METHOD_2: Analyser.getColNumber('DH'),
-			TASER_METHOD_3: Analyser.getColNumber('DU')
+			TASER_METHOD_3: Analyser.getColNumber('DU'),
+
+			INCIDENT_TYPE: Analyser.getColNumber('FS'),
+			INJURIES: Analyser.getColNumber('FT')
 		};
 		var arrayCols = {};
 		arrayCols[cols.TACTICS] = null;
@@ -231,6 +236,7 @@ require(
 			var sChartData = {
 				title: 'Tactical options use by NZ Police, standardised by Pākehā rate',
 				labels: enums.ETHNICITY,
+				showTooltips: true,
 				dataSeries: [
 					{
 						dataPoints: [0, 0, 0]
@@ -241,6 +247,7 @@ require(
 			sAxisConfig = {
 				max: 15,
 				values: 3,
+				valuesAt: [1],
 				toFixed: 2
 			};
 

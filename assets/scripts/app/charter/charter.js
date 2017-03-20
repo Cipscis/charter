@@ -26,8 +26,11 @@ define(
 	) {
 		var numericAxisDefaults = {
 			values: 4,
+			valuesAt: [],
 			// When gridlines is set to null, it interhits its value from values
 			gridlines: null,
+
+			showTooltips: false,
 
 			toFixed: 0,
 			percentage: false,
@@ -277,6 +280,32 @@ define(
 						value: value,
 						displayValue: displayValue,
 						percentage: Charter._mapToRange(value, min, max)
+					});
+				}
+
+				if (axisConfig.valuesAt.length) {
+					for (i = 0; i < axisConfig.valuesAt.length; i++) {
+						value = ((max-min) * (axisConfig.valuesAt[i] / max)) + min;
+						displayValue = Charter.getDisplayNumber(value, axisConfig);
+
+						axis.gridlines.push({
+							value: value,
+							displayValue: displayValue,
+							percentage: Charter._mapToRange(value, min, max)
+						});
+
+						axis.values.push({
+							value: value,
+							displayValue: displayValue,
+							percentage: Charter._mapToRange(value, min, max)
+						});
+					}
+
+					axis.gridlines.sort(function (a, b) {
+						return a.value - b.value;
+					});
+					axis.values.sort(function (a, b) {
+						return a.value - b.value;
 					});
 				}
 

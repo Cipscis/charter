@@ -247,11 +247,16 @@ $z-legend: 4;
 
 		cursor: pointer;
 		&:hover,
-		&:focus {
+		&:focus,
+		.show-tooltips & {
 			outline: none;
 			.chart__bar-tooltip {
 				display: block;
 			}
+		}
+		.show-tooltips & {
+			cursor: default;
+			cursor: unset;
 		}
 	}
 
