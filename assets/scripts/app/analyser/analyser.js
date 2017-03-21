@@ -417,6 +417,9 @@ define(
 				return col;
 			},
 
+			///////////////////
+			// SUMMARY TOOLS //
+			///////////////////
 			createSubTable: function (rows, colsObject) {
 				// Takes in a set of rows and a colsObject formatted like this:
 				// {
@@ -449,6 +452,33 @@ define(
 				}
 
 				return table;
+			},
+
+			getColSummary: function (rows, col) {
+				// Takes in a set of rows and a column number
+
+				// Outputs an object summarising the number of times each value
+				// appeared in the given column of the given rows
+
+				var i, row,
+					summary,
+					value;
+
+				summary = {};
+				for (i = 0; i < rows.length; i++) {
+					row = rows[i];
+					value = row[col];
+
+					if (value) {
+						if (value in summary) {
+							summary[value]++;
+						} else {
+							summary[value] = 1;
+						}
+					}
+				}
+
+				return summary;
 			}
 		};
 

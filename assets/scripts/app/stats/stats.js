@@ -24,6 +24,19 @@ define(
 				return values.reduce(sum, 0) / values.length;
 			},
 
+			median: function (values) {
+				// Create a copy and sort it in place
+				values = values.concat().sort();
+
+				if (values.length % 2) {
+					// Odd number - return middle value
+					return values[(values.length + 1) / 2];
+				} else {
+					// Even number - return mean of middle values
+					return (values[values.length / 2] + values[(values.length / 2) + 1]) / 2;
+				}
+			},
+
 			variance: function (values) {
 				var mean,
 					variance;
