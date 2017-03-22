@@ -78,6 +78,7 @@ define(
 				config.enumsMap = config.enumsMap || {};
 
 				output.cols = config.cols;
+				output.aliases = config.aliases;
 				output.filters = Analyser.getAliasFilters(config.aliases);
 
 				// Remove header rows
@@ -454,31 +455,83 @@ define(
 				return table;
 			},
 
-			getColSummary: function (rows, col) {
-				// Takes in a set of rows and a column number
+			getColSummary: function (rows, cols, aliasList) {
+				// Takes in a set of rows and one or more column numbers, and optionally
+				// a list of aliases - an array of arrays of strings to be grouped together
 
 				// Outputs an object summarising the number of times each value
 				// appeared in the given column of the given rows
 
 				var i, row,
-					summary,
-					value;
+					j, col,
+					values,
+					k, value,
+					summary;
+
+				// Allow the passing of a single number or an array of column indices
+				if (!(cols instanceof Array)) {
+					cols = [cols];
+				}
 
 				summary = {};
 				for (i = 0; i < rows.length; i++) {
 					row = rows[i];
-					value = row[col];
 
-					if (value) {
-						if (value in summary) {
-							summary[value]++;
-						} else {
-							summary[value] = 1;
+					for (j = 0; j < cols.length; j++) {
+						col = cols[j];
+						values = row[col];
+
+						if (values) {
+							if (!(values instanceof Array)) {
+								values = [values];
+							}
+
+							for (k = 0; k < values.length; k++) {
+								value = values[k];
+
+								if (value in summary) {
+									summary[value]++;
+								} else {
+									summary[value] = 1;
+								}
+							}
 						}
 					}
 				}
 
+				if (typeof aliasList !== 'undefined') {
+					summary = Analyser.groupSummaryByAliases(summary, aliasList);
+				}
+
 				return summary;
+			},
+
+			groupSummaryByAliases: function (summary, aliasList) {
+				// Takes a summary object like the output from getColSummary, and
+				// a list of aliases - an array of arrays of strings to be grouped together
+
+				// Outputs a summary object where values within the same set of aliases are grouped
+
+				var newSummary,
+					i,
+					j, aliases;
+
+				newSummary = {};
+				for (i in summary) {
+					for (j = 0; j < aliasList.length; j++) {
+						aliases = aliasList[j];
+
+						if (aliases.indexOf(i) !== -1) {
+							if (aliases[0] in newSummary) {
+								newSummary[aliases[0]] += summary[i];
+							} else {
+								newSummary[aliases[0]] = summary[i];
+							}
+						}
+					}
+				}
+
+				return newSummary;
 			}
 		};
 
