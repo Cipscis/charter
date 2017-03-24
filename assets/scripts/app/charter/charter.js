@@ -492,15 +492,15 @@ define(
 				return $chart;
 			},
 
-			createLineGraph: function (chartData, independentAxisConfig, dependentAxisConfig) {
+			createLineGraph: function (chartData, dependentAxisConfig, independentAxisConfig) {
 				return Charter._create2DChart(chartData, independentAxisConfig, dependentAxisConfig, lineGraphTemplate);
 			},
 
-			createScatterPlot: function (chartData, independentAxisConfig, dependentAxisConfig) {
+			createScatterPlot: function (chartData, dependentAxisConfig, independentAxisConfig) {
 				return Charter._create2DChart(chartData, independentAxisConfig, dependentAxisConfig, scatterPlotTemplate);
 			},
 
-			_create2DChart: function (chartData, independentAxisConfig, dependentAxisConfig, template) {
+			_create2DChart: function (chartData, dependentAxisConfig, independentAxisConfig, template) {
 				// Takes in basic chart data,
 				// constructs data for axes based on axisConfig,
 				// creates display values based on axisConfig,
