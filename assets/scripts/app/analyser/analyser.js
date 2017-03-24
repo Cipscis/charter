@@ -500,13 +500,13 @@ define(
 				}
 
 				if (typeof aliasList !== 'undefined') {
-					summary = Analyser.groupSummaryByAliases(summary, aliasList);
+					summary = Analyser._groupColSummaryByAliases(summary, aliasList);
 				}
 
 				return summary;
 			},
 
-			groupSummaryByAliases: function (summary, aliasList) {
+			_groupColSummaryByAliases: function (summary, aliasList) {
 				// Takes a summary object like the output from getColSummary, and
 				// a list of aliases - an array of arrays of strings to be grouped together
 
@@ -514,14 +514,17 @@ define(
 
 				var newSummary,
 					i,
-					j, aliases;
+					j, aliases,
+					inAlias;
 
 				newSummary = {};
 				for (i in summary) {
+					inAlias = false;
 					for (j = 0; j < aliasList.length; j++) {
 						aliases = aliasList[j];
 
 						if (aliases.indexOf(i) !== -1) {
+							inAlias = true;
 							if (aliases[0] in newSummary) {
 								newSummary[aliases[0]] += summary[i];
 							} else {
@@ -529,9 +532,119 @@ define(
 							}
 						}
 					}
+
+					if (inAlias === false) {
+						newSummary[i] = summary[i];
+					}
 				}
 
 				return newSummary;
+			},
+
+			getComparisonSummary: function (rows, headerCol, headerAliases, varCol, varAliases) {
+				// Takes in a set of rows and two column numbers
+				// Creates an object that can be used with console.table
+				// with the values of headerCol used in the header, and
+				// the values of varCol used for each row, with the cells
+				// denoting the number of times these values coincided
+				// using filterRows with the passed sets of aliases
+
+				// Also optionally takes a set of aliases for one or both columns
+
+				var varSummary,
+					headerSummary,
+					comparisonSummary,
+
+					aliases,
+					filters,
+
+					i, j;
+
+				if (arguments.length === 3) {
+					// No aliases specified
+					varCol = headerAliases;
+					headerAliases = undefined;
+				} else if (arguments.length === 4) {
+					// One alias specified
+					if (!(headerAliases instanceof Array)) {
+						// headerAliases was not passed
+						varAliases = varCol;
+						varCol = headerAliases;
+						headerAliases = undefined;
+					}
+				}
+
+				headerSummary = Analyser.getColSummary(rows, headerCol, headerAliases);
+				varSummary = Analyser.getColSummary(rows, varCol, varAliases);
+
+				aliases = {};
+				if (headerAliases) {
+					aliases.HEADERS = headerAliases;
+				}
+				if (varAliases) {
+					aliases.VARS = varAliases;
+				}
+				filters = Analyser.getAliasFilters(aliases);
+
+				comparisonSummary = {};
+				for (i in varSummary) {
+					comparisonSummary[i] = {};
+					for (j in headerSummary) {
+						comparisonSummary[i][j] = filters.filterRows(rows,
+							varCol, i,
+							headerCol, j
+						).length;
+					}
+				}
+
+				return comparisonSummary;
+			},
+
+			getComparisonSummaryString: function () {
+				// Calls getComparisonSummary with all arguments passed,
+				// then returns a string of the data that can be copy/pasted
+				// into a spreadsheet
+
+				var cellSeparator = '\t',
+					rowSeparator = '\n';
+
+				var comparisonSummary,
+					comparisonSummaryString,
+					i, j, k;
+
+				comparisonSummary = Analyser.getComparisonSummary.apply(this, arguments);
+
+				// Render headers and create array of labels
+				comparisonSummaryString = cellSeparator;
+				k = false;
+				for (i in comparisonSummary) {
+					if (k === true) {
+						break;
+					}
+					k = true;
+
+					for (j in comparisonSummary[i]) {
+						comparisonSummaryString += j + cellSeparator;
+					}
+				}
+				// Trim off last character, replace with newline
+				comparisonSummaryString = comparisonSummaryString.substr(0, comparisonSummaryString.length-1) + rowSeparator;
+
+				for (i in comparisonSummary) {
+					k = false;
+					for (j in comparisonSummary[i]) {
+						if (k === false) {
+							comparisonSummaryString += i + cellSeparator;
+						}
+						k = true;
+
+						comparisonSummaryString += comparisonSummary[i][j] + cellSeparator;
+					}
+					// Trim off last character, replace with newline
+					comparisonSummaryString = comparisonSummaryString.substr(0, comparisonSummaryString.length-1) + rowSeparator;
+				}
+
+				return comparisonSummaryString;
 			}
 		};
 
