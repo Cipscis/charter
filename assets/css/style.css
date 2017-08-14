@@ -1155,19 +1155,37 @@ html {
 
 /* line 10, ../scss/components/_cards.scss */
 .card {
-  flex: 0 1 20%;
+  flex: 0 1 100%;
   padding: 0 10px 20px;
   display: flex;
 }
+@media (min-width: 768px) {
+  /* line 10, ../scss/components/_cards.scss */
+  .card {
+    flex: 0 1 33%;
+  }
+}
+@media (min-width: 1024px) {
+  /* line 10, ../scss/components/_cards.scss */
+  .card {
+    flex: 0 1 25%;
+  }
+}
+@media (min-width: 1440px) {
+  /* line 10, ../scss/components/_cards.scss */
+  .card {
+    flex: 0 1 20%;
+  }
+}
 
-/* line 16, ../scss/components/_cards.scss */
+/* line 25, ../scss/components/_cards.scss */
 .card__body {
   width: 100%;
   padding: 20px;
   background: #666;
 }
 
-/* line 22, ../scss/components/_cards.scss */
+/* line 31, ../scss/components/_cards.scss */
 .card__title {
   display: block;
   font-weight: bold;
