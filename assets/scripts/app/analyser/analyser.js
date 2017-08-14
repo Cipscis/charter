@@ -418,6 +418,30 @@ define(
 				return col;
 			},
 
+			combineRows: function (row1, row2) {
+				// Takes in an arbitraty number of rows, and puts them into a single array
+				// Then checks the array for duplicated rows and removes them
+
+				var rows = [],
+					i, rowN;
+
+				for (i = 0; i < arguments.length; i++) {
+					rowN = arguments[i];
+					rows = rows.concat(rowN);
+				}
+
+				for (i = rows.length-1; i >= 0; i--) {
+					rowN = rows[i];
+
+					while (rows.indexOf(rowN) < i) {
+						rows.splice(rows.indexOf(rowN), 1);
+						i--;
+					}
+				}
+
+				return rows;
+			},
+
 			///////////////////
 			// SUMMARY TOOLS //
 			///////////////////
@@ -481,7 +505,7 @@ define(
 						col = cols[j];
 						values = row[col];
 
-						if (values) {
+						if (values || (values === 0)) {
 							if (!(values instanceof Array)) {
 								values = [values];
 							}

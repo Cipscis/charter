@@ -1,8 +1,15 @@
+$white: #fff;
+$grey--lighter: #ccc;
+$grey--light: #999;
+$grey: #666;
+$grey--dark: #333;
+$black: #000;
+
 html {
-	background: #333;
-	color: #fff;
+	background: $grey--dark;
+	color: $white;
 
 	a {
-		color: #fff;
+		color: $white;
 	}
 }

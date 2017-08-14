@@ -5,11 +5,17 @@ require(
 		'templayed',
 
 		'charter/charter',
-		'analyser/analyser'
+		'analyser/analyser',
+		'stats/stats'
 	],
-	function ($, d3, templayed, Charter, Analyser) {
+	function ($, d3, templayed, Charter, Analyser, Stats) {
 
 		var cols = {
+			ID: Analyser.getColNumber('A'),
+			MONTH: Analyser.getColNumber('C'),
+			YEAR: Analyser.getColNumber('D'),
+
+			DISTRICT: Analyser.getColNumber('F'),
 			AGE: Analyser.getColNumber('I'),
 			GENDER: Analyser.getColNumber('J'),
 			ETHNICITY: Analyser.getColNumber('K'),
@@ -21,8 +27,20 @@ require(
 			TASER_METHOD_2: Analyser.getColNumber('DH'),
 			TASER_METHOD_3: Analyser.getColNumber('DU'),
 
+			TASER_TYPE_1: Analyser.getColNumber('CT'),
+			TASER_TYPE_2: Analyser.getColNumber('DG'),
+			TASER_TYPE_3: Analyser.getColNumber('DT'),
+
+			TASER_PCA_1: Analyser.getColNumber('CS'),
+			TASER_PCA_2: Analyser.getColNumber('DF'),
+			TASER_PCA_3: Analyser.getColNumber('DS'),
+
 			INCIDENT_TYPE: Analyser.getColNumber('FS'),
-			INJURIES: Analyser.getColNumber('FT')
+
+			INJURIES: Analyser.getColNumber('FT'),
+			INJURY_CAUSE_1: Analyser.getColNumber('FU'),
+			INJURY_CAUSE_2: Analyser.getColNumber('FZ'),
+			INJURY_CAUSE_3: Analyser.getColNumber('GE')
 		};
 		var arrayCols = {};
 		arrayCols[cols.TACTICS] = null;
@@ -62,18 +80,246 @@ require(
 			},
 			arrayCols: arrayCols,
 			enumsMap: {
-				TASER_METHOD: [cols.TASER_METHOD_1, cols.TASER_METHOD_2, cols.TASER_METHOD_3]
+				TASER_METHOD: [cols.TASER_METHOD_1, cols.TASER_METHOD_2, cols.TASER_METHOD_3],
+				TASER_TYPE: [cols.TASER_TYPE_1, cols.TASER_TYPE_2, cols.TASER_TYPE_3]
 			}
 		};
 
 		var fileProcessed = function (config) {
 			exploratoryAnalysis(config);
+			// articleCheck(config);
 			buildVisualisation(config);
 		};
 
 		Analyser.loadFile('assets/data/Tactical Options 2016 - raw.csv', config, fileProcessed);
 
 		var exploratoryAnalysis = function (config) {
+			var rows = config.rows,
+				cols = config.cols,
+				enums = config.enums,
+				aliases = config.aliases,
+				filterRows = config.filters.filterRows,
+				filterRowsOr = config.filters.filterRowsOr,
+
+				i, row;
+
+			var percent = function (n, d, f) {
+				return (n / d * 100).toFixed(f || 1);
+			};
+
+			var force = filterRows(rows,
+				cols.TACTICS, function (tactics) {
+					return (tactics.length > 1) || (tactics.indexOf('Communication') === -1);
+				}
+			);
+
+			console.log(force.length);
+
+			var injuries = filterRows(force,
+				cols.INJURIES, function (injuries) { return injuries > 0; }
+			);
+
+			var tasers = filterRows(force,
+				cols.TACTICS, 'Taser'
+			);
+
+			var taserDischarges1 = filterRows(tasers,
+				cols.TASER_METHOD_1, 'Discharge'
+			);
+			var taserDischarges2 = filterRows(tasers,
+				cols.TASER_METHOD_2, 'Discharge'
+			);
+			var taserDischarges3 = filterRows(tasers,
+				cols.TASER_METHOD_3, 'Discharge'
+			);
+
+			console.log(Analyser.getColSummary(taserDischarges1, cols.TASER_PCA_1));
+			console.log(Analyser.getColSummary(taserDischarges2, cols.TASER_PCA_2));
+			console.log(Analyser.getColSummary(taserDischarges3, cols.TASER_PCA_3));
+
+			var taserDischargesPCA1 = filterRowsOr(taserDischarges1,
+				cols.TASER_PCA_1, 'Passive Resistant',
+				cols.TASER_PCA_1, 'Active Resistant'
+			);
+			var taserDischargesPCA2 = filterRowsOr(taserDischarges2,
+				cols.TASER_PCA_2, 'Passive Resistant',
+				cols.TASER_PCA_2, 'Active Resistant'
+			);
+			var taserDischargesPCA3 = filterRowsOr(taserDischarges3,
+				cols.TASER_PCA_3, 'Passive Resistant',
+				cols.TASER_PCA_3, 'Active Resistant'
+			);
+
+			var taserDischargesPCA = Analyser.combineRows(
+				taserDischargesPCA1,
+				taserDischargesPCA2,
+				taserDischargesPCA3
+			);
+
+			console.table(Analyser.createSubTable(taserDischargesPCA, cols));
+
+
+			var taserDischarges = Analyser.combineRows(
+				taserDischarges1,
+				taserDischarges2,
+				taserDischarges3
+			);
+
+			var tasersMentalHealth = filterRowsOr(tasers,
+				cols.INCIDENT_TYPE, '1x - attempt suicide',
+				cols.INCIDENT_TYPE, '1m ? mental incident'
+			);
+			console.log('Mental health % of taser use: ', percent(tasersMentalHealth.length, tasers.length));
+
+			var tasersDischargesMentalHealth = filterRowsOr(taserDischarges,
+				cols.INCIDENT_TYPE, '1x - attempt suicide',
+				cols.INCIDENT_TYPE, '1m ? mental incident'
+			);
+			console.log('Mental health % of taser discharges: ', percent(tasersDischargesMentalHealth.length, tasers.length));
+			console.table(Analyser.createSubTable(tasersDischargesMentalHealth, cols));
+
+
+		};
+
+		var articleCheck = function (config) {
+			var rows = config.rows,
+				cols = config.cols,
+				enums = config.enums,
+				aliases = config.aliases,
+				filterRows = config.filters.filterRows,
+				filterRowsOr = config.filters.filterRowsOr,
+
+				i, row,
+				j;
+
+			var percent = function (n, d, f) {
+				return (n / d * 100).toFixed(f || 1);
+			};
+			var pop = {
+				'Pākehā': 2969391,
+				'Māori': 598605,
+				'Pacific': 295944
+			};
+			var minYouthAge = 16;
+
+			console.log('The child was one of 29 youths to have police dogs used against them in just six months');
+			var youthDogs = filterRows(rows,
+				cols.TACTICS, 'Dog',
+				cols.AGE, function (age) { return age <= minYouthAge; }
+			);
+			console.log(youthDogs.length);
+
+			console.log('youths made up 20 percent of incidents where dogs were used');
+			var dogs = filterRows(rows,
+				cols.TACTICS, 'Dog'
+			);
+			console.log(percent(youthDogs.length, dogs.length));
+
+			console.log('Of those, more than 60 percent stated their ethnicity as Maori');
+			var maoriDogs = filterRows(dogs,
+				cols.ETHNICITY, 'Māori'
+			);
+			var maoriYouthDogs = filterRows(youthDogs,
+				cols.ETHNICITY, 'Māori'
+			);
+			console.log('All: ', percent(maoriDogs.length, dogs.length));
+			console.log('Youth: ', percent(maoriYouthDogs.length, youthDogs.length));
+
+			console.log('In general, Maori were 12 times as likely to face a dog than Pakeha');
+			var pakehaDogs = filterRows(dogs,
+				cols.ETHNICITY, 'Pākehā'
+			);
+			console.log((maoriDogs.length/pop['Māori']) / (pakehaDogs.length/pop['Pākehā']));
+
+			console.log('Overall, a person who was Maori was seven times more likely to incur the use of force by police');
+			var nonCom = filterRows(rows,
+				cols.TACTICS, function (tactics) { return (tactics.length > 1) || (tactics.indexOf('Communication') === -1); }
+			);
+			var maoriNonCom = filterRows(nonCom,
+				cols.ETHNICITY, 'Māori'
+			);
+			var pakehaNonCom = filterRows(nonCom,
+				cols.ETHNICITY, 'Pākehā'
+			);
+			console.log((maoriNonCom.length/pop['Māori']) / (pakehaNonCom.length/pop['Pākehā']));
+
+			console.log('Pacific Islanders were also more likely to encounter force, at a rate of 3-1');
+			var pacificNonCom = filterRows(nonCom,
+				cols.ETHNICITY, 'Pacific'
+			);
+			console.log((pacificNonCom.length/pop['Pacific']) / (pakehaNonCom.length/pop['Pākehā']));
+
+			console.log('Of responses that required force, the data shows "empty hand" was the most common option used, with batons being the least common');
+			console.log(Analyser.getColSummary(rows, cols.TACTICS));
+
+			console.log('Police used Tasers against people threatening suicide ten times in six months, latest data shows');
+			var suicideAttempts = filterRows(rows,
+				cols.INCIDENT_TYPE, '1x - attempt suicide'
+			);
+			var suicideAttemptsTaserDischarge = filterRowsOr(suicideAttempts,
+				cols.TASER_METHOD_1, 'Discharge',
+				cols.TASER_METHOD_2, 'Discharge',
+				cols.TASER_METHOD_3, 'Discharge'
+			);
+			console.log(suicideAttemptsTaserDischarge.length);
+			console.log(Analyser.getColSummary(suicideAttemptsTaserDischarge, cols.ID));
+
+			console.log('Of the approximately 2500 events where force was used in the six months to December 2016, 25 percent of those included the use of a Taser');
+			var tasers = filterRows(nonCom,
+				cols.TACTICS, 'Taser'
+			);
+			var taserDischarges = filterRowsOr(tasers,
+				cols.TASER_METHOD_1, 'Discharge',
+				cols.TASER_METHOD_2, 'Discharge',
+				cols.TASER_METHOD_3, 'Discharge'
+			);
+			console.log(nonCom.length);
+			console.log(percent(tasers.length, nonCom.length));
+
+			console.log('Maori were eight times more likely to have a Taser used against them than Pakeha');
+			var maoriTaser = filterRows(tasers,
+				cols.ETHNICITY, 'Māori'
+			);
+			var pakehaTaser = filterRows(tasers,
+				cols.ETHNICITY, 'Pākehā'
+			);
+			console.log('Māori taser use rate divided by Pākehā taser use rate: ', (maoriTaser.length/pop['Māori']) / (pakehaTaser.length/pop['Pākehā']));
+
+			console.log('% of forceful TOR events involving taser discharge: ', percent(taserDischarges.length, nonCom.length));
+
+			var maoriTaserDischarge = filterRowsOr(maoriTaser,
+				cols.TASER_METHOD_1, 'Discharge',
+				cols.TASER_METHOD_2, 'Discharge',
+				cols.TASER_METHOD_3, 'Discharge'
+			);
+			var pakehaTaserDischarge = filterRowsOr(pakehaTaser,
+				cols.TASER_METHOD_1, 'Discharge',
+				cols.TASER_METHOD_2, 'Discharge',
+				cols.TASER_METHOD_3, 'Discharge'
+			);
+			console.log('Māori taser discharge rate divided by Pākehā taser discharge rate: ', (maoriTaserDischarge.length/pop['Māori']) / (pakehaTaserDischarge.length/pop['Pākehā']));
+
+			console.log('Māori discharge rate: ', percent(maoriTaserDischarge.length, maoriTaser.length));
+			console.log('Pākehā discharge rate: ', percent(pakehaTaserDischarge.length, pakehaTaser.length));
+
+			console.log('tasers are used more on people with mental illness or those in crisis than others');
+			var mhForce = filterRowsOr(nonCom,
+				cols.INCIDENT_TYPE, '1x - attempt suicide',
+				cols.INCIDENT_TYPE, '1m ? mental incident'
+			);
+			var nonMhForce = filterRows(nonCom,
+				cols.INCIDENT_TYPE, function (it) { return (it !== '1x - attempt suicide') && (it !== '1m ? mental incident'); }
+			);
+
+			var mhForceTaser = filterRows(mhForce,
+				cols.TACTICS, 'Taser'
+			);
+			var nonMhForceTaser = filterRows(nonMhForce,
+				cols.TACTICS, 'Taser'
+			);
+
+			console.log('% force events at MH incidents involving a taser: ', percent(mhForceTaser.length, mhForce.length));
+			console.log('% force events at non MH incidents involving a taser: ', percent(nonMhForceTaser.length, nonMhForce.length));
 		};
 
 		var buildVisualisation = function (config) {
@@ -92,6 +338,23 @@ require(
 				'Māori': 598605,
 				'Pacific': 295944
 			};
+
+			var notCommunication = filterRows(rows,
+				cols.TACTICS, function (tactics) {
+					return (tactics.length > 1 || tactics.indexOf('Communication') === -1);
+				}
+			);
+			var pakeha = filterRows(rows,
+				cols.ETHNICITY, 'Pākehā'
+			);
+			var maori = filterRows(rows,
+				cols.ETHNICITY, 'Māori'
+			);
+			var pacific = filterRows(rows,
+				cols.ETHNICITY, 'Pacific'
+			);
+
+			var pakehaNum = pakeha.length / pop['Pākehā'] * 100000;
 
 			// Format data for bar charts
 			/////////////////////////////
