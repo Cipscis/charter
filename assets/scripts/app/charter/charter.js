@@ -193,7 +193,9 @@ define(
 					finalRange = [];
 
 				for (i = 0; i < dataSeries.length; i++) {
-					ranges.push(Charter._getRangeSingle(dataSeries[i], axisConfig));
+					if (dataSeries[i].dataPoints.length) {
+						ranges.push(Charter._getRangeSingle(dataSeries[i], axisConfig));
+					}
 				}
 
 				finalRange = [ranges[0][0], ranges[0][1]];
@@ -429,10 +431,17 @@ define(
 					for (j = 0; j < series.dataPoints.length; j++) {
 						dataPoint = series.dataPoints[j];
 
-						objArray.push({
-							value: dataPoint,
-							color: series.color
-						});
+						if (dataPoint instanceof Object) {
+							objArray.push({
+								value: dataPoint.value,
+								color: dataPoint.color || series.color
+							});
+						} else {
+							objArray.push({
+								value: dataPoint,
+								color: series.color
+							});
+						}
 					}
 
 					dataSeries[i].dataPoints = objArray;
@@ -469,25 +478,25 @@ define(
 				return templayed(tableTemplate)(data);
 			},
 
-			createBarChart: function (chartData, axisConfig) {
+			createBarChart: function (chartData, dependentAxisConfig) {
 				// Takes in basic chart data,
-				// constructs data for independent axis based on axisConfig,
-				// creates display values based on axisConfig,
+				// constructs data for dependent axis based on dependentAxisConfig,
+				// creates display values based on dependentAxisConfig,
 				// then uses the combined data to build the markup for a bar chart
 
 				// Bar charts should only have a single dataSeries
 
 				dataSeries = Charter._processDataSeries(chartData.dataSeries);
 
-				axisConfig = Charter._getNumericAxisOptions(axisConfig);
+				dependentAxisConfig = Charter._getNumericAxisOptions(dependentAxisConfig);
 
-				chartData.dependentAxis = Charter._createNumericAxis(chartData, axisConfig);
-				chartData = Charter._getValuePercentages(chartData, axisConfig);
-				chartData = Charter._getDisplayValues(chartData, axisConfig);
+				chartData.dependentAxis = Charter._createNumericAxis(chartData, dependentAxisConfig);
+				chartData = Charter._getValuePercentages(chartData, dependentAxisConfig);
+				chartData = Charter._getDisplayValues(chartData, dependentAxisConfig);
 
-				$chart = $(templayed(axisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
+				$chart = $(templayed(dependentAxisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
 				$chart.data('chartData', chartData);
-				$chart.data('dependentAxisConfig', axisConfig);
+				$chart.data('dependentAxisConfig', dependentAxisConfig);
 
 				return $chart;
 			},

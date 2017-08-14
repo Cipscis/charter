@@ -33,9 +33,9 @@
 	display: block;
 	padding: 10px 5px;
 	text-align: center;
-	background: #666;
+	background: $grey;
 	border: 0;
-	color: #fff;
+	color: $white;
 	cursor: pointer;
 
 	&:hover {
@@ -43,6 +43,6 @@
 	}
 
 	.tabs__input:checked ~ & {
-		background: #999;
+		background: $grey--light;
 	}
 }

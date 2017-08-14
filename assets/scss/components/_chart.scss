@@ -4,15 +4,15 @@
 $axis-width: 50px;
 $axis-height: 30px;
 
-$axis-color: #ccc;
+$axis-color: $grey--light;
 $axis-text-size: 16px;
-$gridline-color: #666;
+$gridline-color: $grey;
 
-$data-color: #999;
+$data-color: $grey--light;
 
 
-$tooltip-color: #fff;
-$tooltip-bg: #000;
+$tooltip-color: $white;
+$tooltip-bg: $black;
 
 
 ///////////////
@@ -196,6 +196,11 @@ $z-legend: 4;
 	}
 }
 
+.chart__legend--left {
+	right: auto;
+	left: 60px;
+}
+
 .chart__legend-name {
 	clear: left;
 	float: right;
@@ -257,6 +262,20 @@ $z-legend: 4;
 		.show-tooltips & {
 			cursor: default;
 			cursor: unset;
+		}
+
+		&.is-selected {
+			&:after {
+				content: "";
+
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+
+				background: rgba($white, 0.2);
+			}
 		}
 	}
 

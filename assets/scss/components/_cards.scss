@@ -1,0 +1,25 @@
+.card__list {
+	margin: 0 -10px;
+	padding: 0;
+	list-style: none;
+
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.card {
+	flex: 0 1 20%;
+	padding: 0 10px 20px;
+	display: flex;
+}
+
+.card__body {
+	width: 100%;
+	padding: 20px;
+	background: $grey;
+}
+
+.card__title {
+	display: block;
+	font-weight: bold;
+}
