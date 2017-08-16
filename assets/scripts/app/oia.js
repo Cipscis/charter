@@ -6,9 +6,13 @@ require(
 
 		'charter/charter',
 		'analyser/analyser',
-		'stats/stats'
+		'stats/stats',
+
+		'util/workingDays'
 	],
-	function ($, d3, templayed, Charter, Analyser, Stats) {
+	function ($, d3, templayed, Charter, Analyser, Stats, workingDays) {
+
+		window.wd = workingDays;
 
 		var config = {
 			headerRows: 1,
@@ -22,7 +26,7 @@ require(
 				DATE_DUE: Analyser.getColNumber('F'),
 				DATE_RESPONSE: Analyser.getColNumber('G'),
 
-				WORKING_DAYS_REMAINING: Analyser.getColNumber('H')
+				EXTENSION: Analyser.getColNumber('H')
 			}
 		};
 
@@ -38,6 +42,19 @@ require(
 				cols = config.cols;
 
 			var table = Analyser.createSubTable(rows, cols);
+
+			// for (var i = 0; i < rows.length; i++) {
+			// 	var row = rows[i];
+
+			// 	var dateSent = new Date(row[cols.DATE_SENT]);
+			// 	var dateResponse = new Date(row[cols.DATE_RESPONSE]);
+
+			// 	if (dateResponse) {
+			// 		var daysTaken = workingDays.getWorkingDaysBetween(dateSent, dateResponse);
+			// 		var daysAllowed = 20 + row[cols.EXTENSION];
+			// 		console.log(daysTaken - daysAllowed);
+			// 	}
+			// }
 
 			// console.table(table);
 
@@ -58,8 +75,21 @@ require(
 				LATE: '#a61f1f'
 			};
 
+			for (i = 0; i < rows.length; i++) {
+				row = rows[i];
+
+				var dateSent = new Date(row[cols.DATE_SENT]);
+				var dateResponse = new Date(row[cols.DATE_RESPONSE]);
+
+				row.daysAllowed = 20 + row[cols.EXTENSION];
+				if (row[cols.DATE_RESPONSE]) {
+					row.daysTaken = workingDays.getWorkingDaysBetween(dateSent, dateResponse);
+					row.daysRemaining = row.daysAllowed - row.daysTaken;
+				}
+			}
+
 			// Create object storing the different states of requests returned on the due date
-			var dueRequests = filterRows(rows, cols.WORKING_DAYS_REMAINING, 0);
+			var dueRequests = filterRows(rows, 'daysRemaining', 0);
 			var numDueRequests = {
 				early: 0,
 				due: 0,
@@ -108,7 +138,7 @@ require(
 				for (j = 0; j < rows.length; j++) {
 					row = rows[j];
 
-					if (row[cols.WORKING_DAYS_REMAINING] === workingDayNums[i]) {
+					if (row.daysRemaining === workingDayNums[i]) {
 						dataPoint.value++;
 					}
 				}
@@ -167,7 +197,7 @@ require(
 				// Ensure it's a number
 				daysRemaining = +daysRemaining;
 
-				var cardRows = filterRows(rows, cols.WORKING_DAYS_REMAINING, daysRemaining);
+				var cardRows = filterRows(rows, 'daysRemaining', daysRemaining);
 				var cardData = Analyser.createSubTable(cardRows, cols);
 
 				// Sort by time of day (ascending)
