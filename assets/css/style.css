@@ -1162,13 +1162,13 @@ html {
 @media (min-width: 768px) {
   /* line 10, ../scss/components/_cards.scss */
   .card {
-    flex: 0 1 33%;
+    flex: 0 1 50%;
   }
 }
 @media (min-width: 1024px) {
   /* line 10, ../scss/components/_cards.scss */
   .card {
-    flex: 0 1 25%;
+    flex: 0 1 33%;
   }
 }
 @media (min-width: 1440px) {
