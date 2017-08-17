@@ -10,10 +10,10 @@
 .card {
 	flex: 0 1 100%;
 	@include bp("md") {
-		flex: 0 1 33%;
+		flex: 0 1 50%;
 	}
 	@include bp("l") {
-		flex: 0 1 25%;
+		flex: 0 1 33%;
 	}
 	@include bp("xl") {
 		flex: 0 1 20%;

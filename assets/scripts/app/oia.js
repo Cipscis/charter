@@ -218,19 +218,24 @@ require(
 
 					var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-					var date = new Date(row.DATE_RESPONSE);
-					var hours = date.getHours();
-					var minutes = date.getMinutes();
-					var ampm = 'am';
+					var requestDate = new Date(row.DATE_SENT);
+					var requestHours = requestDate.getHours();
+					var requestMinutes = requestDate.getMinutes();
+					var requestAmPm = 'am';
+
+					var responseDate = new Date(row.DATE_RESPONSE);
+					var responseHours = responseDate.getHours();
+					var responseMinutes = responseDate.getMinutes();
+					var responseAmPm = 'am';
 
 					var colour;
 
 					if (daysRemaining > 0) {
 						colour = colours.EARLY;
 					} else if (daysRemaining === 0) {
-						if (hours >= 17) {
+						if (responseHours >= 17) {
 							colour = colours.LATE;
-						} else if (hours >= 16) {
+						} else if (responseHours >= 16) {
 							colour = colours.DUE;
 						} else {
 							colour = colours.EARLY;
@@ -239,26 +244,69 @@ require(
 						colour = colours.LATE;
 					}
 
-					if (hours === 12) {
-						ampm = 'pm';
-					} else if (hours > 12) {
-						ampm = 'pm';
-						hours = hours - 12;
+					// Convert to AM / PM
+					if (requestHours === 12) {
+						requestAmPm = 'pm';
+					} else if (requestHours > 12) {
+						requestAmPm = 'pm';
+						requestHours = requestHours - 12;
+					} else if (requestHours === 0) {
+						requestHours = 12;
 					}
 
-					if (hours < 10) {
-						hours = '0' + hours;
+					if (responseHours === 12) {
+						responseAmPm = 'pm';
+					} else if (responseHours > 12) {
+						responseAmPm = 'pm';
+						responseHours = responseHours - 12;
+					} else if (responseHours === 0) {
+						responseHours = 12;
 					}
-					if (minutes < 10) {
-						minutes = '0' + minutes;
+
+					// Add leading 0
+					if (requestHours < 10) {
+						requestHours = '0' + requestHours;
+					}
+					if (requestMinutes < 10) {
+						requestMinutes = '0' + requestMinutes;
 					}
 
-					var time = hours + ':' + minutes + ' ' + ampm;
+					if (responseHours < 10) {
+						responseHours = '0' + responseHours;
+					}
+					if (responseMinutes < 10) {
+						responseMinutes = '0' + responseMinutes;
+					}
 
-					var dateString = date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear();
+					// Create display strings
+					var requestTime = requestHours + ':' + requestMinutes + '&nbsp;' + requestAmPm;
+					var requestDateString = requestDate.getDate() + '&nbsp;' + monthNames[requestDate.getMonth()] + '&nbsp;' + requestDate.getFullYear();
 
-					row.time = time;
-					row.date = dateString;
+					var responseTime = responseHours + ':' + responseMinutes + '&nbsp;' + responseAmPm;
+					var responseDateString = responseDate.getDate() + '&nbsp;' + monthNames[responseDate.getMonth()] + '&nbsp;' + responseDate.getFullYear();
+
+					// Create due date data
+					var dueDate = workingDays.addWorkingDays(requestDate, 20);
+					if (row.EXTENSION) {
+						dueDate = workingDays.addWorkingDays(dueDate, row.EXTENSION);
+					}
+
+					var dueDateString = dueDate.getDate() + '&nbsp;' + monthNames[dueDate.getMonth()] + '&nbsp;' + dueDate.getFullYear();
+
+					// Store data
+					row.requestTime = requestTime;
+					row.requestDate = requestDateString;
+
+					row.responseTime = responseTime;
+					row.responseDate = responseDateString;
+
+					row.dueDate = dueDateString;
+					if (row.EXTENSION) {
+						row.wasExtended = [{
+							days: row.EXTENSION
+						}];
+					}
+
 					row.colour = colour;
 				}
 

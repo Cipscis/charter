@@ -52,7 +52,9 @@
 								<div class="card__body" style="background: {{colour}};">
 									<a href="{{URL}}" target="_blank" class="card__title">{{TITLE}}</a>
 									<p>{{AGENCY}}</p>
-									<p>{{time}} {{date}}</p>
+									<p><b>Sent:</b> {{{requestDate}}}</p>
+									<p><b>Due:</b> {{{dueDate}}}{{#wasExtended}}<br />(extended {{days}} working days){{/wasExtended}}</p>
+									<p><b>Response:</b> {{{responseDate}}}&nbsp;{{{responseTime}}}</p>
 								</div>
 							</li>
 						{{/requests}}
