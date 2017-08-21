@@ -12,8 +12,6 @@ require(
 	],
 	function ($, d3, templayed, Charter, Analyser, Stats, workingDays) {
 
-		window.wd = workingDays;
-
 		var config = {
 			headerRows: 1,
 			cols: {
