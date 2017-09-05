@@ -33,8 +33,6 @@ require(
 			buildVisualisation(config);
 		};
 
-		Analyser.loadFile('assets/data/fyi-mark-hanna.csv', config, fileProcessed);
-
 		var exploratoryAnalysis = function (config) {
 			var rows = config.rows,
 				cols = config.cols;
@@ -309,7 +307,7 @@ require(
 				}
 
 				var $cards = templayed($('#oia-cards').html())({requests: cardData});
-				$('.js-due-date').html($cards);
+				$('.js-click-instructions').html($cards);
 			};
 
 			$('.js-chart-area').on('click', '.js-chart-bar', function (e) {
@@ -323,5 +321,99 @@ require(
 				createCards($this.data('label'));
 			});
 		};
+
+		Analyser.loadFile('assets/data/fyi-mark-hanna.csv', config, fileProcessed);
+
+
+
+		var dateCalc = {
+			init: function () {
+				dateCalc._selectCurrentDay();
+				dateCalc._getMonthDays();
+				dateCalc._calculateDueDate();
+
+				dateCalc._initEvents();
+			},
+
+			_initEvents: function () {
+				$(document)
+					.on('change', '.js-sent-month', dateCalc._getMonthDays)
+					.on('change', '.js-sent-day, .js-sent-month, .js-sent-year, .js-extension-length', dateCalc._calculateDueDate);
+			},
+
+			_selectCurrentDay: function () {
+				var today = new Date(),
+					day = today.getDate(),
+					month = today.getMonth() + 1,
+					year = today.getFullYear();
+
+				$('.js-sent-day').val(day);
+				$('.js-sent-month').val(month);
+				$('.js-sent-year').val(year);
+			},
+
+			_getMonthDays: function () {
+				var month = $('.js-sent-month').val(),
+					year = $('.js-sent-year').val(),
+
+					days = [],
+					date, i,
+
+					$days = $('.js-sent-day option');
+
+				for (i = 1; i < 32; i++) {
+					date = new Date(year + ' ' + month + ' ' + i);
+					if (date.getDate() !== i) {
+						break;
+					}
+					days.push(i);
+				}
+
+				$days.show().removeAttr('disabled');
+				$days.filter(function () {
+					var inDays = days.indexOf(+$(this).val()) === -1;
+					return inDays;
+				}).hide().attr('disabled', 'disabled');
+
+				// if ($days.filter(':selected').is('[disabled]')) {
+				// 	$('.js-sent-day').val(1);
+				// }
+			},
+
+			_calculateDueDate: function () {
+				var $sentDay = $('.js-sent-day'),
+					$sentMonth = $('.js-sent-month'),
+					$sentYear = $('.js-sent-year'),
+					$extension = $('.js-extension-length'),
+					$dueDate = $('.js-due-date'),
+
+					sent = new Date($sentYear.val() + '/' + $sentMonth.val() + '/' + $sentDay.val()),
+					extension = parseInt($extension.val(), 10) || 0,
+
+					dueDay,
+					dueMonth,
+					dueYear,
+					dueDate;
+
+				dueDate = workingDays.addWorkingDays(sent, 20 + extension);
+
+				dueDay = dueDate.getDate();
+				dueMonth = dueDate.getMonth() + 1;
+				dueYear = dueDate.getFullYear();
+
+				if (dueDay < 10) {
+					dueDay = '0' + dueDay;
+				}
+				if (dueMonth < 10) {
+					dueMonth = '0' + dueMonth;
+				}
+
+				dueDate = dueYear + '/' + dueMonth + '/' + dueDay;
+
+				$dueDate.text(dueDate);
+			}
+		};
+
+		dateCalc.init();
 	}
 );

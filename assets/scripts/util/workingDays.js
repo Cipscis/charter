@@ -39,6 +39,11 @@ define(
 			},
 
 			addWorkingDays: function (fromDate, numWorkingDays) {
+				if (!(fromDate instanceof Date) || isNaN(fromDate.getTime())) {
+					console.error(fromDate + ' is not a date');
+					return new Date();
+				}
+
 				var toDate = new Date(fromDate);
 
 				toDate.setDate(toDate.getDate() + numWorkingDays);
@@ -73,6 +78,53 @@ define(
 					(b)
 						a day in the period commencing with 25 December in any year and ending with 15 January in the following year.*/
 
+				var holidays = {
+					2014: {
+						1: [6], // Waitangi Day
+						3: [18, 21, 25], // Good Friday, Easter Monday, ANZAC Day
+						5: [2], // Queen's Birthday
+						9: [27] // Labour Day
+					},
+					2015: {
+						1: [6],
+						3: [3, 6, 27],
+						5: [1],
+						9: [26]
+					},
+					2016: {
+						1: [8],
+						2: [25, 28],
+						3: [25],
+						5: [6],
+						9: [24]
+					},
+					2017: {
+						1: [6],
+						3: [14, 17],
+						5: [5],
+						9: [23]
+					},
+					2018: {
+						1: [6],
+						2: [30],
+						3: [2, 25],
+						5: [4],
+						9: [22]
+					},
+					2019: {
+						1: [6],
+						3: [19, 22, 25],
+						5: [3],
+						9: [28]
+					},
+					2020: {
+						1: [6],
+						3: [10, 13, 27],
+						5: [1],
+						9: [26]
+					}
+				};
+
 				if (weekDay === 6 || weekDay === 0) {
 					// Saturday, Sunday
 					return false;
@@ -89,85 +141,9 @@ define(
 
 					// Other non-working days hard-coded per year
 					year = date.getFullYear();
-					if (year === 2014) {
-						if (month === 1 && dateNum === 6) {
-							return false; // Waitangi Day
-						}
-						if (month === 3 && dateNum === 18) {
-							return false; // Good Friday
-						}
-						if (month === 3 && dateNum === 21) {
-							return false; // Easter Monday
-						}
-						if (month === 3 && dateNum === 25) {
-							return false; // ANZAC Day
-						}
-						if (month === 5 && dateNum === 2) {
-							return false; // Queen's Birthday
-						}
-						if (month === 9 && dateNum === 27) {
-							return false; // Labour Day
-						}
-					}
-					if (year === 2015) {
-						if (month === 1 && dateNum === 6) {
-							return false; // Waitangi Day
-						}
-						if (month === 3 && dateNum === 3) {
-							return false; // Good Friday
-						}
-						if (month === 3 && dateNum === 6) {
-							return false; // Easter Monday
-						}
-						if (month === 3 && dateNum === 27) {
-							return false; // ANZAC Day
-						}
-						if (month === 5 && dateNum === 1) {
-							return false; // Queen's Birthday
-						}
-						if (month === 9 && dateNum === 26) {
-							return false; // Labour Day
-						}
-					}
-					if (year === 2016) {
-						if (month === 1 && dateNum === 8) {
-							return false; // Waitangi Day
-						}
-						if (month === 2 && dateNum === 25) {
-							return false; // Good Friday
-						}
-						if (month === 2 && dateNum === 28) {
-							return false; // Easter Monday
-						}
-						if (month === 3 && dateNum === 25) {
-							return false; // ANZAC Day
-						}
-						if (month === 5 && dateNum === 6) {
-							return false; // Queen's Birthday
-						}
-						if (month === 9 && dateNum === 24) {
-							return false; // Labour Day
-						}
-					}
-					if (year === 2017) {
-						if (month === 1 && dateNum === 6) {
-							return false; // Waitangi Day
-						}
-						if (month === 3 && dateNum === 14) {
-							return false; // Good Friday
-						}
-						if (month === 3 && dateNum === 17) {
-							return false; // Easter Monday
-						}
-						if (month === 3 && dateNum === 25) {
-							return false; // ANZAC Day
-						}
-						if (month === 5 && dateNum === 5) {
-							return false; // Queen's Birthday
-						}
-						if (month === 9 && dateNum === 23) {
-							return false; // Labour Day
-						}
+
+					if (holidays[year][month] && holidays[year][month].indexOf(dateNum) > -1) {
+						return false;
 					}
 
 					return true;
