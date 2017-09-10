@@ -1,1 +1,1 @@
-python -m SimpleHTTPServer 8080
+npm install && npm start
