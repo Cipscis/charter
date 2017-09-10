@@ -306,7 +306,10 @@ require(
 					row.colour = colour;
 				}
 
-				var $cards = templayed($('#oia-cards').html())({requests: cardData});
+				var $cards = templayed($('#oia-cards').html())({
+					daysRemaining: daysRemaining,
+					requests: cardData
+				});
 				$('.js-click-instructions').html($cards);
 			};
 
@@ -321,10 +324,6 @@ require(
 				createCards($this.data('label'));
 			});
 		};
-
-		Analyser.loadFile('assets/data/fyi-mark-hanna.csv', config, fileProcessed);
-
-
 
 		var dateCalc = {
 			init: function () {
@@ -415,5 +414,7 @@ require(
 		};
 
 		dateCalc.init();
+
+		Analyser.loadFile('assets/data/fyi-mark-hanna.csv', config, fileProcessed);
 	}
 );
