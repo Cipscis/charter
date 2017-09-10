@@ -39,7 +39,7 @@ $z-legend: 4;
 	position: relative;
 
 	width: 100%;
-	padding-top: 75%;
+	padding-top: calc(56.25% - 40px);
 	@include bp("md") {
 		padding-top: 50%;
 	}

@@ -793,7 +793,7 @@ html {
 .chart__area {
   position: relative;
   width: 100%;
-  padding-top: 75%;
+  padding-top: calc(56.25% - 40px);
 }
 @media (min-width: 768px) {
   /* line 38, ../scss/components/_chart.scss */
