@@ -1,0 +1,1 @@
+npm install && start npm start && gulp sass:watch
