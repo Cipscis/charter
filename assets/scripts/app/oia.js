@@ -190,10 +190,18 @@ require(
 
 			// Create cards for due date
 			var createCards = function (daysRemaining) {
-				// Ensure it's a number
-				daysRemaining = +daysRemaining;
+				var title;
 
-				var cardRows = filterRows(rows, 'daysRemaining', daysRemaining);
+				var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+				var cardRows;
+				if (typeof daysRemaining !== 'undefined') {
+					cardRows = filterRows(rows, 'daysRemaining', parseInt(daysRemaining, 10));
+				} else {
+					// No days remaining specified, so instead show outstanding requests
+					cardRows = filterRows(rows, cols.DATE_RESPONSE, '');
+				}
+
 				var cardData = Analyser.createSubTable(cardRows, cols);
 
 				// Sort by time of day (ascending)
@@ -209,10 +217,8 @@ require(
 
 
 				// Create calculated card data
-				for (i = 0; i < cardData.length; i++) {
-					row = cardData[i];
-
-					var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+				for (var i = 0; i < cardData.length; i++) {
+					var row = cardData[i];
 
 					var requestDate = new Date(row.DATE_SENT);
 					var requestHours = requestDate.getHours();
@@ -293,8 +299,16 @@ require(
 					row.requestTime = requestTime;
 					row.requestDate = requestDateString;
 
-					row.responseTime = responseTime;
-					row.responseDate = responseDateString;
+					if (row.DATE_RESPONSE) {
+						title = 'Responses received with ' + daysRemaining + ' working days remaining:';
+
+						row.hasResponse = [{
+							responseTime: responseTime,
+							responseDate: responseDateString
+						}];
+					} else {
+						title = 'Requests that have not yet received a response:';
+					}
 
 					row.dueDate = dueDateString;
 					if (row.EXTENSION) {
@@ -307,7 +321,7 @@ require(
 				}
 
 				var $cards = templayed($('#oia-cards').html())({
-					daysRemaining: daysRemaining,
+					title: title,
 					requests: cardData
 				});
 				$('.js-click-instructions').html($cards);
@@ -322,6 +336,10 @@ require(
 				$this.addClass('is-selected');
 
 				createCards($this.data('label'));
+			});
+
+			$('.js-show-outstanding').on('click', function () {
+				createCards();
 			});
 		};
 
