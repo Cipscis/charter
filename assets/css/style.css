@@ -681,64 +681,6 @@ html {
   padding: 60px 20px;
 }
 
-/* line 1, ../scss/components/_tabs.scss */
-.tabs {
-  margin: -10px 0 0 -10px;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* line 10, ../scss/components/_tabs.scss */
-.tabs__tab {
-  flex: 1 1 50%;
-  padding: 10px 0 0 10px;
-}
-@media (min-width: 768px) {
-  /* line 10, ../scss/components/_tabs.scss */
-  .tabs__tab {
-    flex: 1 1 100%;
-  }
-}
-@media (min-width: 1024px) {
-  /* line 10, ../scss/components/_tabs.scss */
-  .tabs__tab {
-    flex: 1 1 0;
-  }
-}
-
-/* line 21, ../scss/components/_tabs.scss */
-.tabs__input {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-}
-
-/* line 32, ../scss/components/_tabs.scss */
-.tabs__display {
-  display: block;
-  padding: 10px 5px;
-  text-align: center;
-  background: #666;
-  border: 0;
-  color: #fff;
-  cursor: pointer;
-}
-/* line 41, ../scss/components/_tabs.scss */
-.tabs__display:hover {
-  background: #777;
-}
-/* line 45, ../scss/components/_tabs.scss */
-.tabs__input:checked ~ .tabs__display {
-  background: #999;
-}
-
 @keyframes centreRotate {
   0% {
     transform: translateX(-50%) translateY(-50%) rotate(0deg);
@@ -1144,6 +1086,50 @@ html {
   width: 100%;
 }
 
+/* line 1, ../scss/components/_tabs.scss */
+.tabs {
+  margin: -10px 0 0 -10px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* line 10, ../scss/components/_tabs.scss */
+.tabs__tab {
+  flex: 1 1 50%;
+  padding: 10px 0 0 10px;
+}
+@media (min-width: 768px) {
+  /* line 10, ../scss/components/_tabs.scss */
+  .tabs__tab {
+    flex: 1 1 100%;
+  }
+}
+@media (min-width: 1024px) {
+  /* line 10, ../scss/components/_tabs.scss */
+  .tabs__tab {
+    flex: 1 1 0;
+  }
+}
+
+/* line 21, ../scss/components/_tabs.scss */
+.tabs__input {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+
+/* line 35, ../scss/components/_tabs.scss */
+.tabs__input:checked ~ .tabs__display {
+  background: #999;
+}
+
 /* line 1, ../scss/components/_cards.scss */
 .card__list {
   margin: 0 -10px;
@@ -1189,4 +1175,20 @@ html {
 .card__title {
   display: block;
   font-weight: bold;
+}
+
+/* line 1, ../scss/components/_buttons.scss */
+.button, .tabs__display {
+  display: block;
+  padding: 10px 15px;
+  text-align: center;
+  background: #666;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+}
+/* line 13, ../scss/components/_buttons.scss */
+.button:hover, .tabs__display:hover {
+  background: #777;
 }

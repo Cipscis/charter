@@ -30,17 +30,7 @@
 }
 
 .tabs__display {
-	display: block;
-	padding: 10px 5px;
-	text-align: center;
-	background: $grey;
-	border: 0;
-	color: $white;
-	cursor: pointer;
-
-	&:hover {
-		background: #777;
-	}
+	@extend .button;
 
 	.tabs__input:checked ~ & {
 		background: $grey--light;

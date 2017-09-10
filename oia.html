@@ -46,7 +46,7 @@
 
 			<div class="grid__item">
 				<script id="oia-cards" type="template">
-					<p>Responses received with {{daysRemaining}} working days remaining:</p>
+					<p>{{title}}</p>
 
 					<ul class="card__list">
 						{{#requests}}
@@ -56,7 +56,9 @@
 									<p>{{AGENCY}}</p>
 									<p><b>Sent:</b> {{{requestDate}}}</p>
 									<p><b>Due:</b> {{{dueDate}}}{{#wasExtended}}<br />(extended {{days}} working days){{/wasExtended}}</p>
-									<p><b>Response:</b> {{{responseDate}}}&nbsp;{{{responseTime}}}</p>
+									{{#hasResponse}}
+										<p><b>Response:</b> {{{responseDate}}}&nbsp;{{{responseTime}}}</p>
+									{{/hasResponse}}
 								</div>
 							</li>
 						{{/requests}}
@@ -66,6 +68,10 @@
 				<div class="js-click-instructions">
 					<p>Click on one of the bars in the chart to see the requests received with that many working days remaining.</p>
 				</div>
+			</div>
+
+			<div class="grid__item">
+				<button class="button js-show-outstanding">Show outstanding</button>
 			</div>
 
 			<div class="grid__item">
