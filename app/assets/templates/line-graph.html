@@ -1,5 +1,5 @@
 <div class="chart js-chart">
-	<span class="chart__title js-chart-title">{{title}}</span>
+	<span class="chart__title js-chart-title">{{{title}}}</span>
 
 	<div class="chart__area">
 		<ul class="chart__axis--v">
@@ -41,10 +41,10 @@
 		</div>
 
 		{{#showLegend}}
-			<dl class="chart__legend">
+			<dl class="chart__legend {{#legendLeft}}chart__legend--left{{/legendLeft}}">
 				{{#dataSeries}}
-					<dt class="chart__legend-name">{{name}}</dt>
 					<dd class="chart__legend-indicator" style="background-color: {{color}};"></dd>
+					<dt class="chart__legend-name">{{name}}</dt>
 				{{/dataSeries}}
 			</dl>
 		{{/showLegend}}
