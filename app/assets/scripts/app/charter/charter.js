@@ -231,13 +231,13 @@ define(
 				if (axisConfig.min !== null) {
 					min = axisConfig.min;
 				} else {
-					min = Math.floor(min / roundTo) * roundTo;
+					min = roundTo && Math.floor(min / roundTo) * roundTo;
 				}
 
 				if (axisConfig.max !== null) {
 					max = axisConfig.max;
 				} else {
-					max = Math.ceil(max / roundTo) * roundTo;
+					max = roundTo && Math.ceil(max / roundTo) * roundTo;
 				}
 
 				return [min, max];
