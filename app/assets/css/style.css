@@ -653,7 +653,7 @@ html {
 .chart__line {
   fill: none;
   vector-effect: non-scaling-stroke;
-  stroke-width: 1;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke: #999;
   position: absolute;
