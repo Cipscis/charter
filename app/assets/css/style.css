@@ -502,13 +502,13 @@ html {
   left: 60px; }
 
 .chart__legend-name {
-  clear: left;
-  float: right;
+  float: left;
   width: calc(100% - 16px);
   padding-left: 8px;
   margin-bottom: 8px; }
 
 .chart__legend-indicator {
+  clear: left;
   float: left;
   margin: 0;
   background: #999;
