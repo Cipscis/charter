@@ -389,7 +389,7 @@ define(
 					dataSeries = chartData.dataSeries[i];
 					for (j = 0; j < dataSeries.dataPoints.length; j++) {
 						dataPoint = dataSeries.dataPoints[j];
-						dataPoint.percentage = (dataPoint.value-min) / (max-min) * 100;
+						dataPoint.percentage = (dataPoint.value-min) / (max-min) * 100 || 0;
 					}
 				}
 
