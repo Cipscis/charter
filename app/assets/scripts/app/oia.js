@@ -232,6 +232,15 @@ require(
 
 					var colour;
 
+					// Create due date data
+					var dueDate = workingDays.addWorkingDays(requestDate, 20);
+					if (row.EXTENSION) {
+						dueDate = workingDays.addWorkingDays(dueDate, row.EXTENSION);
+					}
+
+					var dueDateString = dueDate.getDate() + '&nbsp;' + monthNames[dueDate.getMonth()] + '&nbsp;' + dueDate.getFullYear();
+
+					// Caldulate colour based on due date
 					if (daysRemaining > 0) {
 						colour = colours.EARLY;
 					} else if (daysRemaining === 0) {
@@ -244,6 +253,13 @@ require(
 						}
 					} else if (daysRemaining < 0) {
 						colour = colours.LATE;
+					} else {
+						// daysRemaining is undefined, meaning no response has been received
+						if (dueDate < (new Date())) {
+							colour = colours.LATE;
+						} else {
+							colour = undefined;
+						}
 					}
 
 					// Convert to AM / PM
@@ -286,14 +302,6 @@ require(
 
 					var responseTime = responseHours + ':' + responseMinutes + '&nbsp;' + responseAmPm;
 					var responseDateString = responseDate.getDate() + '&nbsp;' + monthNames[responseDate.getMonth()] + '&nbsp;' + responseDate.getFullYear();
-
-					// Create due date data
-					var dueDate = workingDays.addWorkingDays(requestDate, 20);
-					if (row.EXTENSION) {
-						dueDate = workingDays.addWorkingDays(dueDate, row.EXTENSION);
-					}
-
-					var dueDateString = dueDate.getDate() + '&nbsp;' + monthNames[dueDate.getMonth()] + '&nbsp;' + dueDate.getFullYear();
 
 					// Store data
 					row.requestTime = requestTime;
