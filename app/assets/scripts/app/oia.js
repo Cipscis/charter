@@ -308,7 +308,11 @@ require(
 					row.requestDate = requestDateString;
 
 					if (row.DATE_RESPONSE) {
-						title = 'Responses received with ' + daysRemaining + ' working days remaining:';
+						if (daysRemaining >= 0) {
+							title = 'Responses received with ' + daysRemaining + ' working day' + (daysRemaining !== 1 ? 's' : '') + ' remaining:';
+						} else {
+							title = 'Responses received ' + (-daysRemaining) + ' working day' + (daysRemaining !== -1 ? 's' : '') + ' overdue:';
+						}
 
 						row.hasResponse = [{
 							responseTime: responseTime,
@@ -347,6 +351,8 @@ require(
 			});
 
 			$('.js-show-outstanding').on('click', function () {
+				$('.js-chart-bar').removeClass('is-selected');
+
 				createCards();
 			});
 		};
