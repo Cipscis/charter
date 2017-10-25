@@ -7,6 +7,35 @@
 	<link rel="stylesheet" href="assets/css/style.css" />
 
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<style>
+		.chart--behind {
+			overflow: hidden;
+			position: relative;
+		}
+
+		.chart--behind .chart__area {
+			position: relative;
+			z-index: -1;
+		}
+
+		.chart--behind .chart__bar-tooltip {
+			top: auto;
+			bottom: 10px;
+			transform: translateX(-50%);
+		}
+
+		.chart--behind:after {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+
+			height: 15px;
+			background: linear-gradient(to bottom, rgba(51, 51, 51, 1) 0%, rgba(51, 51, 51, 0) 100%);
+		}
+	</style>
 </head>
 <body>
 	<script type="text/javascript">
@@ -111,7 +140,7 @@
 					</div>
 
 					<div class="grid__item width-1 width-l-1-2">
-						<div class="js-bar-chart">
+						<div class="chart--behind js-bar-chart">
 							<div class="chart is-loading">
 								<span class="chart__title">&nbsp;</span>
 								<div class="chart__area"></div>
@@ -153,7 +182,11 @@
 
 				<h3>Sponge rounds and communication</h3>
 
-				<p>Values for the "sponge rounds" and "communication" tactical options are not shown as they are not available for all time periods. Sponge rounds underwent a trial in 2014, and data on "communication" as a tactical option is not available for 2014.</p>
+				<p>Data for the "sponge rounds" and "communication" tactical options have been excluded. Sponge rounds underwent a trial in 2014. Data on "communication" as a tactical option is not available for 2014, and unlike other tactical options it does not involve the use of force.</p>
+
+				<h3>Any</h3>
+
+				<p>Values for "any" use the total number of TOR events. As a single TOR event can involve the use of multiple tactical options, the value for "any" is less than the sum of all tactical options.</p>
 			</div>
 			<!-- GRAPHS END -->
 

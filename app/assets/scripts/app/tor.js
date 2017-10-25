@@ -1,14 +1,13 @@
 require(
 	[
 		'jquery',
-		'd3',
 		'templayed',
 
 		'charter/charter',
 		'analyser/analyser',
 		'stats/stats'
 	],
-	function ($, d3, templayed, Charter, Analyser, Stats) {
+	function ($, templayed, Charter, Analyser, Stats) {
 
 		var cols2016 = {
 			ID: Analyser.getColNumber('A'),
@@ -457,7 +456,7 @@ require(
 			}
 
 			// Insert "Any" at the end of the list
-			// enums.TACTICS.push('Any');
+			enums.TACTICS.push('Any');
 
 			// Format 2016 data for bar charts
 			/////////////////////////////
