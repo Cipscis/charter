@@ -601,8 +601,16 @@ require(
 				};
 
 			for (i = 0; i < enums.TACTICS.length; i++) {
+				var tacticName = enums.TACTICS[i];
+				var tacticDisplayName = tacticName;
+
+				if (tacticDisplayName === 'Handcuffs-Restraints') {
+					tacticDisplayName = 'Handcuffs';
+				}
+
 				torOptionsData.options.push({
-					name: enums.TACTICS[i]
+					name: tacticName,
+					displayName: tacticDisplayName
 				});
 			}
 
