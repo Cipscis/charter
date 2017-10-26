@@ -3,3 +3,12 @@
 	margin: 0 auto;
 	padding: 60px 20px;
 }
+
+.layout--narrow {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px 10px;
+	.layout & {
+		padding: 0;
+	}
+}
