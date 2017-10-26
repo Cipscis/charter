@@ -169,19 +169,37 @@ require(
 			}
 		};
 
+		var numFilesProcessed = 0;
+		var numFilesToProcess = 2;
+
+		var finalConfig = {};
+
 		var fileProcessed2016 = function (config2016) {
-			Analyser.loadFile('assets/data/Tactical Options 2017-01 - 2017-06 raw.csv', config, fileProcessed(config2016));
+			numFilesProcessed++;
+			finalConfig[2016] = config2016;
+			if (numFilesProcessed >= numFilesToProcess) {
+				filesProcessed(finalConfig);
+			}
 		};
 
-		var fileProcessed = function (config2016) {
-			return function (config) {
-				// exploratoryAnalysis(config2016, config);
-				// articleCheck(config);
-				buildVisualisation(config2016, config);
-			};
+		var fileProcessed2017 = function (config2017) {
+			numFilesProcessed++;
+			finalConfig[2017] = config2017;
+			if (numFilesProcessed >= numFilesToProcess) {
+				filesProcessed(finalConfig);
+			}}
+
+		var filesProcessed = function (finalConfig) {
+			var config2016 = finalConfig[2016],
+				config = finalConfig[2017];
+
+			// exploratoryAnalysis(config2016, config);
+			// articleCheck(config);
+			buildVisualisation(config2016, config);
 		};
 
 		Analyser.loadFile('assets/data/Tactical Options 2016 - raw.csv', config2016, fileProcessed2016);
+		Analyser.loadFile('assets/data/Tactical Options 2017-01 - 2017-06 raw.csv', config, fileProcessed2017);
 
 		var exploratoryAnalysis = function (config2016, config) {
 			var rows = config.rows,
