@@ -345,6 +345,13 @@ html {
   margin: 0 auto;
   padding: 60px 20px; }
 
+.layout--narrow {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 10px; }
+  .layout .layout--narrow {
+    padding: 0; }
+
 @keyframes centreRotate {
   0% {
     transform: translateX(-50%) translateY(-50%) rotate(0deg); }
