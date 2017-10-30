@@ -59,6 +59,12 @@
 									{{#hasResponse}}
 										<p><b>Response:</b> {{{responseDate}}}&nbsp;{{{responseTime}}}</p>
 									{{/hasResponse}}
+									{{#isOverdue}}
+										<p><b>Overdue:</b> {{{overdueDays}} working days</p>
+									{{/isOverdue}}
+									{{#hasTimeLeft}}
+										<p><b>Remaining:</b> {{{remainingDays}} working days</p>
+									{{/hasTimeLeft}}
 								</div>
 							</li>
 						{{/requests}}

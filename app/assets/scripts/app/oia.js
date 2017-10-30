@@ -243,7 +243,9 @@ require(
 					// Caldulate colour based on due date
 					if (daysRemaining > 0) {
 						colour = colours.EARLY;
+						row.hasTimeLeft = [{remainingDays: daysRemaining}];
 					} else if (daysRemaining === 0) {
+						row.hasTimeLeft = [{remainingDays: daysRemaining}];
 						if (responseHours >= 17) {
 							colour = colours.LATE;
 						} else if (responseHours >= 16) {
@@ -253,12 +255,15 @@ require(
 						}
 					} else if (daysRemaining < 0) {
 						colour = colours.LATE;
+						row.isOverdue = [{overdueDays: -daysRemaining}];
 					} else {
 						// daysRemaining is undefined, meaning no response has been received
 						if (dueDate < (new Date())) {
 							colour = colours.LATE;
+							row.isOverdue = [{overdueDays: workingDays.getWorkingDaysBetween(dueDate, (new Date()))}];
 						} else {
 							colour = undefined;
+							row.hasTimeLeft = [{remainingDays: workingDays.getWorkingDaysBetween((new Date()), dueDate)}];
 						}
 					}
 
