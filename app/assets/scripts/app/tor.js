@@ -108,24 +108,40 @@ require(
 			INJURY_CAUSE_2: Analyser.getColNumber('GU'),
 			INJURY_CAUSE_3: Analyser.getColNumber('GZ'),
 
+			INJURY_TREATMENT_REQUIRED_1: Analyser.getColNumber('GS'),
+			INJURY_TREATMENT_RECEIVED_1: Analyser.getColNumber('GT'),
+			INJURY_TREATMENT_REQUIRED_2: Analyser.getColNumber('GX'),
+			INJURY_TREATMENT_RECEIVED_2: Analyser.getColNumber('GY'),
+			INJURY_TREATMENT_REQUIRED_3: Analyser.getColNumber('HC'),
+			INJURY_TREATMENT_RECEIVED_3: Analyser.getColNumber('HD'),
+
+			DOG_PCA: Analyser.getColNumber('CU'),
+			DOG_BITTEN: Analyser.getColNumber('CV'),
+			SPECIAL_POLICE_GROUPS: Analyser.getColNumber('G'),
+
 			TASER_METHOD_1: Analyser.getColNumber('DI'),
 			TASER_METHOD_2: Analyser.getColNumber('DW'),
 			TASER_METHOD_3: Analyser.getColNumber('EK'),
 
-			RF_HISTORY_WEAPONS: Analyser.getColNumber('L'),
-			RF_HISTORY_VIOLENCE_POLICE: Analyser.getColNumber('M'),
-			RF_HISTORY_VIOLENCE_NON_POLICE: Analyser.getColNumber('N'),
-			RF_ALCOHOL: Analyser.getColNumber('O'),
-			RF_DRUGS: Analyser.getColNumber('P'),
-			RF_MENTAL_HEALTH: Analyser.getColNumber('Q'),
-			RF_DISTRESSED_NOT_MENTAL_HEALTH: Analyser.getColNumber('R'),
-			RF_SUICIDAL: Analyser.getColNumber('S'),
-			RF_EXCITED_DELERIUM: Analyser.getColNumber('T'),
-			RF_MEDICAL: Analyser.getColNumber('U'),
-			RF_OTHER: Analyser.getColNumber('V')
+			TASER_PCA_1: Analyser.getColNumber('DF'),
+			TASER_PCA_2: Analyser.getColNumber('DT'),
+			TASER_PCA_3: Analyser.getColNumber('EH')
+
+			// RF_HISTORY_WEAPONS: Analyser.getColNumber('L'),
+			// RF_HISTORY_VIOLENCE_POLICE: Analyser.getColNumber('M'),
+			// RF_HISTORY_VIOLENCE_NON_POLICE: Analyser.getColNumber('N'),
+			// RF_ALCOHOL: Analyser.getColNumber('O'),
+			// RF_DRUGS: Analyser.getColNumber('P'),
+			// RF_MENTAL_HEALTH: Analyser.getColNumber('Q'),
+			// RF_DISTRESSED_NOT_MENTAL_HEALTH: Analyser.getColNumber('R'),
+			// RF_SUICIDAL: Analyser.getColNumber('S'),
+			// RF_EXCITED_DELERIUM: Analyser.getColNumber('T'),
+			// RF_MEDICAL: Analyser.getColNumber('U'),
+			// RF_OTHER: Analyser.getColNumber('V')
 		};
 		var arrayCols = {};
 		arrayCols[cols.TACTICS] = null;
+		arrayCols[cols.SPECIAL_POLICE_GROUPS] = ', ';
 
 		var config = {
 			headerRows: 2,
@@ -193,7 +209,7 @@ require(
 			var config2016 = finalConfig[2016],
 				config = finalConfig[2017];
 
-			// exploratoryAnalysis(config2016, config);
+			exploratoryAnalysis(config2016, config);
 			// articleCheck(config);
 			buildVisualisation(config2016, config);
 		};
@@ -201,7 +217,9 @@ require(
 		Analyser.loadFile('assets/data/Tactical Options 2016 - raw.csv', config2016, fileProcessed2016);
 		Analyser.loadFile('assets/data/Tactical Options 2017-01 - 2017-06 raw.csv', config, fileProcessed2017);
 
-		var exploratoryAnalysis = function (config2016, config) {
+		var exploratoryAnalysis = function (config2016, config2017) {
+			var config = config2017;
+
 			var rows = config.rows,
 				cols = config.cols,
 				enums = config.enums,
@@ -215,78 +233,72 @@ require(
 				return (n / d * 100).toFixed(f || 1);
 			};
 
-			var force = filterRows(rows,
-				cols.TACTICS, function (tactics) {
-					return (tactics.length > 1) || (tactics.indexOf('Communication') === -1);
-				}
-			);
+			var getTacticInjuries = function (rows, tactic) {
+				var injuries = filterRowsOr(rows,
+					cols.INJURY_CAUSE_1, tactic,
+					cols.INJURY_CAUSE_2, tactic,
+					cols.INJURY_CAUSE_3, tactic
+				);
 
-			console.log(force.length);
+				return injuries;
+			};
 
-			var injuries = filterRows(force,
-				cols.INJURIES, function (injuries) { return injuries > 0; }
-			);
+			// Sort by ascending age
+			rows = rows.sort(function (a, b) {
+				return a[cols.AGE] - b[cols.AGE];
+			});
 
-			var tasers = filterRows(force,
-				cols.TACTICS, 'Taser'
-			);
-
-			var taserDischarges1 = filterRows(tasers,
+			// TASER PCA
+			var taser1 = filterRows(rows,
 				cols.TASER_METHOD_1, 'Discharge'
 			);
-			var taserDischarges2 = filterRows(tasers,
+			var taser2 = filterRows(rows,
 				cols.TASER_METHOD_2, 'Discharge'
 			);
-			var taserDischarges3 = filterRows(tasers,
+			var taser3 = filterRows(rows,
 				cols.TASER_METHOD_3, 'Discharge'
 			);
 
-			console.log(Analyser.getColSummary(taserDischarges1, cols.TASER_PCA_1));
-			console.log(Analyser.getColSummary(taserDischarges2, cols.TASER_PCA_2));
-			console.log(Analyser.getColSummary(taserDischarges3, cols.TASER_PCA_3));
+			console.log(Analyser.getColSummary(taser1, cols.TASER_PCA_1));
+			console.log(Analyser.getColSummary(taser2, cols.TASER_PCA_2));
+			console.log(Analyser.getColSummary(taser3, cols.TASER_PCA_3));
 
-			var taserDischargesPCA1 = filterRowsOr(taserDischarges1,
-				cols.TASER_PCA_1, 'Passive Resistant',
-				cols.TASER_PCA_1, 'Active Resistant'
-			);
-			var taserDischargesPCA2 = filterRowsOr(taserDischarges2,
-				cols.TASER_PCA_2, 'Passive Resistant',
-				cols.TASER_PCA_2, 'Active Resistant'
-			);
-			var taserDischargesPCA3 = filterRowsOr(taserDischarges3,
-				cols.TASER_PCA_3, 'Passive Resistant',
-				cols.TASER_PCA_3, 'Active Resistant'
-			);
+			// INJURY RATES
+			// var tactics = Analyser.getColSummary(rows, cols.TACTICS);
 
-			var taserDischargesPCA = Analyser.combineRows(
-				taserDischargesPCA1,
-				taserDischargesPCA2,
-				taserDischargesPCA3
-			);
+			// // Report on each type of tactic
+			// for (var tactic in tactics) {
+			// 	var tacticEvents = filterRows(rows, cols.TACTICS, tactic);
+			// 	var injuries = getTacticInjuries(tacticEvents, tactic);
 
-			console.table(Analyser.createSubTable(taserDischargesPCA, cols));
+			// 	console.log(tactic);
+			// 	console.log('==========');
+			// 	console.log('Events:', tacticEvents.length);
+			// 	console.log('Injury rate:', percent(injuries.length, tacticEvents.length) + '%', injuries.length);
+			// 	if (injuries.length) {
+			// 		console.log('Youngest subject:', tacticEvents[0][cols.AGE]);
+			// 		console.log('Youngest subject injured:', injuries[0][cols.AGE]);
 
+			// 		console.log('Oldest subject:', tacticEvents[tacticEvents.length-1][cols.AGE]);
+			// 		console.log('Oldest subject injured:', injuries[injuries.length-1][cols.AGE]);
+			// 	}
+			// 	console.log(' ');
+			// }
 
-			var taserDischarges = Analyser.combineRows(
-				taserDischarges1,
-				taserDischarges2,
-				taserDischarges3
-			);
+			// // Dog-specific
+			// var dogs = filterRows(rows,
+			// 	cols.TACTICS, 'Dog'
+			// );
 
-			var tasersMentalHealth = filterRowsOr(tasers,
-				cols.INCIDENT_TYPE, '1x - attempt suicide',
-				cols.INCIDENT_TYPE, '1m ? mental incident'
-			);
-			console.log('Mental health % of taser use: ', percent(tasersMentalHealth.length, tasers.length));
+			// var dogInjuries = getTacticInjuries(rows, 'Dog');
+			// console.log('Dog injuries:');
+			// console.table(Analyser.createSubTable(dogInjuries, cols));
 
-			var tasersDischargesMentalHealth = filterRowsOr(taserDischarges,
-				cols.INCIDENT_TYPE, '1x - attempt suicide',
-				cols.INCIDENT_TYPE, '1m ? mental incident'
-			);
-			console.log('Mental health % of taser discharges: ', percent(tasersDischargesMentalHealth.length, tasers.length));
-			console.table(Analyser.createSubTable(tasersDischargesMentalHealth, cols));
+			// console.log('Dog bitten summary', Analyser.getColSummary(rows, cols.DOG_BITTEN));
 
+			// console.log('Dog PCA summary', Analyser.getColSummary(rows, cols.DOG_PCA));
 
+			// console.log('Dog special police groups summary', Analyser.getColSummary(dogs, cols.SPECIAL_POLICE_GROUPS));
 		};
 
 		var articleCheck = function (config) {
@@ -430,15 +442,16 @@ require(
 			console.log('% force events at non MH incidents involving a taser: ', percent(nonMhForceTaser.length, nonMhForce.length));
 		};
 
-		var buildVisualisation = function (config2016, config) {
+		var buildVisualisation = function (config2016, config2017) {
 			var rows2016 = config2016.rows,
 				cols2016 = config2016.cols,
 				filterRows2016 = config2016.filters.filterRows,
 
-				rows = config.rows,
-				cols = config.cols,
-				enums = config.enums,
-				filterRows = config.filters.filterRows;
+				rows2017 = config2017.rows,
+				cols2017 = config2017.cols,
+				filterRows2017 = config2017.filters.filterRows,
+
+				enums = config2017.enums;
 
 			// Introduce ethnicity population data
 			//////////////////////////////////////
@@ -507,13 +520,13 @@ require(
 				data2017[enums.ETHNICITY[i]] = {};
 				for (j = 0; j < enums.TACTICS.length; j++) {
 					if (enums.TACTICS[j] === 'Any') {
-						data2017[enums.ETHNICITY[i]][enums.TACTICS[j]] = filterRows(rows,
-							cols.ETHNICITY, enums.ETHNICITY[i]
+						data2017[enums.ETHNICITY[i]][enums.TACTICS[j]] = filterRows2017(rows2017,
+							cols2017.ETHNICITY, enums.ETHNICITY[i]
 						).length / pop[enums.ETHNICITY[i]] * 100000;
 					} else {
-						data2017[enums.ETHNICITY[i]][enums.TACTICS[j]] = filterRows(rows,
-							cols.ETHNICITY, enums.ETHNICITY[i],
-							cols.TACTICS, enums.TACTICS[j]
+						data2017[enums.ETHNICITY[i]][enums.TACTICS[j]] = filterRows2017(rows2017,
+							cols2017.ETHNICITY, enums.ETHNICITY[i],
+							cols2017.TACTICS, enums.TACTICS[j]
 						).length / pop[enums.ETHNICITY[i]] * 100000;
 					}
 
