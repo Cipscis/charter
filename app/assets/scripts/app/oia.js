@@ -120,7 +120,7 @@ require(
 
 			// To use as labels for the graph
 			var workingDayNums = [];
-			for (i = 20; i >= -15; i--) {
+			for (i = 20; i >= -30; i--) {
 				workingDayNums.push(i);
 			}
 
