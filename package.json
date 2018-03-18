@@ -4,7 +4,8 @@
   "description": "A framework for analysing and visualising data",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server/server.js",
+    "test": "node server/server.js | node server/build.js"
   },
   "dependencies": {
     "express": "^4.15.3"
