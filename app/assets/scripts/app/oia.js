@@ -8,9 +8,13 @@ require(
 		'analyser/analyser',
 		'stats/stats',
 
-		'util/workingDays'
+		'util/workingDays',
+
+		'text!templates/options.html'
 	],
-	function ($, d3, templayed, Charter, Analyser, Stats, workingDays) {
+	function ($, d3, templayed, Charter, Analyser, Stats, workingDays, optionsTemplate) {
+
+		var allAgenciesString = 'All agencies';
 
 		var config = {
 			headerRows: 1,
@@ -29,8 +33,44 @@ require(
 		};
 
 		var fileProcessed = function (config) {
+			buildAgencyList(config);
+
+			$(document).on('change', '.js-agency-filter', buildFilteredVisualisation(config));
+
 			exploratoryAnalysis(config);
 			buildVisualisation(config);
+		};
+
+		var buildAgencyList = function (config, selectedAgency) {
+			var rows = config.rows,
+				cols = config.cols,
+				filterRows = config.filters.filterRows;
+
+			var agencies = [];
+			var agencySummary = Analyser.getColSummary(rows, cols.AGENCY);
+
+			for (let i in agencySummary) {
+				agencies.push(i);
+			}
+			agencies.sort();
+			agencies.splice(0, 0, allAgenciesString);
+
+			$('.js-agency-filter').html(templayed(optionsTemplate)({options: agencies}));
+			if (selectedAgency) {
+				$('.js-agency-filter').val(selectedAgency);
+			}
+		};
+
+		var buildFilteredVisualisation = function (config) {
+			return function (e) {
+				var agencyFilter = $(e.target).val();
+				if (agencyFilter === allAgenciesString) {
+					agencyFilter = undefined;
+				}
+
+				buildVisualisation(config, agencyFilter);
+				$('.js-agency-filter').focus();
+			}
 		};
 
 		var exploratoryAnalysis = function (config) {
@@ -57,8 +97,7 @@ require(
 			// console.log(Analyser.getColSummary(rows, cols.WORKING_DAYS_REMAINING));
 		};
 
-		var buildVisualisation = function (config) {
-
+		var buildVisualisation = function (config, agencyFilter) {
 			var rows = config.rows,
 				cols = config.cols,
 				filterRows = config.filters.filterRows;
@@ -70,6 +109,12 @@ require(
 				DUE: '#cb4f1e',
 				LATE: '#a61f1f'
 			};
+
+			if (agencyFilter) {
+				rows = filterRows(rows,
+					cols.AGENCY, agencyFilter
+				);
+			}
 
 			for (i = 0; i < rows.length; i++) {
 				row = rows[i];
@@ -117,13 +162,24 @@ require(
 				colours.LATE + ' ' + ((numDueRequests.early + numDueRequests.due) / numDueRequests.total * 100) + '%, ' +
 				colours.LATE + ' 100%)';
 
+			var maxLateness = 0;
+			for (i = 0; i < rows.length; i++) {
+				if (typeof rows[i].daysRemaining !== 'undefined') {
+					maxLateness = Math.min(maxLateness, rows[i].daysRemaining);
+				}
+			}
+			// Round up to multiple of five, to use as last axis label
+			if (maxLateness % 5 !== 0) {
+				maxLateness -= (5 - Math.abs(maxLateness % 5));
+			}
 
 			// To use as labels for the graph
 			var workingDayNums = [];
-			for (i = 20; i >= -30; i--) {
+			for (i = 20; i >= maxLateness; i--) {
 				workingDayNums.push(i);
 			}
 
+			var maxValue = 1;
 			var dataPoints = [];
 			var dataPoint;
 			for (i = 0; i < workingDayNums.length; i++) {
@@ -136,6 +192,7 @@ require(
 
 					if (row.daysRemaining === workingDayNums[i]) {
 						dataPoint.value++;
+						maxValue = Math.max(maxValue, dataPoint.value);
 					}
 				}
 
@@ -149,9 +206,11 @@ require(
 
 				dataPoints.push(dataPoint);
 			}
+			maxValue = Math.ceil(maxValue/2)*2; // Round up to nearest even number
+			var valuesToShow = maxValue > 5 ? maxValue/2 : maxValue; // All numbers if 5 or under, otherwise only even numbers
 
 			var barChartData = {
-				title: 'Working days remaining when OIA responses sent',
+				title: 'Working days remaining when OIA responses sent by <select class="js-agency-filter"></select>',
 				labels: workingDayNums,
 				dataSeries: [
 					{
@@ -178,14 +237,16 @@ require(
 
 			var barAxisConfig = {
 				min: 0,
-				max: 10,
-				values: 5
+				max: maxValue,
+				values: valuesToShow
 			};
 
 			var $barChart = Charter.createBarChart(barChartData, barAxisConfig);
 			$('.js-chart-area').html('')
 				.append($barChart)
 				.removeClass('is-loading');
+
+			buildAgencyList(config, agencyFilter);
 
 
 			// Create cards for due date
@@ -196,6 +257,7 @@ require(
 
 				var cardRows;
 				if (typeof daysRemaining !== 'undefined') {
+					// A number of days has been specified
 					cardRows = filterRows(rows, 'daysRemaining', parseInt(daysRemaining, 10));
 				} else {
 					// No days remaining specified, so instead show outstanding requests
@@ -215,6 +277,11 @@ require(
 					return timeA - timeB;
 				});
 
+
+				var agencyFilter = $('.js-agency-filter').val();
+				if (agencyFilter === allAgenciesString) {
+					agencyFilter = agencyFilter.toLowerCase();
+				}
 
 				// Create calculated card data
 				for (var i = 0; i < cardData.length; i++) {
@@ -314,9 +381,9 @@ require(
 
 					if (row.DATE_RESPONSE) {
 						if (daysRemaining >= 0) {
-							title = 'Responses received with ' + daysRemaining + ' working day' + (daysRemaining !== 1 ? 's' : '') + ' remaining:';
+							title = 'Responses received from ' + agencyFilter + ' with ' + daysRemaining + ' working day' + (daysRemaining !== 1 ? 's' : '') + ' remaining:';
 						} else {
-							title = 'Responses received ' + (-daysRemaining) + ' working day' + (daysRemaining !== -1 ? 's' : '') + ' overdue:';
+							title = 'Responses received from ' + agencyFilter + ' ' + (-daysRemaining) + ' working day' + (daysRemaining !== -1 ? 's' : '') + ' overdue:';
 						}
 
 						row.hasResponse = [{
@@ -324,7 +391,7 @@ require(
 							responseDate: responseDateString
 						}];
 					} else {
-						title = 'Requests that have not yet received a response:';
+						title = 'Requests to ' + agencyFilter + ' that have not yet received a response:';
 					}
 
 					row.dueDate = dueDateString;
@@ -337,11 +404,16 @@ require(
 					row.colour = colour;
 				}
 
+				if (!title) {
+					title = 'No matching requests to ' + agencyFilter + '.';
+				}
+
 				var $cards = templayed($('#oia-cards').html())({
 					title: title,
 					requests: cardData
 				});
-				$('.js-click-instructions').html($cards);
+				$('.js-click-instructions').hide();
+				$('.js-cards').show().html($cards);
 			};
 
 			$('.js-chart-area').on('click', '.js-chart-bar', function (e) {
@@ -360,6 +432,9 @@ require(
 
 				createCards();
 			});
+
+			$('.js-click-instructions').show();
+			$('.js-cards').hide();
 		};
 
 		var dateCalc = {
