@@ -5,6 +5,8 @@ define(
 		'papaparse',
 		'd3',
 
+		'stats/stats',
+
 		'text!templates/table.html',
 		'text!templates/bar-chart.html',
 		'text!templates/bar-chart-h.html',
@@ -17,6 +19,8 @@ define(
 		templayed,
 		Papa,
 		d3,
+
+		Stats,
 
 		tableTemplate,
 		barChartTemplate,
@@ -71,7 +75,8 @@ define(
 		// 			color: '#fff',
 		// 			dataPoints: [1, 2]
 		// 		}
-		// 	]
+		// 	],
+		// 	smoothing: 2
 		// }
 
 		var Charter = {
@@ -521,6 +526,17 @@ define(
 				// TODO: Allow secondary vertical axis
 
 				var i, dataSeries;
+
+				// Apply any necessary smoothing
+				if (chartData.smoothing > 1) {
+					chartData.labels.splice(0, chartData.smoothing-1);
+
+					for (i = 0; i < chartData.dataSeries.length; i++) {
+						dataSeries = chartData.dataSeries[i];
+
+						dataSeries.dataPoints = Stats.smooth(dataSeries.dataPoints, chartData.smoothing);
+					}
+				}
 
 				dataSeries = Charter._processDataSeries(chartData.dataSeries);
 
