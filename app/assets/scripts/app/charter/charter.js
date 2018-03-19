@@ -360,6 +360,27 @@ define(
 				return axis;
 			},
 
+			_processQualitativeLabels: function (labels, axisConfig) {
+				// Process a set of labels for a given axis config
+				// Currently will only set some labels to a blank string,
+				// depending on whether or not axisConfig has a "valuesEvery"
+				// property that is not 1.
+
+				var incr;
+
+				if (axisConfig && typeof axisConfig.valuesEvery !== 'undefined' && axisConfig !== 1) {
+					incr = axisConfig.valuesEvery;
+
+					for (var i = 0; i < labels.length+incr; i += incr) {
+						for (var j = 1; j < incr && (i+j) < labels.length; j++) {
+							labels[i+j] = '';
+						}
+					}
+				}
+
+				return labels;
+			},
+
 			_getDisplayValues: function (chartData, axisConfig) {
 				var i, j,
 					dataSeries, dataPoint;
@@ -483,7 +504,7 @@ define(
 				return templayed(tableTemplate)(data);
 			},
 
-			createBarChart: function (chartData, dependentAxisConfig) {
+			createBarChart: function (chartData, dependentAxisConfig, independentAxisConfig) {
 				// Takes in basic chart data,
 				// constructs data for dependent axis based on dependentAxisConfig,
 				// creates display values based on dependentAxisConfig,
@@ -494,6 +515,8 @@ define(
 				dataSeries = Charter._processDataSeries(chartData.dataSeries);
 
 				dependentAxisConfig = Charter._getNumericAxisOptions(dependentAxisConfig);
+
+				chartData.labels = Charter._processQualitativeLabels(chartData.labels, independentAxisConfig);
 
 				chartData.dependentAxis = Charter._createNumericAxis(chartData, dependentAxisConfig);
 				chartData = Charter._getValuePercentages(chartData, dependentAxisConfig);

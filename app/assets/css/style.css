@@ -519,6 +519,7 @@ html {
   float: left;
   margin: 0;
   background: #999;
+  border: 1px solid #000;
   width: 16px;
   height: 16px;
   margin-bottom: 8px; }
