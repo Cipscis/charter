@@ -20,6 +20,10 @@ define(
 		};
 
 		var Stats = {
+			sum: function (values) {
+				return values.reduce(sum, 0);
+			},
+
 			mean: function (values) {
 				return values.reduce(sum, 0) / values.length;
 			},
@@ -155,6 +159,27 @@ define(
 				}
 
 				return smoothY;
+			},
+
+			chunk: function (y, chunkSize) {
+				// Takes in an array of values y, and combines
+				// them into a smaller array where each element
+				// is the sum of chunkSize elements from y. Will
+				// discard any extra elements of y left over if
+				// chunkSize isn't a factor of the length of y
+
+				var chunkY = [];
+				var chunk;
+
+				for (var i = 0; i < y.length; i += chunkSize) {
+					chunk = 0;
+					for (var j = 0; j < chunkSize; j++) {
+						chunk += y[i+j];
+					}
+					chunkY.push(chunk);
+				}
+
+				return chunkY;
 			}
 		};
 
