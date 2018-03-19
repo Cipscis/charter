@@ -132,6 +132,29 @@ define(
 				// Calculates the r^2 of a regression model
 
 				return Math.pow(Stats.r(y, rY), 2);
+			},
+
+			smooth: function (y, smoothness) {
+				// Takes in an array of values y, and smooths
+				// them by calculating a rolling average using
+				// a number of data points based on the smoothness
+				// value. If smoothness is 1, will return y
+
+				var smoothY = [];
+				var average = [];
+
+				for (var i = 0; i < y.length; i++) {
+					average.push(y[i]);
+
+					while (average.length > smoothness) {
+						average.splice(0, 1);
+					}
+					if (average.length === smoothness) {
+						smoothY.push(Stats.mean(average));
+					}
+				}
+
+				return smoothY;
 			}
 		};
 
