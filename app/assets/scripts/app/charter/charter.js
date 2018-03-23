@@ -445,6 +445,9 @@ define(
 			///////////////////////////
 			_processDataSeries: function (dataSeries) {
 				// Takes in an array of dataSeries from chartData
+				// For each dataSeries, if necessary, convert its
+				// array of dataPoints from raw values into objects
+				// with a value and an inherited colour from the series
 
 				var i, series,
 					j, dataPoint,
@@ -474,6 +477,86 @@ define(
 				}
 
 				return dataSeries;
+			},
+
+			_combineStackedDataSeries: function (dataSeries) {
+				// Takes in an array of dataSeries from chartData
+				// Combines them into a single dataSeries, where each
+				// point's value is the sum of the value at that position
+				// for all dataSeries, and its colour is a gradient using
+				// the appropriate proportions from each different dataSeries.
+				// The resultant newDataSeriesArray will keep vestigial
+				// dataSeries in order to build the legend.
+
+				// The last dataSeries in the list will be at the bottom
+				// of the stack, so as to keep the same order as the legend
+				// and to be reflected in the order in the code.
+
+				var i, series, seriesLength,
+					j, dataPoint,
+					newDataSeriesArray = [],
+					stackedSeries, value;
+
+				// Create a copy so its order can be
+				// changed without affecting the original
+				dataSeries = dataSeries.concat();
+				dataSeries.reverse();
+
+				// Create newDataSeriesArray, including vestigial dataSeries
+				for (i = 0; i < dataSeries.length; i++) {
+					series = dataSeries[i];
+
+					newDataSeriesArray.push({
+						name: series.name,
+						color: series.color,
+						dataPoints: []
+					});
+				}
+				stackedSeries = newDataSeriesArray[0].dataPoints;
+
+				// Create new dataPoints with summed values
+				for (i = 0; i < dataSeries.length; i++) {
+					series = dataSeries[i];
+
+					for (j = 0; j < series.dataPoints.length; j++) {
+						dataPoint = series.dataPoints[j];
+
+						if (j >= stackedSeries.length) {
+							stackedSeries.push({
+								value: 0,
+								valueBreakdown: {}
+							});
+						}
+
+						stackedSeries[j].value += dataPoint.value;
+						stackedSeries[j].valueBreakdown[dataPoint.color] = dataPoint.value;
+					}
+				}
+
+				// Create gradients for each dataPoint
+				for (i = 0; i < stackedSeries.length; i++) {
+					dataPoint = stackedSeries[i];
+
+					dataPoint.color = 'linear-gradient(to top, ';
+					value = 0;
+					for (j in dataPoint.valueBreakdown) {
+						if (dataPoint.valueBreakdown[j]) {
+							dataPoint.color += j + ' ' + (value / dataPoint.value * 100) + '%, ';
+							value += dataPoint.valueBreakdown[j];
+							dataPoint.color += j + ' ' + (value / dataPoint.value * 100) + '%';
+
+							if (value < dataPoint.value) {
+								dataPoint.color += ', ';
+							}
+						}
+					}
+					dataPoint.color += ')';
+				}
+
+				// Undo reversing, now that colour gradient has been calculated
+				newDataSeriesArray.reverse();
+
+				return newDataSeriesArray;
 			},
 
 			///////////////////////
@@ -510,9 +593,14 @@ define(
 				// creates display values based on dependentAxisConfig,
 				// then uses the combined data to build the markup for a bar chart
 
-				// Bar charts should only have a single dataSeries
+				// Bar charts should only have a single dataSeries, but if multiple
+				// are included their total length should match the length of the axis
+				// labels array, and the dataSeries will be displayed one after another
 
-				dataSeries = Charter._processDataSeries(chartData.dataSeries);
+				chartData.dataSeries = Charter._processDataSeries(chartData.dataSeries);
+				if (chartData.stacked) {
+					chartData.dataSeries = Charter._combineStackedDataSeries(chartData.dataSeries);
+				}
 
 				dependentAxisConfig = Charter._getNumericAxisOptions(dependentAxisConfig);
 
