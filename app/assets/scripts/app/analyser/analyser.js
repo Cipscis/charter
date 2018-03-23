@@ -419,7 +419,7 @@ define(
 			},
 
 			combineRows: function (row1, row2) {
-				// Takes in an arbitraty number of rows, and puts them into a single array
+				// Takes in an arbitrary number of rows, and puts them into a single array
 				// Then checks the array for duplicated rows and removes them
 
 				var rows = [],
@@ -440,6 +440,70 @@ define(
 				}
 
 				return rows;
+			},
+
+			//////////////////////////////
+			// TRANSFORMING INFORMATION //
+			//////////////////////////////
+			getDerivedCol: function (rows, callback, optionalCols) {
+				// Creates an array analogous to a column as returns
+				// by the getCol function, where its output is the
+				// result of applying a callback function to the row
+				// any number of values from optional column arguments
+
+				var i, row,
+					derivedCol = [],
+
+					cols = [],
+					j, col,
+					derivedValues;
+
+				for (i = 2; i < arguments.length; i++) {
+					cols.push(arguments[i]);
+				}
+
+				for (i = 0; i < rows.length; i++) {
+					row = rows[i];
+					derivedValues = [row];
+
+					for (j = 0; j < cols.length; j++) {
+						col = cols[j];
+						derivedValues.push(col[i]);
+					}
+
+					derivedCol.push(callback.apply(this, derivedValues));
+				}
+
+				return derivedCol;
+			},
+
+			addCol: function (rows, col) {
+				// Edits the passed rows array to add an extra column
+				// to it, then returns the index of that new column
+
+				if (rows.length !== col.length) {
+					console.error('Cannot add col to rows unless their length matches');
+				}
+
+				var i, row,
+					colIndex = rows[0].length;
+
+				for (i = 0; i < rows.length; i++) {
+					row = rows[i];
+					row.push(col[i]);
+				}
+
+				return colIndex;
+			},
+
+			addDerivedCol: function (rows, callback, optionalCols) {
+				// Works like getDerivedCol, but instead of returning
+				// the derived column directly it uses addCol to add
+				// it to rows and returns the new column index.
+
+				var derivedCol = Analyser.getDerivedCol.apply(this, arguments);
+
+				return Analyser.addCol(rows, derivedCol);
 			},
 
 			///////////////////
@@ -528,6 +592,32 @@ define(
 				}
 
 				return summary;
+			},
+
+			getColAsDataSeries: function (rows, col, labels) {
+				// Takes in a set of rows and a column number,
+				// and an array of labels. Outputs an array where
+				// each element is the count of the values matching
+				// the element of labels at the same index
+
+				var colSummary = Analyser.getColSummary(rows, col),
+					i, value, index,
+					dataSeries = [];
+
+				for (i = 0; i < labels.length; i++) {
+					dataSeries[i] = 0;
+				}
+
+				for (i in colSummary) {
+					value = colSummary[i];
+					index = labels.indexOf(i);
+
+					if (index !== -1) {
+						dataSeries[labels.indexOf(i)] = value;
+					}
+				}
+
+				return dataSeries;
 			},
 
 			_groupColSummaryByAliases: function (summary, aliasList) {
