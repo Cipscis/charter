@@ -70,7 +70,7 @@ require(
 
 				buildVisualisation(config, agencyFilter);
 				$('.js-agency-filter').focus();
-			}
+			};
 		};
 
 		var exploratoryAnalysis = function (config) {
@@ -116,56 +116,41 @@ require(
 				);
 			}
 
-			for (i = 0; i < rows.length; i++) {
-				row = rows[i];
+			var getDaysAllowed = function (row) {
+				var dateSent = new Date(row[cols.DATE_SENT]);
 
+				return 20 + row[cols.EXTENSION];
+			};
+			cols.DAYS_ALLOWED = Analyser.addDerivedCol(rows, getDaysAllowed);
+
+			var getDaysTaken = function (row) {
 				var dateSent = new Date(row[cols.DATE_SENT]);
 				var dateResponse = new Date(row[cols.DATE_RESPONSE]);
 
-				row.daysAllowed = 20 + row[cols.EXTENSION];
 				if (row[cols.DATE_RESPONSE]) {
-					row.daysTaken = workingDays.getWorkingDaysBetween(dateSent, dateResponse);
-					row.daysRemaining = row.daysAllowed - row.daysTaken;
-				}
-			}
-
-			// Create object storing the different states of requests returned on the due date
-			var dueRequests = filterRows(rows, 'daysRemaining', 0);
-			var numDueRequests = {
-				early: 0,
-				due: 0,
-				late: 0,
-				total: dueRequests.length
-			};
-			for (i = 0; i < dueRequests.length; i++) {
-				row = dueRequests[i];
-
-				var responseDate = new Date(row[cols.DATE_RESPONSE]),
-					responseHour = responseDate.getHours();
-
-				if (responseHour < 16) {
-					numDueRequests.early++;
-				} else if (responseHour < 17) {
-					numDueRequests.due++;
+					return workingDays.getWorkingDaysBetween(dateSent, dateResponse);
 				} else {
-					numDueRequests.late++;
+					return undefined;
 				}
-			}
+			};
+			cols.DAYS_TAKEN = Analyser.addDerivedCol(rows, getDaysTaken);
 
-			var dueGradient = 'linear-gradient(to top, ' +
-				colours.EARLY + ' 0%, ' +
-				colours.EARLY + ' ' + (numDueRequests.early / numDueRequests.total * 100) + '%, ' +
+			var getDaysRemaining = function (row) {
+				var dateSent = new Date(row[cols.DATE_SENT]);
+				var dateResponse = new Date(row[cols.DATE_RESPONSE]);
 
-				colours.DUE + ' ' + (numDueRequests.early / numDueRequests.total * 100) + '%, ' +
-				colours.DUE + ' ' + ((numDueRequests.early + numDueRequests.due) / numDueRequests.total * 100) + '%, ' +
-
-				colours.LATE + ' ' + ((numDueRequests.early + numDueRequests.due) / numDueRequests.total * 100) + '%, ' +
-				colours.LATE + ' 100%)';
+				if (row[cols.DATE_RESPONSE]) {
+					return row[cols.DAYS_ALLOWED] - row[cols.DAYS_TAKEN];
+				} else {
+					return undefined;
+				}
+			};
+			cols.DAYS_REMAINING = Analyser.addDerivedCol(rows, getDaysRemaining);
 
 			var maxLateness = 0;
 			for (i = 0; i < rows.length; i++) {
-				if (typeof rows[i].daysRemaining !== 'undefined') {
-					maxLateness = Math.min(maxLateness, rows[i].daysRemaining);
+				if (typeof rows[i][cols.DAYS_REMAINING] !== 'undefined') {
+					maxLateness = Math.min(maxLateness, rows[i][cols.DAYS_REMAINING]);
 				}
 			}
 			// Round up to multiple of five, to use as last axis label
@@ -179,32 +164,41 @@ require(
 				workingDayNums.push(i);
 			}
 
+			// Gather number of responses for each day
+			var responses = Analyser.getColAsDataSeries(rows, cols.DAYS_REMAINING, workingDayNums);
+
+			// Split responses into early, due, and late series
+			var dueIndex = workingDayNums.indexOf(0);
+
+			var earlyResponseData = responses.concat().fill(0, dueIndex);
+			var dueResponseData = responses.concat().fill(0, 0);
+			var lateResponseData = responses.concat().fill(0, 0, dueIndex+1);
+
+			// Split further on the due date, as status depends on time of day
+			var dueResponses = filterRows(rows,
+				cols.DAYS_REMAINING, 0
+			);
+
+			for (i = 0; i < dueResponses.length; i++) {
+				row = dueResponses[i];
+
+				var responseDate = new Date(row[cols.DATE_RESPONSE]);
+				var hours = responseDate.getHours();
+
+				if (hours < 16) {
+					earlyResponseData[dueIndex]++;
+				} else if (hours < 17) {
+					dueResponseData[dueIndex]++;
+				} else {
+					lateResponseData[dueIndex]++;
+				}
+			}
+
+			// Find maximum value for axis
 			var maxValue = 1;
-			var dataPoints = [];
-			var dataPoint;
-			for (i = 0; i < workingDayNums.length; i++) {
-				dataPoint = {
-					value: 0
-				};
-
-				for (j = 0; j < rows.length; j++) {
-					row = rows[j];
-
-					if (row.daysRemaining === workingDayNums[i]) {
-						dataPoint.value++;
-						maxValue = Math.max(maxValue, dataPoint.value);
-					}
-				}
-
-				if (workingDayNums[i] > 0) {
-					dataPoint.color = colours.EARLY;
-				} else if (workingDayNums[i] === 0) {
-					dataPoint.color = dueGradient;
-				} else if (workingDayNums[i] < 0) {
-					dataPoint.color = colours.LATE;
-				}
-
-				dataPoints.push(dataPoint);
+			for (i = 0; i < responses.length; i++) {
+				row = responses[i];
+				maxValue = Math.max(maxValue, row);
 			}
 			maxValue = Math.ceil(maxValue/2)*2; // Round up to nearest even number
 			var valuesToShow = maxValue > 5 ? maxValue/2 : maxValue; // All numbers if 5 or under, otherwise only even numbers
@@ -214,23 +208,22 @@ require(
 				labels: workingDayNums,
 				dataSeries: [
 					{
-						name: 'Before 4pm on due date',
-						color: colours.EARLY,
-						dataPoints: dataPoints
+						name: 'After 5pm on due date',
+						color: colours.LATE,
+						dataPoints: lateResponseData
 					},
-
-					// These dataSeries are just for the legend
 					{
 						name: '4pm - 5pm on due date',
 						color: colours.DUE,
-						dataPoints: []
+						dataPoints: dueResponseData
 					},
 					{
-						name: 'After 5pm on due date',
-						color: colours.LATE,
-						dataPoints: []
+						name: 'Before 4pm on due date',
+						color: colours.EARLY,
+						dataPoints: earlyResponseData
 					}
 				],
+				stacked: true,
 				showLegend: true,
 				legendLeft: true
 			};
