@@ -611,9 +611,13 @@ define(
 				for (i in colSummary) {
 					value = colSummary[i];
 					index = labels.indexOf(i);
+					if (index === -1) {
+						// Couldn't find index, try forcing it to be a number
+						index = labels.indexOf(parseInt(i, 10));
+					}
 
 					if (index !== -1) {
-						dataSeries[labels.indexOf(i)] = value;
+						dataSeries[index] = value;
 					}
 				}
 
