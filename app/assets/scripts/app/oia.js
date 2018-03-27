@@ -251,7 +251,7 @@ require(
 				var cardRows;
 				if (typeof daysRemaining !== 'undefined') {
 					// A number of days has been specified
-					cardRows = filterRows(rows, 'daysRemaining', parseInt(daysRemaining, 10));
+					cardRows = filterRows(rows, cols.DAYS_REMAINING, parseInt(daysRemaining, 10));
 				} else {
 					// No days remaining specified, so instead show outstanding requests
 					cardRows = filterRows(rows, cols.DATE_RESPONSE, '');
