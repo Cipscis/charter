@@ -300,7 +300,7 @@ require(
 
 					var dueDateString = dueDate.getDate() + '&nbsp;' + monthNames[dueDate.getMonth()] + '&nbsp;' + dueDate.getFullYear();
 
-					// Caldulate colour based on due date
+					// Calculate colour based on due date
 					if (daysRemaining > 0) {
 						colour = colours.EARLY;
 						row.hasTimeLeft = [{remainingDays: daysRemaining}];
