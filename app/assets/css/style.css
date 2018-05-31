@@ -382,6 +382,7 @@ html {
     animation: 1s centreRotate infinite linear; }
 
 .chart {
+  position: relative;
   width: 100%; }
 
 .chart__title {
@@ -494,9 +495,8 @@ html {
   border-right: 1px solid #666; }
 
 .chart__legend {
-  position: absolute;
   z-index: 4;
-  top: 24px;
+  top: 64px;
   right: 0;
   margin: 0; }
   .chart__legend:after {
