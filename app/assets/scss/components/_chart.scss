@@ -24,6 +24,7 @@ $z-data: 3;
 $z-legend: 4;
 
 .chart {
+	position: relative;
 	width: 100%;
 }
 
@@ -182,9 +183,11 @@ $z-legend: 4;
 // LEGEND //
 ////////////
 .chart__legend {
-	position: absolute;
+	// @include bp("m") {
+	// 	position: absolute;
+	// }
 	z-index: $z-legend;
-	top: ($axis-text-size * 1.5);
+	top: 40px + ($axis-text-size * 1.5);
 	right: 0;
 
 	margin: 0;
