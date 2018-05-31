@@ -10,10 +10,10 @@ $gridline-color: $grey;
 
 $data-color: $grey--light;
 
-
 $tooltip-color: $white;
 $tooltip-bg: $black;
 
+$point-tooltip-size: 15px;
 
 ///////////////
 // Z-INDICES //
@@ -422,4 +422,69 @@ $z-legend: 4;
 	width: 100%;
 
 	// points
+}
+
+////////////////////
+// POINT TOOLTIPS //
+////////////////////
+.chart__point-tooltips {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.chart__point-tooltip {
+	position: absolute;
+	transform: translate(-50%, 50%);
+
+	display: block;
+	width: 0;
+	height: 0;
+	border-radius: 50%;
+
+	transition: all 0.3s;
+	&:hover,
+	&:focus {
+		width: $point-tooltip-size;
+		height: $point-tooltip-size;
+		outline: none;
+	}
+	&:hover {
+		z-index: 1;
+		// Appear above focus
+	}
+
+	&:before {
+		// Used as initial hover/click area since
+		// main element requires inline styling for colour
+		content: "";
+		cursor: pointer;
+
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		display: block;
+		width: $point-tooltip-size;
+		height: $point-tooltip-size;
+		border-radius: 50%;
+	}
+}
+
+.chart__point-tooltip-body {
+	position: absolute;
+	top: -5px;
+	left: 50%;
+	transform: translateX(-50%) translateY(-100%);
+
+	display: none;
+	.chart__point-tooltip:hover &,
+	.chart__point-tooltip:focus & {
+		display: block;
+	}
+
+	padding: 5px;
+	background: $tooltip-bg;
+	color: $tooltip-color;
 }

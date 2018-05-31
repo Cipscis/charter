@@ -670,6 +670,50 @@ html {
   height: 100%;
   width: 100%; }
 
+.chart__point-tooltips {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.chart__point-tooltip {
+  position: absolute;
+  transform: translate(-50%, 50%);
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transition: all 0.3s; }
+  .chart__point-tooltip:hover, .chart__point-tooltip:focus {
+    width: 15px;
+    height: 15px;
+    outline: none; }
+  .chart__point-tooltip:hover {
+    z-index: 1; }
+  .chart__point-tooltip:before {
+    content: "";
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%; }
+
+.chart__point-tooltip-body {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+  display: none;
+  padding: 5px;
+  background: #000;
+  color: #fff; }
+  .chart__point-tooltip:hover .chart__point-tooltip-body,
+  .chart__point-tooltip:focus .chart__point-tooltip-body {
+    display: block; }
+
 .tabs {
   margin: -10px 0 0 -10px;
   padding: 0;

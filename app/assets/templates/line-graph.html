@@ -38,6 +38,16 @@
 					{{/dataSeries}}
 				</g>
 			</svg>
+
+			{{#dataSeries}}
+			<ul class="chart__point-tooltips">
+				{{#dataPoints}}
+					<li class="chart__point-tooltip" style="left: {{index}}%; bottom: {{percentage}}%; background-color: {{color}};" tabindex="-1">
+						<span class="chart__point-tooltip-body">{{displayValue}}</span>
+					</li>
+				{{/dataPoints}}
+			</ul>
+			{{/dataSeries}}
 		</div>
 
 		{{#showLegend}}
