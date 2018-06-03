@@ -594,10 +594,10 @@ html {
 .chart__bars--v .chart__bar-label {
   position: absolute;
   bottom: 0;
-  left: 0;
-  transform: translateY(100%);
+  left: 50%;
+  transform: translateY(100%) translateX(-50%);
   padding: 10px 5px 0;
-  width: 100%;
+  min-width: 100%;
   text-align: center; }
 
 .chart__bars--v .chart__bar-tooltip {
