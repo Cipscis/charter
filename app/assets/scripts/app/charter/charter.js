@@ -367,18 +367,24 @@ define(
 				// property that is not 1.
 
 				var incr;
+				var i;
+				var j;
+				var newLabels = [];
+				for (i = 0; i < labels.length; i++) {
+					newLabels.push(labels[i]);
+				}
 
 				if (axisConfig && typeof axisConfig.valuesEvery !== 'undefined' && axisConfig !== 1) {
 					incr = axisConfig.valuesEvery;
 
-					for (var i = 0; i < labels.length+incr; i += incr) {
-						for (var j = 1; j < incr && (i+j) < labels.length; j++) {
-							labels[i+j] = '';
+					for (i = 0; i < newLabels.length+incr; i += incr) {
+						for (j = 1; j < incr && (i+j) < newLabels.length; j++) {
+							newLabels[i+j] = '';
 						}
 					}
 				}
 
-				return labels;
+				return newLabels;
 			},
 
 			_getDisplayValues: function (chartData, axisConfig) {
