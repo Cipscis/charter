@@ -15,10 +15,6 @@ define(
 			};
 		};
 
-		var variance = function (s, v, i, arr) {
-
-		};
-
 		var Stats = {
 			sum: function (values) {
 				return values.reduce(sum, 0);
@@ -51,6 +47,54 @@ define(
 				variance = variance / (values.length - 1);
 
 				return variance;
+			},
+
+			max: function (values) {
+				var maxValue = values[0],
+					i, value;
+
+				for (i = 1; i < values.length; i++) {
+					value = values[i];
+					if (value > maxValue) {
+						maxValue = value;
+					}
+				}
+
+				return maxValue;
+			},
+
+			min: function (values) {
+				var minValue = values[0],
+					i, value;
+
+				for (i = 1; i < values.length; i++) {
+					value = values[i];
+					if (value < minValue) {
+						minValue = value;
+					}
+				}
+
+				return minValue;
+			},
+
+			intRange: function (start, finish) {
+				start = Math.round(start);
+				finish = Math.round(finish);
+
+				var range = [],
+					i;
+
+				if (finish > start) {
+					for (i = start; i <= finish; i++) {
+						range.push(i);
+					}
+				} else {
+					for (i = start; i >= finish; i--) {
+						range.push(i);
+					}
+				}
+
+				return range;
 			},
 
 			sd: function (values) {
