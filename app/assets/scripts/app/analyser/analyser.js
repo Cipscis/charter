@@ -569,7 +569,7 @@ define(
 						col = cols[j];
 						values = row[col];
 
-						if (values || (values === 0)) {
+						if (typeof values !== 'undefined' && values !== '') {
 							if (!(values instanceof Array)) {
 								values = [values];
 							}
