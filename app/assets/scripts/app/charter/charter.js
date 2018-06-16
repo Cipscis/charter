@@ -29,7 +29,7 @@ define(
 		scatterPlotTemplate
 	) {
 		var numericAxisDefaults = {
-			values: 4,
+			values: 5, // Will always fit when max is a multiple of 10
 			valuesAt: [],
 			// When gridlines is set to null, it interhits its value from values
 			gridlines: null,
