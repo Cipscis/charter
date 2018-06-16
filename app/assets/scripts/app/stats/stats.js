@@ -15,6 +15,15 @@ define(
 			};
 		};
 
+		// Sorting callbacks
+		var numericalDesc = function (a, b) {
+			return b-a;
+		};
+
+		var numericalAsc = function (a, b) {
+			return a-b;
+		};
+
 		var Stats = {
 			sum: function (values) {
 				return values.reduce(sum, 0);
@@ -26,7 +35,7 @@ define(
 
 			median: function (values) {
 				// Create a copy and sort it in place
-				values = values.concat().sort();
+				values = values.concat().sort(numericalAsc);
 
 				if (values.length % 2) {
 					// Odd number - return middle value
