@@ -1,7 +1,7 @@
 <div class="chart{{#showTooltips}} show-tooltips{{/showTooltips}} js-chart">
 	<span class="chart__title js-chart-title">{{{title}}}</span>
 	{{#showLegend}}
-		<dl class="chart__legend {{#legendLeft}}chart__legend--left{{/legendLeft}}">
+		<dl class="chart__legend{{#legendLeft}} chart__legend--left{{/legendLeft}}">
 			{{#dataSeries}}
 				<dd class="chart__legend-indicator" style="background-color: {{color}};"></dd>
 				<dt class="chart__legend-name">{{name}}</dt>

@@ -579,6 +579,7 @@ html {
   .chart__bars--h .chart__bar-tooltip {
     display: none;
     position: absolute;
+    z-index: 1;
     padding: 5px;
     background: #000;
     color: #fff; }
