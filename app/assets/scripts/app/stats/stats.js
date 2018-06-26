@@ -39,10 +39,10 @@ define(
 
 				if (values.length % 2) {
 					// Odd number - return middle value
-					return values[(values.length + 1) / 2];
+					return values[((values.length + 1) / 2) - 1];
 				} else {
 					// Even number - return mean of middle values
-					return (values[values.length / 2] + values[(values.length / 2) + 1]) / 2;
+					return (values[(values.length / 2) - 1] + values[values.length / 2]) / 2;
 				}
 			},
 
