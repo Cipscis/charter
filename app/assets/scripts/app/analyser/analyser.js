@@ -709,8 +709,8 @@ define(
 					comparisonSummary[i] = {};
 					for (j in headerSummary) {
 						comparisonSummary[i][j] = filters.filterRows(rows,
-							varCol, i,
-							headerCol, j
+							varCol, Analyser._extractNumber(i),
+							headerCol, Analyser._extractNumber(j)
 						).length;
 					}
 				}
