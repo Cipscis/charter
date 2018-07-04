@@ -592,6 +592,9 @@ html {
   margin: 0 auto;
   transition: height 0.5s; }
 
+.chart__bars--v.chart__bars--histogram .chart__bar-area {
+  width: 100%; }
+
 .chart__bars--v .chart__bar-label {
   position: absolute;
   bottom: 0;
@@ -614,6 +617,8 @@ html {
   .chart__bars--h .chart__bar-area {
     height: 80%;
     transition: width 0.5s; }
+  .chart__bars--h.chart__bars--histogram .chart__bar-area {
+    height: 100%; }
   .chart__bars--h .chart__bar-label {
     position: absolute;
     top: 50%;

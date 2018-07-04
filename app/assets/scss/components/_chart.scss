@@ -307,6 +307,9 @@ $z-legend: 4;
 		transition: height 0.5s;
 		// height
 	}
+	&.chart__bars--histogram .chart__bar-area {
+		width: 100%;
+	}
 
 	.chart__bar-label {
 		position: absolute;
@@ -340,6 +343,9 @@ $z-legend: 4;
 
 		transition: width 0.5s;
 		// width
+	}
+	&.chart__bars--histogram .chart__bar-area {
+		height: 100%;
 	}
 
 	.chart__bar-label {
