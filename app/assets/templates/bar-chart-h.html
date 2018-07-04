@@ -1,4 +1,4 @@
-<div class="chart {{#showTooltips}}show-tooltips{{/showTooltips}} js-chart">
+<div class="chart{{#showTooltips}} show-tooltips{{/showTooltips}} js-chart">
 	<span class="chart__title js-chart-title">{{{title}}}</span>
 	{{#showLegend}}
 		<dl class="chart__legend{{#legendLeft}} chart__legend--left{{/legendLeft}}">
@@ -27,7 +27,7 @@
 		<ul class="chart__axis--v">
 		</ul>
 
-		<ul class="chart__bars--h">
+		<ul class="chart__bars--h{{#histogram}} chart__bars--histogram{{/histogram}}">
 			{{#dataSeries}}
 				{{#dataPoints}}
 					<li class="chart__bar">
