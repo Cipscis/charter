@@ -82,7 +82,7 @@ define(
 				output.filters = Analyser.getAliasFilters(config.aliases);
 
 				// Remove header rows
-				output.headerRows = rows.splice(0, config.headerRows);
+				rows.splice(0, config.headerRows);
 
 				// Convert cells that are lists into arrays
 				output.rows = rows.concat();
@@ -151,6 +151,124 @@ define(
 				}
 
 				return enumsArr;
+			},
+
+			combineData: function (config1, config2, configN) {
+				// Takes in any number of config objects from _processData
+				// Combines the rows and relevant config objects (e.g. aliases, enums)
+				// Keeps only columns shared amongs all config objects
+
+				// Assumes there is no data shared between different sets,
+				// so duplicates will *not* be detected or removed
+
+				// The output is in the same format as for _processData
+
+				var configs = Array.prototype.slice.call(arguments, 0);
+				var output = {
+					cols: {},
+					rows: [],
+					aliases: {}
+				};
+
+				var config;
+				var row;
+				var aliasSet;
+				var outputAliasSet;
+
+				var i;
+				var j;
+				var k;
+				var l;
+
+				if (!configs || configs.length < 2) {
+					console.error('Invalid inputs passed to combineData', arguments);
+				}
+
+				// Combine cols first //
+
+				// Build base set from first cols object
+				for (j in configs[0].cols) {
+					output.cols[j] = true;
+				}
+
+				// Remove any cols not shared by every other cols object
+				for (i = 1; i < configs.length; i++) {
+					config = configs[i];
+
+					for (j in config.cols) {
+						if (!j in output.cols) {
+							delete output.cols[j];
+						}
+					}
+				}
+
+				i = 0;
+				for (j in output.cols) {
+					output.cols[j] = i;
+					i++;
+				}
+
+				// Now that we have the combined cols object, combine other parts
+				for (i = 0; i < configs.length; i++) {
+					// Combine rows //
+
+					config = configs[i];
+
+					for (j = 0; j < config.rows.length; j++) {
+						row = [];
+						for (k in output.cols) {
+							row[output.cols[k]] = config.rows[j][config.cols[k]];
+						}
+
+						output.rows.push(row);
+					}
+
+
+					// Combine aliases //
+
+					// Loop through each row's aliases to combine
+					for (j in config.aliases) {
+
+						// If we don't have an alias for this column, make an empty placeholder
+						if (!(j in output.aliases)) {
+							output.aliases[j] = [];
+						}
+
+						// Loop through each aliasSet for this column
+						for (k = 0; k < config.aliases[j].length; k++) {
+							aliasSet = config.aliases[j][k];
+
+							// Combine aliasSets based off their first element, which is used as a label
+							outputAliasSet = [];
+							for (l = 0; l < output.aliases[j].length; l++) {
+								if (output.aliases[j][l][0] === aliasSet[0]) {
+									outputAliasSet = output.aliases[j][l];
+									break;
+								}
+							}
+
+							outputAliasSet = outputAliasSet.concat(aliasSet);
+
+							// Remove duplicates
+							outputAliasSet = outputAliasSet.filter(function (alias, index) {
+								return outputAliasSet.indexOf(alias) === index;
+							});
+
+							// Append or replace aliasSet in output
+							if (l < output.aliases[j].length) {
+								output.aliases[j][l] = outputAliasSet;
+							} else {
+								output.aliases[j].push(outputAliasSet);
+							}
+						}
+					}
+
+
+					// Create new filters using combined aliases
+					output.filters = Analyser.getAliasFilters(config.aliases);
+				}
+
+				return output;
 			},
 
 			/////////////////
