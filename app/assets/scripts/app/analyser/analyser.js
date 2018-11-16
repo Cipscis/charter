@@ -250,8 +250,8 @@ define(
 							outputAliasSet = outputAliasSet.concat(aliasSet);
 
 							// Remove duplicates
-							outputAliasSet = outputAliasSet.filter(function (alias, index) {
-								return outputAliasSet.indexOf(alias) === index;
+							outputAliasSet = outputAliasSet.filter(function (alias, index, array) {
+								return array.indexOf(alias) === index;
 							});
 
 							// Append or replace aliasSet in output
