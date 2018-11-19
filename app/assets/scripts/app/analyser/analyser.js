@@ -354,7 +354,7 @@ define(
 						startAt = 2,
 
 						filteredRows = [],
-						filters, isMatch,
+						filter, filters, isMatch,
 						i, row,
 						j, filter;
 
@@ -370,14 +370,16 @@ define(
 
 					filters = [];
 					for (i = startAt; i < arguments.length-1; i += 2) {
-						filters.push({
+						filter = {
 							colIndex: arguments[i],
 							values: arguments[i+1]
-						});
-					}
+						};
 
-					if (!(values instanceof Array)) {
-						values = [values];
+						if (!(Array.isArray(filter.values) || filter.values instanceof Function)) {
+							filter.values = [filter.values];
+						}
+
+						filters.push(filter);
 					}
 
 					for (i = 0; i < rows.length; i++) {
