@@ -9,36 +9,36 @@ define(
 			/////////////////////
 			// FILE PROCESSING //
 			/////////////////////
-			loadFile: function (filePath, config, callback) {
+			loadFile: function (filePath, fileConfig, callback) {
 				$.ajax({
 					url: filePath,
-					success: Analyser._fileLoaded(config, callback)
+					success: Analyser._fileLoaded(fileConfig, callback)
 				});
 			},
 
-			_fileLoaded: function (config, callback) {
+			_fileLoaded: function (fileConfig, callback) {
 				return function (csv) {
-					Analyser.parseCsv(csv, Analyser._fileParsed(config, callback));
+					Analyser._parseCsv(csv, Analyser._fileParsed(fileConfig, callback));
 				};
 			},
 
-			_fileParsed: function (config, callback) {
+			_fileParsed: function (fileConfig, callback) {
 				return function (rows) {
-					callback(Analyser._processData(rows, config));
+					callback(Analyser._processData(rows, fileConfig));
 				};
 			},
 
-			_processData: function (rows, config) {
-				// Takes in config with the following properties:
+			_processData: function (rows, fileConfig) {
+				// Takes in fileConfig with the following properties:
 				// The number of header rows to remove from rows
-				// A config object for column names
+				// A fileConfig object for column names
 				// An optional set of aliases
 				// An optional set of columns whose values should be treated as arrays
 				// An optional map of columns that should be combined when collecting enums
 
 				// The output contains the following properties:
 				// The header rows that were removed
-				// The config object for column names
+				// The fileConfig object for column names
 				// A set of filters respecting the given aliases
 				// Enums collected according to the specified column names and optional enumsMap
 
@@ -67,57 +67,57 @@ define(
 				// 	TASER_METHOD: [cols.TASER_METHOD_1, cols.TASER_METHOD_2, cols.TASER_METHOD_3]
 				// };
 
-				var output = {},
+				var dataConfig = {},
 					i, row,
 					j;
 
-				config.headerRows = config.headerRows || 0;
-				config.cols = config.cols || {};
-				config.aliases = config.aliases || {};
-				config.arrayCols = config.arrayCols || {};
-				config.enumsMap = config.enumsMap || {};
+				fileConfig.headerRows = fileConfig.headerRows || 0;
+				fileConfig.cols = fileConfig.cols || {};
+				fileConfig.aliases = fileConfig.aliases || {};
+				fileConfig.arrayCols = fileConfig.arrayCols || {};
+				fileConfig.enumsMap = fileConfig.enumsMap || {};
 
-				output.cols = config.cols;
-				output.aliases = config.aliases;
-				output.filters = Analyser.getAliasFilters(config.aliases);
+				dataConfig.cols = fileConfig.cols;
+				dataConfig.aliases = fileConfig.aliases;
+				dataConfig.filters = Analyser._getAliasFilters(fileConfig.aliases);
 
 				// Remove header rows
-				rows.splice(0, config.headerRows);
+				rows.splice(0, fileConfig.headerRows);
 
 				// Convert cells that are lists into arrays
-				output.rows = rows.concat();
-				for (i = 0; i < output.rows.length; i++) {
-					row = output.rows[i];
+				dataConfig.rows = rows.concat();
+				for (i = 0; i < dataConfig.rows.length; i++) {
+					row = dataConfig.rows[i];
 
-					for (j in config.arrayCols) {
-						row[j] = row[j].trim().split(config.arrayCols[j] || '\n');
+					for (j in fileConfig.arrayCols) {
+						row[j] = row[j].trim().split(fileConfig.arrayCols[j] || '\n');
 					}
 				}
 
 				// Build enums
-				output.enums = {};
-				for (i in config.cols) {
+				dataConfig.enums = {};
+				for (i in fileConfig.cols) {
 
 					// Don't collect enums for columns specified in enumsMap
 					k = true;
-					for (j in config.enumsMap) {
-						if (config.enumsMap[j].indexOf(config.cols[i]) !== -1) {
+					for (j in fileConfig.enumsMap) {
+						if (fileConfig.enumsMap[j].indexOf(fileConfig.cols[i]) !== -1) {
 							k = false;
 							break;
 						}
 					}
 
 					if (k) {
-						output.enums[i] = [];
-						Analyser._collectEnums(rows, output.enums[i], config.cols[i]);
+						dataConfig.enums[i] = [];
+						Analyser._collectEnums(rows, dataConfig.enums[i], fileConfig.cols[i]);
 					}
 				}
-				for (i in config.enumsMap) {
-					output.enums[i] = [];
-					Analyser._collectEnums.apply(this, [rows, output.enums[i]].concat(config.enumsMap[i]));
+				for (i in fileConfig.enumsMap) {
+					dataConfig.enums[i] = [];
+					Analyser._collectEnums.apply(this, [rows, dataConfig.enums[i]].concat(fileConfig.enumsMap[i]));
 				}
 
-				return output;
+				return dataConfig;
 			},
 
 			_collectEnums: function (rows, enumsArr, col1, col2, colN) {
@@ -153,128 +153,128 @@ define(
 				return enumsArr;
 			},
 
-			combineData: function (config1, config2, configN) {
-				// Takes in any number of config objects from _processData
-				// Combines the rows and relevant config objects (e.g. aliases, enums)
-				// Keeps only columns shared amongs all config objects
+			combineData: function (dataConfig1, dataConfig2, dataConfigN) {
+				// Takes in any number of dataConfig objects from _processData
+				// Combines the rows and relevant dataConfig objects (e.g. aliases, enums)
+				// Keeps only columns shared by all dataConfig objects
 
 				// Assumes there is no data shared between different sets,
 				// so duplicates will *not* be detected or removed
 
 				// The output is in the same format as for _processData
 
-				var configs = Array.prototype.slice.call(arguments, 0);
-				var output = {
+				var dataConfigs = Array.prototype.slice.call(arguments, 0);
+				var combinedDataConfig = {
 					cols: {},
 					rows: [],
 					aliases: {}
 				};
 
-				var config;
+				var dataConfig;
 				var row;
 				var aliasSet;
-				var outputAliasSet;
+				var combinedAliasSet;
 
 				var i;
 				var j;
 				var k;
 				var l;
 
-				if (!configs || configs.length < 2) {
+				if (!dataConfigs || dataConfigs.length < 2) {
 					console.error('Invalid inputs passed to combineData', arguments);
 				}
 
 				// Combine cols first //
 
 				// Build base set from first cols object
-				for (j in configs[0].cols) {
-					output.cols[j] = true;
+				for (j in dataConfigs[0].cols) {
+					combinedDataConfig.cols[j] = true;
 				}
 
 				// Remove any cols not shared by every other cols object
-				for (i = 1; i < configs.length; i++) {
-					config = configs[i];
+				for (i = 1; i < dataConfigs.length; i++) {
+					dataConfig = dataConfigs[i];
 
-					for (j in config.cols) {
-						if (!j in output.cols) {
-							delete output.cols[j];
+					for (j in combinedDataConfig.cols) {
+						if (!(j in dataConfig.cols)) {
+							delete combinedDataConfig.cols[j];
 						}
 					}
 				}
 
 				i = 0;
-				for (j in output.cols) {
-					output.cols[j] = i;
+				for (j in combinedDataConfig.cols) {
+					combinedDataConfig.cols[j] = i;
 					i++;
 				}
 
 				// Now that we have the combined cols object, combine other parts
-				for (i = 0; i < configs.length; i++) {
+				for (i = 0; i < dataConfigs.length; i++) {
 					// Combine rows //
 
-					config = configs[i];
+					dataConfig = dataConfigs[i];
 
-					for (j = 0; j < config.rows.length; j++) {
+					for (j = 0; j < dataConfig.rows.length; j++) {
 						row = [];
-						for (k in output.cols) {
-							row[output.cols[k]] = config.rows[j][config.cols[k]];
+						for (k in combinedDataConfig.cols) {
+							row[combinedDataConfig.cols[k]] = dataConfig.rows[j][dataConfig.cols[k]];
 						}
 
-						output.rows.push(row);
+						combinedDataConfig.rows.push(row);
 					}
 
 
 					// Combine aliases //
 
 					// Loop through each row's aliases to combine
-					for (j in config.aliases) {
+					for (j in dataConfig.aliases) {
 
 						// If we don't have an alias for this column, make an empty placeholder
-						if (!(j in output.aliases)) {
-							output.aliases[j] = [];
+						if (!(j in combinedDataConfig.aliases)) {
+							combinedDataConfig.aliases[j] = [];
 						}
 
 						// Loop through each aliasSet for this column
-						for (k = 0; k < config.aliases[j].length; k++) {
-							aliasSet = config.aliases[j][k];
+						for (k = 0; k < dataConfig.aliases[j].length; k++) {
+							aliasSet = dataConfig.aliases[j][k];
 
 							// Combine aliasSets based off their first element, which is used as a label
-							outputAliasSet = [];
-							for (l = 0; l < output.aliases[j].length; l++) {
-								if (output.aliases[j][l][0] === aliasSet[0]) {
-									outputAliasSet = output.aliases[j][l];
+							combinedAliasSet = [];
+							for (l = 0; l < combinedDataConfig.aliases[j].length; l++) {
+								if (combinedDataConfig.aliases[j][l][0] === aliasSet[0]) {
+									combinedAliasSet = combinedDataConfig.aliases[j][l];
 									break;
 								}
 							}
 
-							outputAliasSet = outputAliasSet.concat(aliasSet);
+							combinedAliasSet = combinedAliasSet.concat(aliasSet);
 
 							// Remove duplicates
-							outputAliasSet = outputAliasSet.filter(function (alias, index, array) {
+							combinedAliasSet = combinedAliasSet.filter(function (alias, index, array) {
 								return array.indexOf(alias) === index;
 							});
 
-							// Append or replace aliasSet in output
-							if (l < output.aliases[j].length) {
-								output.aliases[j][l] = outputAliasSet;
+							// Append or replace aliasSet in combinedDataConfig
+							if (l < combinedDataConfig.aliases[j].length) {
+								combinedDataConfig.aliases[j][l] = combinedAliasSet;
 							} else {
-								output.aliases[j].push(outputAliasSet);
+								combinedDataConfig.aliases[j].push(combinedAliasSet);
 							}
 						}
 					}
 
 
 					// Create new filters using combined aliases
-					output.filters = Analyser.getAliasFilters(config.aliases);
+					combinedDataConfig.filters = Analyser._getAliasFilters(dataConfig.aliases);
 				}
 
-				return output;
+				return combinedDataConfig;
 			},
 
 			/////////////////
 			// CSV PARSING //
 			/////////////////
-			parseCsv: function (csv, callback) {
+			_parseCsv: function (csv, callback) {
 				// Parse a CSV file then process the data
 
 				Papa.parse(csv, {
@@ -335,12 +335,12 @@ define(
 			///////////////
 			// FILTERING //
 			///////////////
-			getAliasFilters: function (aliases) {
+			_getAliasFilters: function (aliases) {
 				var filterRows,
 					filterRowsAnd,
 					filterRowsOr;
 
-				filterRows = function (rows, andToggle, colIndex, values) {
+				filterRows = function (rows, andToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
 					// Takes in a rows object (imported from csv),
 					// a boolean specifying whether it's an "and" or an "or" filter,
 					// and any number of pairs (at least one) of
@@ -403,7 +403,7 @@ define(
 					return filteredRows;
 				};
 
-				filterRowsAnd = function (rows, colIndex, values) {
+				filterRowsAnd = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
 					var args = Array.prototype.slice.apply(arguments);
 
 					args = args.slice(1);
@@ -413,7 +413,7 @@ define(
 					return filterRows.apply(this, args);
 				};
 
-				filterRowsOr = function (rows, colIndex, values) {
+				filterRowsOr = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
 					var args = Array.prototype.slice.apply(arguments);
 
 					args = args.slice(1);
@@ -502,7 +502,7 @@ define(
 			//////////////////////
 			// HELPER FUNCTIONS //
 			//////////////////////
-			getColNumber: function (rowName) {
+			getColNumber: function (colName) {
 				// Takes in a string like "CE" and converts it to a row number like 82
 
 				var alphabet,
@@ -512,10 +512,10 @@ define(
 				alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 				rowNumber = 0;
 
-				for (i = 0; i < rowName.length; i++) {
-					char = rowName.toUpperCase()[i];
+				for (i = 0; i < colName.length; i++) {
+					char = colName.toUpperCase()[i];
 
-					rowNumber += (alphabet.indexOf(char) + 1) * Math.pow(alphabet.length, rowName.length - (i+1));
+					rowNumber += (alphabet.indexOf(char) + 1) * Math.pow(alphabet.length, colName.length - (i+1));
 				}
 
 				rowNumber -= 1; // Adjust for 0-based counting
@@ -536,37 +536,13 @@ define(
 				return col;
 			},
 
-			combineRows: function (row1, row2) {
-				// Takes in an arbitrary number of rows, and puts them into a single array
-				// Then checks the array for duplicated rows and removes them
-
-				var rows = [],
-					i, rowN;
-
-				for (i = 0; i < arguments.length; i++) {
-					rowN = arguments[i];
-					rows = rows.concat(rowN);
-				}
-
-				for (i = rows.length-1; i >= 0; i--) {
-					rowN = rows[i];
-
-					while (rows.indexOf(rowN) < i) {
-						rows.splice(rows.indexOf(rowN), 1);
-						i--;
-					}
-				}
-
-				return rows;
-			},
-
 			//////////////////////////////
 			// TRANSFORMING INFORMATION //
 			//////////////////////////////
-			getDerivedCol: function (rows, callback, optionalCols) {
+			getDerivedCol: function (rows, processFn, optionalCol1, optionalCol2, optionalColN) {
 				// Creates an array analogous to a column as returns
 				// by the getCol function, where its output is the
-				// result of applying a callback function to the row
+				// result of applying the processFn function to the row
 				// any number of values from optional column arguments
 
 				var i, row,
@@ -589,13 +565,13 @@ define(
 						derivedValues.push(col[i]);
 					}
 
-					derivedCol.push(callback.apply(this, derivedValues));
+					derivedCol.push(processFn.apply(this, derivedValues));
 				}
 
 				return derivedCol;
 			},
 
-			addCol: function (rows, col) {
+			_addCol: function (rows, col) {
 				// Edits the passed rows array to add an extra column
 				// to it, then returns the index of that new column
 
@@ -614,28 +590,28 @@ define(
 				return colIndex;
 			},
 
-			addDerivedCol: function (rows, callback, optionalCols) {
+			addDerivedCol: function (rows, callback, optionalCol1, optionalCol2, optionalColN) {
 				// Works like getDerivedCol, but instead of returning
-				// the derived column directly it uses addCol to add
+				// the derived column directly it uses _addCol to add
 				// it to rows and returns the new column index.
 
 				var derivedCol = Analyser.getDerivedCol.apply(this, arguments);
 
-				return Analyser.addCol(rows, derivedCol);
+				return Analyser._addCol(rows, derivedCol);
 			},
 
 			///////////////////
 			// SUMMARY TOOLS //
 			///////////////////
-			createSubTable: function (rows, colsObject) {
-				// Takes in a set of rows and a colsObject formatted like this:
+			createSubTable: function (rows, cols) {
+				// Takes in a set of rows and a cols object formatted like this:
 				// {
 				// 	ETHNICITY: 3,
 				// 	AGE: 6
 				// }
 
 				// Outputs an array of objects,
-				// each of which has the same indices as colsObject and represents a row
+				// each of which has the same indices as cols and represents a row
 				// The output can be used with console.table
 
 				var colName,
@@ -647,12 +623,12 @@ define(
 					row = rows[i];
 					newRow = {};
 
-					for (colName in colsObject) {
+					for (colName in cols) {
 						// Join arrays so they display in console.table
-						if (row[colsObject[colName]] instanceof Array) {
-							newRow[colName] = row[colsObject[colName]].join(', ');
+						if (row[cols[colName]] instanceof Array) {
+							newRow[colName] = row[cols[colName]].join(', ');
 						} else {
-							newRow[colName] = row[colsObject[colName]];
+							newRow[colName] = row[cols[colName]];
 						}
 					}
 					table.push(newRow);
@@ -820,7 +796,7 @@ define(
 				if (varAliases) {
 					aliases.VARS = varAliases;
 				}
-				filters = Analyser.getAliasFilters(aliases);
+				filters = Analyser._getAliasFilters(aliases);
 
 				comparisonSummary = {};
 				for (i in varSummary) {
@@ -836,7 +812,7 @@ define(
 				return comparisonSummary;
 			},
 
-			getComparisonSummaryString: function () {
+			getComparisonSummaryString: function (rows, headerCol, headerAliases, varCol, varAliases) {
 				// Calls getComparisonSummary with all arguments passed,
 				// then returns a string of the data that can be copy/pasted
 				// into a spreadsheet
@@ -884,6 +860,21 @@ define(
 			}
 		};
 
-		return Analyser;
+		return {
+			loadFile: Analyser.loadFile,
+			combineData: Analyser.combineData,
+
+			getColNumber: Analyser.getColNumber,
+			getCol: Analyser.getCol,
+
+			getDerivedCol: Analyser.getDerivedCol,
+			addDerivedCol: Analyser.addDerivedCol,
+
+			createSubTable: Analyser.createSubTable,
+			getColSummary: Analyser.getColSummary,
+			getColAsDataSeries: Analyser.getColAsDataSeries,
+			getComparisonSummary: Analyser.getComparisonSummary,
+			getComparisonSummaryString: Analyser.getComparisonSummaryString
+		};
 	}
 );
