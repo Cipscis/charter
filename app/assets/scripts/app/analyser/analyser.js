@@ -1,25 +1,26 @@
 define(
 	[
-		'jquery',
 		'papaparse'
 	],
 
-	function ($, Papa) {
+	function (Papa) {
 		var Analyser = {
 			/////////////////////
 			// FILE PROCESSING //
 			/////////////////////
 			loadFile: function (filePath, fileConfig, callback) {
-				$.ajax({
-					url: filePath,
-					success: Analyser._fileLoaded(fileConfig, callback)
-				});
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', filePath);
+				xhr.onload = function () {
+					if (xhr.status === 200) {
+						Analyser._fileLoaded(fileConfig, callback, xhr.responseText);
+					}
+				};
+				xhr.send();
 			},
 
-			_fileLoaded: function (fileConfig, callback) {
-				return function (csv) {
-					Analyser._parseCsv(csv, Analyser._fileParsed(fileConfig, callback));
-				};
+			_fileLoaded: function (fileConfig, callback, csv) {
+				Analyser._parseCsv(csv, Analyser._fileParsed(fileConfig, callback));
 			},
 
 			_fileParsed: function (fileConfig, callback) {
