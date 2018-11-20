@@ -45,7 +45,7 @@ require(
 			INJURY_CAUSE_3: Analyser.getColNumber('GE')
 		};
 		var arrayCols2016 = {};
-		arrayCols2016[cols2016.TACTICS] = null;
+		arrayCols2016[cols2016.TACTICS] = '\n';
 
 		var config2016 = {
 			headerRows: 2,
@@ -140,7 +140,7 @@ require(
 			// RF_OTHER: Analyser.getColNumber('V')
 		};
 		var arrayCols = {};
-		arrayCols[cols.TACTICS] = null;
+		arrayCols[cols.TACTICS] = '\n';
 		arrayCols[cols.SPECIAL_POLICE_GROUPS] = ', ';
 
 		var config = {
