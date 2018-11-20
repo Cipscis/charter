@@ -640,6 +640,57 @@ define(
 				return table;
 			},
 
+			createSubTableString: function (rows, cols) {
+				var table = Analyser.createSubTable(rows, cols);
+				var tableString = Analyser._convertTableToString(table);
+
+				return tableString;
+			},
+
+			_convertTableToString: function (table, useKeys) {
+				var cellSeparator = '\t',
+					rowSeparator = '\n',
+					i, j, k;
+
+				var tableString = '';
+
+				// Render headers and create array of labels
+				if (useKeys) {
+					tableString += cellSeparator;
+				}
+				k = false;
+				for (i in table) {
+					if (k === true) {
+						break;
+					}
+					k = true;
+
+					for (j in table[i]) {
+						tableString += j + cellSeparator;
+					}
+				}
+				// Trim off last character, replace with newline
+				tableString = tableString.substr(0, tableString.length-1) + rowSeparator;
+
+				for (i in table) {
+					k = false;
+					for (j in table[i]) {
+						if (useKeys) {
+							if (k === false) {
+								tableString += i + cellSeparator;
+							}
+							k = true;
+						}
+
+						tableString += table[i][j] + cellSeparator;
+					}
+					// Trim off last character, replace with newline
+					tableString = tableString.substr(0, tableString.length-1) + rowSeparator;
+				}
+
+				return tableString;
+			},
+
 			getColSummary: function (rows, cols, aliasList) {
 				// Takes in a set of rows and one or more column numbers, and optionally
 				// a list of aliases - an array of arrays of strings to be grouped together
@@ -820,44 +871,11 @@ define(
 				// then returns a string of the data that can be copy/pasted
 				// into a spreadsheet
 
-				var cellSeparator = '\t',
-					rowSeparator = '\n';
-
 				var comparisonSummary,
-					comparisonSummaryString,
-					i, j, k;
+					comparisonSummaryString;
 
 				comparisonSummary = Analyser.getComparisonSummary.apply(this, arguments);
-
-				// Render headers and create array of labels
-				comparisonSummaryString = cellSeparator;
-				k = false;
-				for (i in comparisonSummary) {
-					if (k === true) {
-						break;
-					}
-					k = true;
-
-					for (j in comparisonSummary[i]) {
-						comparisonSummaryString += j + cellSeparator;
-					}
-				}
-				// Trim off last character, replace with newline
-				comparisonSummaryString = comparisonSummaryString.substr(0, comparisonSummaryString.length-1) + rowSeparator;
-
-				for (i in comparisonSummary) {
-					k = false;
-					for (j in comparisonSummary[i]) {
-						if (k === false) {
-							comparisonSummaryString += i + cellSeparator;
-						}
-						k = true;
-
-						comparisonSummaryString += comparisonSummary[i][j] + cellSeparator;
-					}
-					// Trim off last character, replace with newline
-					comparisonSummaryString = comparisonSummaryString.substr(0, comparisonSummaryString.length-1) + rowSeparator;
-				}
+				comparisonSummaryString = Analyser._convertTableToString(comparisonSummary, true);
 
 				return comparisonSummaryString;
 			}
@@ -874,6 +892,7 @@ define(
 			addDerivedCol: Analyser.addDerivedCol,
 
 			createSubTable: Analyser.createSubTable,
+			createSubTableString: Analyser.createSubTableString,
 			getColSummary: Analyser.getColSummary,
 			getColAsDataSeries: Analyser.getColAsDataSeries,
 			getComparisonSummary: Analyser.getComparisonSummary,
