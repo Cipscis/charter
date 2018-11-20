@@ -410,7 +410,7 @@ define(
 					var args = Array.prototype.slice.apply(arguments);
 
 					args = args.slice(1);
-					args.splice(0, 0, true);
+					args.splice(0, 0, false);
 					args.splice(0, 0, rows);
 
 					return filterRows.apply(this, args);
@@ -420,7 +420,7 @@ define(
 					var args = Array.prototype.slice.apply(arguments);
 
 					args = args.slice(1);
-					args.splice(0, 0, false);
+					args.splice(0, 0, true);
 					args.splice(0, 0, rows);
 
 					return filterRows.apply(this, args);
