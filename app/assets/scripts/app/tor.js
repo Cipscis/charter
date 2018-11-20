@@ -343,15 +343,19 @@ require(
 			};
 		};
 
-		var filesProcessed = function (separateConfig) {
-			var combinedConfig = Analyser.combineData(separateConfig['2016'], separateConfig['2017a'], separateConfig['2017b']);
+		var filesProcessed = function (configs) {
+			var combinedConfig = Analyser.combineData(configs['2016'], configs['2017a'], configs['2017b']);
 
-			exploratoryAnalysis(combinedConfig, separateConfig['2016'], separateConfig['2017a'], separateConfig['2017b']);
-			// articleCheck(separateConfig['2017a']);
-			buildVisualisation(combinedConfig, separateConfig['2016'], separateConfig['2017a'], separateConfig['2017b']);
+			exploratoryAnalysis(combinedConfig, configs);
+			// articleCheck(configs['2017a']);
+			buildVisualisation(combinedConfig, configs);
 		};
 
-		var exploratoryAnalysis = function (combinedConfig, config2016, config2017a, config2017b) {
+		var exploratoryAnalysis = function (combinedConfig, configs) {
+			var config2016 = configs['2016'],
+				config2017a = configs['2017a'],
+				config2017b = configs['2017b'];
+
 			var config = config2017a;
 
 			var rows = config.rows,
@@ -576,20 +580,9 @@ require(
 			console.log('% force events at non MH incidents involving a taser: ', percent(nonMhForceTaser.length, nonMhForce.length));
 		};
 
-		var buildVisualisation = function (combinedConfig, config2016, config2017a, config2017b) {
-			var rows2016 = config2016.rows,
-				cols2016 = config2016.cols,
-				filterRows2016 = config2016.filters.filterRows,
-
-				rows2017a = config2017a.rows,
-				cols2017a = config2017a.cols,
-				filterRows2017a = config2017a.filters.filterRows,
-
-				rows2017b = config2017b.rows,
-				cols2017b = config2017b.cols,
-				filterRows2017b = config2017b.filters.filterRows,
-
-				enums = config2017a.enums,
+		var buildVisualisation = function (combinedConfig, configs) {
+			var years = ['2016', '2017a', '2017b'],
+				enums = configs['2017a'].enums, // TODO: Used combined data, once combining data combines enums
 				// enums = combinedConfig.enums,
 
 				i, j, k;
@@ -631,12 +624,13 @@ require(
 			enums.TACTICS.push('Any');
 
 			enums.ETHNICITY = ['Pākehā', 'Māori', 'Pacific'];
+			var data = {};
 			var formatDataForChart = function (dataConfig) {
 				var rows = dataConfig.rows;
 				var cols = dataConfig.cols;
 				var filterRows = dataConfig.filters.filterRows;
 
-				var data = {};
+				var yearData = {};
 				var ethnicity;
 				var tactic;
 
@@ -645,16 +639,16 @@ require(
 				for (i = 0; i < enums.ETHNICITY.length; i++) {
 					ethnicity = enums.ETHNICITY[i];
 
-					data[ethnicity] = {};
+					yearData[ethnicity] = {};
 					for (j = 0; j < enums.TACTICS.length; j++) {
 						tactic = enums.TACTICS[j];
 
 						if (tactic === 'Any') {
-							data[ethnicity][tactic] = filterRows(rows,
+							yearData[ethnicity][tactic] = filterRows(rows,
 								cols.ETHNICITY, ethnicity
 							).length / pop[ethnicity] * 100000;
 						} else {
-							data[ethnicity][tactic] = filterRows(rows,
+							yearData[ethnicity][tactic] = filterRows(rows,
 								cols.ETHNICITY, ethnicity,
 								cols.TACTICS, tactic
 							).length / pop[ethnicity] * 100000;
@@ -662,17 +656,17 @@ require(
 					}
 				}
 
-				return data;
+				return yearData;
 			};
 
-			var data2016 = formatDataForChart(config2016);
-			var data2017a = formatDataForChart(config2017a);
-			var data2017b = formatDataForChart(config2017b);
+			for (i = 0; i < years.length; i++) {
+				data[years[i]] = formatDataForChart(configs[years[i]]);
+			}
 
 			// This data has been entered by hand,
-			// and is halved to make it directly comparable to July-December 2016
+			// and is halved to make it directly comparable to 6 month periods
 			// as the 2014 data was collected over a 12 month period
-			var data2014 = {
+			data['2014'] = {
 				'Pākehā': {
 					'Empty Hand': 27.132 / 2,
 					'OC Spray': 13.338 / 2,
@@ -707,29 +701,16 @@ require(
 					'Any': 207 / 2
 				}
 			};
+			years.unshift('2014');
 
 			// Build perPop and perPakeha objects for updating bar charts
-			var perPop = {
-				'2014': {},
-				'2016': {},
-				'2017a': {},
-				'2017b': {}
-			};
+			var perPop = {};
+			var perPakeha = {};
 
-			var perPakeha = {
-				'2014': {},
-				'2016': {},
-				'2017a': {},
-				'2017b': {}
-			};
-
-			var years = ['2014', '2016', '2017a', '2017b'];
-			var data = {
-				'2014': data2014,
-				'2016': data2016,
-				'2017a': data2017a,
-				'2017b': data2017b
-			};
+			for (i = 0; i < years.length; i++) {
+				perPop[years[i]] = {};
+				perPakeha[years[i]] = {};
+			}
 
 			for (i = 0; i < enums.TACTICS.length; i++) {
 				for (j = 0; j < years.length; j++) {
