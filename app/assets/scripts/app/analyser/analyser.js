@@ -96,7 +96,15 @@ define(
 				}
 
 				// Build enums
-				dataConfig.enums = {};
+				dataConfig.enums = Analyser._buildEnums(rows, fileConfig);
+
+				return dataConfig;
+			},
+
+			_buildEnums: function (rows, fileConfig) {
+				var enums = {},
+					i, j, k;
+
 				for (i in fileConfig.cols) {
 
 					// Don't collect enums for columns specified in enumsMap
@@ -109,16 +117,16 @@ define(
 					}
 
 					if (k) {
-						dataConfig.enums[i] = [];
-						Analyser._collectEnums(rows, dataConfig.enums[i], fileConfig.cols[i]);
+						enums[i] = [];
+						Analyser._collectEnums(rows, enums[i], fileConfig.cols[i]);
 					}
 				}
 				for (i in fileConfig.enumsMap) {
-					dataConfig.enums[i] = [];
-					Analyser._collectEnums.apply(this, [rows, dataConfig.enums[i]].concat(fileConfig.enumsMap[i]));
+					enums[i] = [];
+					Analyser._collectEnums.apply(this, [rows, enums[i]].concat(fileConfig.enumsMap[i]));
 				}
 
-				return dataConfig;
+				return enums;
 			},
 
 			_collectEnums: function (rows, enumsArr, col1, col2, colN) {
@@ -163,6 +171,8 @@ define(
 				// so duplicates will *not* be detected or removed
 
 				// The output is in the same format as for _processData
+
+				// TODO: Also combine enums
 
 				var dataConfigs = Array.prototype.slice.call(arguments, 0);
 				var combinedDataConfig = {
