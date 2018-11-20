@@ -81,6 +81,7 @@ define(
 				dataConfig.cols = fileConfig.cols;
 				dataConfig.aliases = fileConfig.aliases;
 				dataConfig.filters = Analyser._getAliasFilters(fileConfig.aliases);
+				dataConfig.enumsMap = fileConfig.enumsMap; // Keep this for combining data
 
 				// Remove header rows
 				rows.splice(0, fileConfig.headerRows);
@@ -101,16 +102,16 @@ define(
 				return dataConfig;
 			},
 
-			_buildEnums: function (rows, fileConfig) {
+			_buildEnums: function (rows, config) {
 				var enums = {},
 					i, j, k;
 
-				for (i in fileConfig.cols) {
+				for (i in config.cols) {
 
 					// Don't collect enums for columns specified in enumsMap
 					k = true;
-					for (j in fileConfig.enumsMap) {
-						if (fileConfig.enumsMap[j].indexOf(fileConfig.cols[i]) !== -1) {
+					for (j in config.enumsMap) {
+						if (config.enumsMap[j].indexOf(config.cols[i]) !== -1) {
 							k = false;
 							break;
 						}
@@ -118,12 +119,12 @@ define(
 
 					if (k) {
 						enums[i] = [];
-						Analyser._collectEnums(rows, enums[i], fileConfig.cols[i]);
+						Analyser._collectEnums(rows, enums[i], config.cols[i]);
 					}
 				}
-				for (i in fileConfig.enumsMap) {
+				for (i in config.enumsMap) {
 					enums[i] = [];
-					Analyser._collectEnums.apply(this, [rows, enums[i]].concat(fileConfig.enumsMap[i]));
+					Analyser._collectEnums.apply(this, [rows, enums[i]].concat(config.enumsMap[i]));
 				}
 
 				return enums;
@@ -172,8 +173,6 @@ define(
 
 				// The output is in the same format as for _processData
 
-				// TODO: Also combine enums
-
 				var dataConfigs = Array.prototype.slice.call(arguments, 0);
 				var combinedDataConfig = {
 					cols: {},
@@ -219,11 +218,10 @@ define(
 					i++;
 				}
 
-				// Now that we have the combined cols object, combine other parts
+				// Now that we have the combined cols object, combine rows and aliases
 				for (i = 0; i < dataConfigs.length; i++) {
-					// Combine rows //
-
 					dataConfig = dataConfigs[i];
+					// Combine rows //
 
 					for (j = 0; j < dataConfig.rows.length; j++) {
 						row = [];
@@ -236,7 +234,6 @@ define(
 
 
 					// Combine aliases //
-
 					// Loop through each row's aliases to combine
 					for (j in dataConfig.aliases) {
 
@@ -273,11 +270,30 @@ define(
 							}
 						}
 					}
-
-
-					// Create new filters using combined aliases
-					combinedDataConfig.filters = Analyser._getAliasFilters(dataConfig.aliases);
 				}
+
+				// Create new filters using combined aliases
+				combinedDataConfig.filters = Analyser._getAliasFilters(dataConfig.aliases);
+
+				// Combine the enumsMaps, then build combined enums
+				combinedDataConfig.enumsMap = {};
+				for (i = 0; i < dataConfigs.length; i++) {
+					dataConfig = dataConfigs[i];
+
+					for (j in dataConfig.enumsMap) {
+						if (j in combinedDataConfig.enumsMap) {
+							combinedDataConfig.enumsMap[j] = combinedDataConfig.enumsMap[j].concat(dataConfig.enumsMap[j]);
+
+							// Remove duplicates
+							combinedDataConfig.enumsMap[j] = combinedDataConfig.enumsMap[j].filter(function (alias, index, array) {
+								return array.indexOf(alias) === index;
+							});
+						} else {
+							combinedDataConfig.enumsMap[j] = dataConfig.enumsMap[j].concat();
+						}
+					}
+				}
+				combinedDataConfig.enums = Analyser._buildEnums(combinedDataConfig.rows, combinedDataConfig);
 
 				return combinedDataConfig;
 			},
