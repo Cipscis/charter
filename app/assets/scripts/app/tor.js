@@ -8,217 +8,245 @@ require(
 		'stats/stats'
 	],
 	function ($, templayed, Charter, Analyser, Stats) {
+		var cols2016;
+		var arrayCols2016;
+		var config2016;
 
-		var cols2016 = {
-			ID: Analyser.getColNumber('A'),
-			MONTH: Analyser.getColNumber('C'),
-			YEAR: Analyser.getColNumber('D'),
+		var cols2017a;
+		var arrayCols2017a;
+		var config2017a;
 
-			DISTRICT: Analyser.getColNumber('F'),
-			AGE: Analyser.getColNumber('I'),
-			GENDER: Analyser.getColNumber('J'),
-			ETHNICITY: Analyser.getColNumber('K'),
-			SUBJECT_ARMED: Analyser.getColNumber('L'),
-			TACTICS: Analyser.getColNumber('M'),
+		// July-December 2016 //
+		var init2016 = function () {
+			cols2016 = {
+				ID: Analyser.getColNumber('A'),
+				MONTH: Analyser.getColNumber('C'),
+				YEAR: Analyser.getColNumber('D'),
 
-			TASER_USAGE_COUNT: Analyser.getColNumber('CR'),
-			TASER_METHOD_1: Analyser.getColNumber('CU'),
-			TASER_METHOD_2: Analyser.getColNumber('DH'),
-			TASER_METHOD_3: Analyser.getColNumber('DU'),
+				DISTRICT: Analyser.getColNumber('F'),
+				AGE: Analyser.getColNumber('I'),
+				GENDER: Analyser.getColNumber('J'),
+				ETHNICITY: Analyser.getColNumber('K'),
+				SUBJECT_ARMED: Analyser.getColNumber('L'),
+				TACTICS: Analyser.getColNumber('M'),
 
-			TASER_TYPE_1: Analyser.getColNumber('CT'),
-			TASER_TYPE_2: Analyser.getColNumber('DG'),
-			TASER_TYPE_3: Analyser.getColNumber('DT'),
+				INCIDENT_TYPE: Analyser.getColNumber('FS'),
 
-			TASER_PCA_1: Analyser.getColNumber('CS'),
-			TASER_PCA_2: Analyser.getColNumber('DF'),
-			TASER_PCA_3: Analyser.getColNumber('DS'),
+				// INJURY
+				INJURIES: Analyser.getColNumber('FT'),
+				INJURY_CAUSE_1: Analyser.getColNumber('FU'),
+				INJURY_CAUSE_2: Analyser.getColNumber('FZ'),
+				INJURY_CAUSE_3: Analyser.getColNumber('GE'),
 
-			FIREARM_METHOD_1: Analyser.getColNumber('ET'),
-			FIREARM_METHOD_2: Analyser.getColNumber('FC'),
+				INJURY_TREATMENT_REQUIRED_1: Analyser.getColNumber('FX'),
+				INJURY_TREATMENT_RECEIVED_1: Analyser.getColNumber('FY'),
+				INJURY_TREATMENT_REQUIRED_2: Analyser.getColNumber('GC'),
+				INJURY_TREATMENT_RECEIVED_2: Analyser.getColNumber('GD'),
+				INJURY_TREATMENT_REQUIRED_3: Analyser.getColNumber('GH'),
+				INJURY_TREATMENT_RECEIVED_3: Analyser.getColNumber('GI'),
 
-			INCIDENT_TYPE: Analyser.getColNumber('FS'),
+				// DOG
+				DOG_PCA_1: Analyser.getColNumber('CH'),
+				DOG_PCA_2: Analyser.getColNumber('CM'),
 
-			INJURIES: Analyser.getColNumber('FT'),
-			INJURY_CAUSE_1: Analyser.getColNumber('FU'),
-			INJURY_CAUSE_2: Analyser.getColNumber('FZ'),
-			INJURY_CAUSE_3: Analyser.getColNumber('GE')
-		};
-		var arrayCols2016 = {};
-		arrayCols2016[cols2016.TACTICS] = '\n';
+				DOG_BITTEN_1: Analyser.getColNumber('CI'),
+				DOG_BITTEN_2: Analyser.getColNumber('CH'),
 
-		var config2016 = {
-			headerRows: 2,
-			cols: cols2016,
-			aliases: {
-				ETHNICITY: [
-					[
-						'Pacific', // Not represented in data, but used as a label
-						'Pacific Island',
-						'Pacific Islander',
-						'Other - Cook Island/Maori',
-						'Other - Fijian/PI',
-						'Other - Tongan'
-					],
-					[
-						'African',
-						'Native African (or cultural group of African origin)',
-						'Other - african'
-					],
-					[
-						'Pākehā', // Not represented in data, but used as a label
-						'European',
-						'Other - Maori/European',
-						'Other - European/Maori'
-					],
-					[
-						'Māori', // Not represented in data, but used as a label
-						'Maori',
-						'Other - Maori/European',
-						'Other - Cook Island/Maori',
-						'Other - European/Maori'
+				DOG_LOCATION_TYPE_1: Analyser.getColNumber('CJ'),
+				DOG_LOCATION_TYPE_2: Analyser.getColNumber('CO'),
+
+				DOG_LOCATION_DESCRIPTION_1: Analyser.getColNumber('CK'),
+				DOG_LOCATION_DESCRIPTION_2: Analyser.getColNumber('CP'),
+
+				DOG_EFFECT_1: Analyser.getColNumber('CL'),
+				DOG_EFFECT_2: Analyser.getColNumber('CQ'),
+
+				// TASER
+				TASER_METHOD_1: Analyser.getColNumber('CU'),
+				TASER_METHOD_2: Analyser.getColNumber('DH'),
+				TASER_METHOD_3: Analyser.getColNumber('DU'),
+
+				TASER_PCA_1: Analyser.getColNumber('CS'),
+				TASER_PCA_2: Analyser.getColNumber('DF'),
+				TASER_PCA_3: Analyser.getColNumber('DS')
+			};
+
+			arrayCols2016 = {};
+			arrayCols2016[cols2016.TACTICS] = '\n';
+
+			config2016 = {
+				headerRows: 2,
+				cols: cols2016,
+				aliases: {
+					ETHNICITY: [
+						[
+							'Pacific', // Not represented in data, but used as a label
+							'Pacific Island',
+							'Pacific Islander',
+							'Other - Cook Island/Maori',
+							'Other - Fijian/PI',
+							'Other - Tongan'
+						],
+						[
+							'African',
+							'Native African (or cultural group of African origin)',
+							'Other - african'
+						],
+						[
+							'Pākehā', // Not represented in data, but used as a label
+							'European',
+							'Other - Maori/European',
+							'Other - European/Maori'
+						],
+						[
+							'Māori', // Not represented in data, but used as a label
+							'Maori',
+							'Other - Maori/European',
+							'Other - Cook Island/Maori',
+							'Other - European/Maori'
+						]
 					]
-				]
-			},
-			arrayCols: arrayCols2016,
-			enumsMap: {
-				TASER_METHOD: [cols2016.TASER_METHOD_1, cols2016.TASER_METHOD_2, cols2016.TASER_METHOD_3],
-				TASER_TYPE: [cols2016.TASER_TYPE_1, cols2016.TASER_TYPE_2, cols2016.TASER_TYPE_3]
-			}
+				},
+				arrayCols: arrayCols2016,
+				enumsMap: {
+					TASER_METHOD: [cols2016.TASER_METHOD_1, cols2016.TASER_METHOD_2, cols2016.TASER_METHOD_3]
+				}
+			};
 		};
 
+		// January-June 2017 //
+		var init2017a = function () {
+			cols2017a = {
+				ID: Analyser.getColNumber('A'),
+				MONTH: Analyser.getColNumber('C'),
+				YEAR: Analyser.getColNumber('D'),
 
+				DISTRICT: Analyser.getColNumber('F'),
+				AGE: Analyser.getColNumber('I'),
+				GENDER: Analyser.getColNumber('J'),
+				ETHNICITY: Analyser.getColNumber('K'),
+				SUBJECT_ARMED: Analyser.getColNumber('W'),
+				TACTICS: Analyser.getColNumber('Y'),
 
-		var cols = {
-			ID: Analyser.getColNumber('A'),
-			MONTH: Analyser.getColNumber('C'),
-			YEAR: Analyser.getColNumber('D'),
+				SPECIAL_POLICE_GROUPS: Analyser.getColNumber('G'),
+				INCIDENT_TYPE: Analyser.getColNumber('GM'),
 
-			DISTRICT: Analyser.getColNumber('F'),
-			AGE: Analyser.getColNumber('I'),
-			GENDER: Analyser.getColNumber('J'),
-			ETHNICITY: Analyser.getColNumber('K'),
-			SUBJECT_ARMED: Analyser.getColNumber('W'),
-			TACTICS: Analyser.getColNumber('Y'),
+				// INJURY
+				INJURIES: Analyser.getColNumber('GO'),
+				INJURY_CAUSE_1: Analyser.getColNumber('GP'),
+				INJURY_CAUSE_2: Analyser.getColNumber('GU'),
+				INJURY_CAUSE_3: Analyser.getColNumber('GZ'),
 
-			INCIDENT_TYPE: Analyser.getColNumber('GM'),
+				INJURY_TREATMENT_REQUIRED_1: Analyser.getColNumber('GS'),
+				INJURY_TREATMENT_RECEIVED_1: Analyser.getColNumber('GT'),
+				INJURY_TREATMENT_REQUIRED_2: Analyser.getColNumber('GX'),
+				INJURY_TREATMENT_RECEIVED_2: Analyser.getColNumber('GY'),
+				INJURY_TREATMENT_REQUIRED_3: Analyser.getColNumber('HC'),
+				INJURY_TREATMENT_RECEIVED_3: Analyser.getColNumber('HD'),
 
-			INJURIES: Analyser.getColNumber('GO'),
-			INJURY_CAUSE_1: Analyser.getColNumber('GP'),
-			INJURY_CAUSE_2: Analyser.getColNumber('GU'),
-			INJURY_CAUSE_3: Analyser.getColNumber('GZ'),
+				// DOG
+				DOG_PCA_1: Analyser.getColNumber('CU'),
+				DOG_PCA_2: Analyser.getColNumber('CZ'),
 
-			INJURY_TREATMENT_REQUIRED_1: Analyser.getColNumber('GS'),
-			INJURY_TREATMENT_RECEIVED_1: Analyser.getColNumber('GT'),
-			INJURY_TREATMENT_REQUIRED_2: Analyser.getColNumber('GX'),
-			INJURY_TREATMENT_RECEIVED_2: Analyser.getColNumber('GY'),
-			INJURY_TREATMENT_REQUIRED_3: Analyser.getColNumber('HC'),
-			INJURY_TREATMENT_RECEIVED_3: Analyser.getColNumber('HD'),
+				DOG_BITTEN_1: Analyser.getColNumber('CV'),
+				DOG_BITTEN_2: Analyser.getColNumber('DA'),
 
-			DOG_PCA: Analyser.getColNumber('CU'),
-			DOG_BITTEN: Analyser.getColNumber('CV'),
-			SPECIAL_POLICE_GROUPS: Analyser.getColNumber('G'),
+				DOG_LOCATION_TYPE_1: Analyser.getColNumber('CW'),
+				DOG_LOCATION_TYPE_2: Analyser.getColNumber('DB'),
 
-			TASER_METHOD_1: Analyser.getColNumber('DI'),
-			TASER_METHOD_2: Analyser.getColNumber('DW'),
-			TASER_METHOD_3: Analyser.getColNumber('EK'),
+				DOG_LOCATION_DESCRIPTION_1: Analyser.getColNumber('CX'),
+				DOG_LOCATION_DESCRIPTION_2: Analyser.getColNumber('DC'),
 
-			TASER_PCA_1: Analyser.getColNumber('DF'),
-			TASER_PCA_2: Analyser.getColNumber('DT'),
-			TASER_PCA_3: Analyser.getColNumber('EH')
+				DOG_EFFECT_1: Analyser.getColNumber('CY'),
+				DOG_EFFECT_2: Analyser.getColNumber('DD'),
 
-			// RF_HISTORY_WEAPONS: Analyser.getColNumber('L'),
-			// RF_HISTORY_VIOLENCE_POLICE: Analyser.getColNumber('M'),
-			// RF_HISTORY_VIOLENCE_NON_POLICE: Analyser.getColNumber('N'),
-			// RF_ALCOHOL: Analyser.getColNumber('O'),
-			// RF_DRUGS: Analyser.getColNumber('P'),
-			// RF_MENTAL_HEALTH: Analyser.getColNumber('Q'),
-			// RF_DISTRESSED_NOT_MENTAL_HEALTH: Analyser.getColNumber('R'),
-			// RF_SUICIDAL: Analyser.getColNumber('S'),
-			// RF_EXCITED_DELERIUM: Analyser.getColNumber('T'),
-			// RF_MEDICAL: Analyser.getColNumber('U'),
-			// RF_OTHER: Analyser.getColNumber('V')
-		};
-		var arrayCols = {};
-		arrayCols[cols.TACTICS] = '\n';
-		arrayCols[cols.SPECIAL_POLICE_GROUPS] = ', ';
+				// TASER
+				TASER_METHOD_1: Analyser.getColNumber('DI'),
+				TASER_METHOD_2: Analyser.getColNumber('DW'),
+				TASER_METHOD_3: Analyser.getColNumber('EK'),
 
-		var config = {
-			headerRows: 2,
-			cols: cols,
-			aliases: {
-				ETHNICITY: [
-					[
-						'Pacific', // Not represented in data, but used as a label
-						'Pacific Island',
-						'Pacific Islander',
-						'Other - COOK ISLAND MAORI',
-						'Other - maori-cook islander',
-						'Other - Tongan',
-						'Other - EUROPEAN/SAMOAN'
-					],
-					[
-						'African',
-						'Native African (or cultural group of African origin)',
-						'Other - SUDANESE',
-						'Other - Sudanese'
-					],
-					[
-						'Pākehā', // Not represented in data, but used as a label
-						'European',
-						'Other - EUROPEAN/SAMOAN'
-					],
-					[
-						'Māori', // Not represented in data, but used as a label
-						'Maori',
-						'Other - Maori/Chillean',
-						'Other - COOK ISLAND MAORI',
-						'Other - maori-cook islander'
+				TASER_PCA_1: Analyser.getColNumber('DF'),
+				TASER_PCA_2: Analyser.getColNumber('DT'),
+				TASER_PCA_3: Analyser.getColNumber('EH')
+			};
+
+			arrayCols2017a = {};
+			arrayCols2017a[cols2017a.TACTICS] = '\n';
+			arrayCols2017a[cols2017a.SPECIAL_POLICE_GROUPS] = ', ';
+
+			config2017a = {
+				headerRows: 2,
+				cols: cols2017a,
+				aliases: {
+					ETHNICITY: [
+						[
+							'Pacific', // Not represented in data, but used as a label
+							'Pacific Island',
+							'Pacific Islander',
+							'Other - COOK ISLAND MAORI',
+							'Other - maori-cook islander',
+							'Other - Tongan',
+							'Other - EUROPEAN/SAMOAN'
+						],
+						[
+							'African',
+							'Native African (or cultural group of African origin)',
+							'Other - SUDANESE',
+							'Other - Sudanese'
+						],
+						[
+							'Pākehā', // Not represented in data, but used as a label
+							'European',
+							'Other - EUROPEAN/SAMOAN'
+						],
+						[
+							'Māori', // Not represented in data, but used as a label
+							'Maori',
+							'Other - Maori/Chillean',
+							'Other - COOK ISLAND MAORI',
+							'Other - maori-cook islander'
+						]
+						// Should 'Middle Eastern' and 'Other - ARAB' be combined?
 					]
-					// Should 'Middle Eastern' and 'Other - ARAB' be combined?
-				]
-			},
-			arrayCols: arrayCols,
-			enumsMap: {
-				TASER_METHOD: [cols.TASER_METHOD_1, cols.TASER_METHOD_2, cols.TASER_METHOD_3],
-				TASER_TYPE: [cols.TASER_TYPE_1, cols.TASER_TYPE_2, cols.TASER_TYPE_3]
-			}
+				},
+				arrayCols: arrayCols2017a,
+				enumsMap: {
+					TASER_METHOD: [cols2017a.TASER_METHOD_1, cols2017a.TASER_METHOD_2, cols2017a.TASER_METHOD_3]
+				}
+			};
 		};
+
+		var initConfigs = function () {
+			init2016();
+			init2017a();
+		};
+		initConfigs();
 
 		var numFilesProcessed = 0;
 		var numFilesToProcess = 2;
 
 		var finalConfig = {};
 
-		var fileProcessed2016 = function (config2016) {
-			numFilesProcessed++;
-			finalConfig[2016] = config2016;
-			if (numFilesProcessed >= numFilesToProcess) {
-				filesProcessed(finalConfig);
-			}
+		var fileProcessed = function (id) {
+			return function (config) {
+				numFilesProcessed++;
+				finalConfig[id] = config;
+				if (numFilesProcessed >= numFilesToProcess) {
+					filesProcessed(finalConfig);
+				}
+			};
 		};
 
-		var fileProcessed2017 = function (config2017) {
-			numFilesProcessed++;
-			finalConfig[2017] = config2017;
-			if (numFilesProcessed >= numFilesToProcess) {
-				filesProcessed(finalConfig);
-			}}
+		var filesProcessed = function (separateConfig) {
+			var combinedConfig = Analyser.combineData(separateConfig['2016'], separateConfig['2017a']);
 
-		var filesProcessed = function (finalConfig) {
-			var config2016 = finalConfig[2016],
-				config = finalConfig[2017];
-
-			exploratoryAnalysis(config2016, config);
-			// articleCheck(config);
-			buildVisualisation(config2016, config);
+			exploratoryAnalysis(combinedConfig, separateConfig['2016'], separateConfig['2017a']);
+			// articleCheck(separateConfig['2017a']);
+			buildVisualisation(combinedConfig, separateConfig['2016'], separateConfig['2017a']);
 		};
 
-		Analyser.loadFile('assets/data/Tactical Options 2016 - raw.csv', config2016, fileProcessed2016);
-		Analyser.loadFile('assets/data/Tactical Options 2017-01 - 2017-06 raw.csv', config, fileProcessed2017);
-
-		var exploratoryAnalysis = function (config2016, config2017) {
-			var config = config2017;
+		var exploratoryAnalysis = function (combinedConfig, config2016, config2017a) {
+			var config = config2017a;
 
 			var rows = config.rows,
 				cols = config.cols,
@@ -259,9 +287,9 @@ require(
 				cols.TASER_METHOD_3, 'Discharge'
 			);
 
-			console.log(Analyser.getColSummary(taser1, cols.TASER_PCA_1));
-			console.log(Analyser.getColSummary(taser2, cols.TASER_PCA_2));
-			console.log(Analyser.getColSummary(taser3, cols.TASER_PCA_3));
+			// console.log(Analyser.getColSummary(taser1, cols.TASER_PCA_1));
+			// console.log(Analyser.getColSummary(taser2, cols.TASER_PCA_2));
+			// console.log(Analyser.getColSummary(taser3, cols.TASER_PCA_3));
 
 			// INJURY RATES
 			// var tactics = Analyser.getColSummary(rows, cols.TACTICS);
@@ -442,16 +470,19 @@ require(
 			console.log('% force events at non MH incidents involving a taser: ', percent(nonMhForceTaser.length, nonMhForce.length));
 		};
 
-		var buildVisualisation = function (config2016, config2017) {
+		var buildVisualisation = function (combinedConfig, config2016, config2017a) {
 			var rows2016 = config2016.rows,
 				cols2016 = config2016.cols,
 				filterRows2016 = config2016.filters.filterRows,
 
-				rows2017 = config2017.rows,
-				cols2017 = config2017.cols,
-				filterRows2017 = config2017.filters.filterRows,
+				rows2017a = config2017a.rows,
+				cols2017a = config2017a.cols,
+				filterRows2017a = config2017a.filters.filterRows,
 
-				enums = config2017.enums;
+				enums = config2017a.enums,
+				// enums = combinedConfig.enums,
+
+				i, j, k;
 
 			// Introduce ethnicity population data
 			//////////////////////////////////////
@@ -489,49 +520,43 @@ require(
 			// Insert "Any" at the end of the list
 			enums.TACTICS.push('Any');
 
-			// Format 2016 data for bar charts
-			/////////////////////////////
-
-			var data2016 = {};
 			enums.ETHNICITY = ['Pākehā', 'Māori', 'Pacific'];
-			for (i = 0; i < enums.ETHNICITY.length; i++) {
-				data2016[enums.ETHNICITY[i]] = {};
-				for (j = 0; j < enums.TACTICS.length; j++) {
-					if (enums.TACTICS[j] === 'Any') {
-						data2016[enums.ETHNICITY[i]][enums.TACTICS[j]] = filterRows2016(rows2016,
-							cols2016.ETHNICITY, enums.ETHNICITY[i]
-						).length / pop[enums.ETHNICITY[i]] * 100000;
-					} else {
-						data2016[enums.ETHNICITY[i]][enums.TACTICS[j]] = filterRows2016(rows2016,
-							cols2016.ETHNICITY, enums.ETHNICITY[i],
-							cols2016.TACTICS, enums.TACTICS[j]
-						).length / pop[enums.ETHNICITY[i]] * 100000;
+			var formatDataForChart = function (dataConfig) {
+				var rows = dataConfig.rows;
+				var cols = dataConfig.cols;
+				var filterRows = dataConfig.filters.filterRows;
+
+				var data = {};
+				var ethnicity;
+				var tactic;
+
+				var i, j;
+
+				for (i = 0; i < enums.ETHNICITY.length; i++) {
+					ethnicity = enums.ETHNICITY[i];
+
+					data[ethnicity] = {};
+					for (j = 0; j < enums.TACTICS.length; j++) {
+						tactic = enums.TACTICS[j];
+
+						if (tactic === 'Any') {
+							data[ethnicity][tactic] = filterRows(rows,
+								cols.ETHNICITY, ethnicity
+							).length / pop[ethnicity] * 100000;
+						} else {
+							data[ethnicity][tactic] = filterRows(rows,
+								cols.ETHNICITY, ethnicity,
+								cols.TACTICS, tactic
+							).length / pop[ethnicity] * 100000;
+						}
 					}
-
 				}
-			}
 
-			// Format 2017 data for bar charts
-			/////////////////////////////
+				return data;
+			};
 
-			var data2017 = {};
-			enums.ETHNICITY = ['Pākehā', 'Māori', 'Pacific'];
-			for (i = 0; i < enums.ETHNICITY.length; i++) {
-				data2017[enums.ETHNICITY[i]] = {};
-				for (j = 0; j < enums.TACTICS.length; j++) {
-					if (enums.TACTICS[j] === 'Any') {
-						data2017[enums.ETHNICITY[i]][enums.TACTICS[j]] = filterRows2017(rows2017,
-							cols2017.ETHNICITY, enums.ETHNICITY[i]
-						).length / pop[enums.ETHNICITY[i]] * 100000;
-					} else {
-						data2017[enums.ETHNICITY[i]][enums.TACTICS[j]] = filterRows2017(rows2017,
-							cols2017.ETHNICITY, enums.ETHNICITY[i],
-							cols2017.TACTICS, enums.TACTICS[j]
-						).length / pop[enums.ETHNICITY[i]] * 100000;
-					}
-
-				}
-			}
+			var data2016 = formatDataForChart(config2016);
+			var data2017a = formatDataForChart(config2017a);
 
 			// This data has been entered by hand,
 			// and is halved to make it directly comparable to July-December 2016
@@ -572,54 +597,41 @@ require(
 				}
 			};
 
-			var perPop2016 = {},
-				perPakeha2016 = {},
+			// Build perPop and perPakeha objects for updating bar charts
+			var perPop = {
+				'2014': {},
+				'2016': {},
+				'2017a': {}
+			};
 
-				perPop2017 = {},
-				perPakeha2017 = {},
+			var perPakeha = {
+				'2014': {},
+				'2016': {},
+				'2017a': {}
+			};
 
-				perPop2014 = {},
-				perPakeha2014 = {};
+			var years = ['2014', '2016', '2017a'];
+			var data = {
+				'2014': data2014,
+				'2016': data2016,
+				'2017a': data2017a
+			};
 
 			for (i = 0; i < enums.TACTICS.length; i++) {
-				perPop2016[enums.TACTICS[i]] = [];
-				perPakeha2016[enums.TACTICS[i]] = [];
+				for (j = 0; j < years.length; j++) {
+					perPop[years[j]][enums.TACTICS[i]] = [];
+					perPakeha[years[j]][enums.TACTICS[i]] = [];
 
-				perPop2017[enums.TACTICS[i]] = [];
-				perPakeha2017[enums.TACTICS[i]] = [];
+					for (k = 0; k < enums.ETHNICITY.length; k++) {
+						perPop[years[j]][enums.TACTICS[i]].push(
+							data[years[j]][enums.ETHNICITY[k]][enums.TACTICS[i]]
+						);
 
-				perPop2014[enums.TACTICS[i]] = [];
-				perPakeha2014[enums.TACTICS[i]] = [];
-
-				for (j = 0; j < enums.ETHNICITY.length; j++) {
-					perPop2016[enums.TACTICS[i]].push(
-						data2016[enums.ETHNICITY[j]][enums.TACTICS[i]]
-					);
-
-					perPakeha2016[enums.TACTICS[i]].push(
-						data2016[enums.ETHNICITY[j]][enums.TACTICS[i]] /
-						data2016[enums.ETHNICITY[0]][enums.TACTICS[i]] || 0
-					);
-
-
-					perPop2017[enums.TACTICS[i]].push(
-						data2017[enums.ETHNICITY[j]][enums.TACTICS[i]]
-					);
-
-					perPakeha2017[enums.TACTICS[i]].push(
-						data2017[enums.ETHNICITY[j]][enums.TACTICS[i]] /
-						data2017[enums.ETHNICITY[0]][enums.TACTICS[i]] || 0
-					);
-
-
-					perPop2014[enums.TACTICS[i]].push(
-						data2014[enums.ETHNICITY[j]][enums.TACTICS[i]]
-					);
-
-					perPakeha2014[enums.TACTICS[i]].push(
-						data2014[enums.ETHNICITY[j]][enums.TACTICS[i]] /
-						data2014[enums.ETHNICITY[0]][enums.TACTICS[i]] || 0
-					);
+						perPakeha[years[j]][enums.TACTICS[i]].push(
+							data[years[j]][enums.ETHNICITY[k]][enums.TACTICS[i]] /
+							data[years[j]][enums.ETHNICITY[0]][enums.TACTICS[i]] || 0
+						);
+					}
 				}
 			}
 
@@ -695,13 +707,11 @@ require(
 			///////////////////////////
 			update = function (year, tor) {
 				Charter.updateBarChart(
-					$('.js-bar-chart .js-chart')[0],
-					(year === '2014' ? perPop2014 : (year === '2017' ? perPop2017 : perPop2016))[tor]
+					$('.js-bar-chart .js-chart')[0], perPop[year][tor]
 				);
 
 				Charter.updateBarChart(
-					$('.js-standardised-bar-chart .js-chart')[0],
-					(year === '2014' ? perPakeha2014 : (year === '2017' ? perPakeha2017 : perPakeha2016))[tor]
+					$('.js-standardised-bar-chart .js-chart')[0], perPakeha[year][tor]
 				);
 			};
 
@@ -752,8 +762,8 @@ require(
 				$('.js-tor').eq(0).prop('checked', 'checked').trigger('change');
 			}, 100);
 		};
-		//////////////////////////////////////
-		// BUILD VISUALISATION SECTION ENDS //
-		//////////////////////////////////////
+
+		Analyser.loadFile('assets/data/Tactical Options 2016 - raw.csv', config2016, fileProcessed('2016'));
+		Analyser.loadFile('assets/data/Tactical Options 2017-01 - 2017-06 raw.csv', config2017a, fileProcessed('2017a'));
 	}
 );
