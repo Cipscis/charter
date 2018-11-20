@@ -582,8 +582,7 @@ require(
 
 		var buildVisualisation = function (combinedConfig, configs) {
 			var years = ['2016', '2017a', '2017b'],
-				enums = configs['2017a'].enums, // TODO: Used combined data, once combining data combines enums
-				// enums = combinedConfig.enums,
+				enums = combinedConfig.enums,
 
 				i, j, k;
 
