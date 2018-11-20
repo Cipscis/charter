@@ -16,6 +16,10 @@ require(
 		var arrayCols2017a;
 		var config2017a;
 
+		var cols2017b;
+		var arrayCols2017b;
+		var config2017b;
+
 		// July-December 2016 //
 		var init2016 = function () {
 			cols2016 = {
@@ -216,14 +220,116 @@ require(
 			};
 		};
 
+		// July-December 2017 //
+		var init2017b = function () {
+			cols2017b = {
+				ID: Analyser.getColNumber('A'),
+				MONTH: Analyser.getColNumber('C'),
+				YEAR: Analyser.getColNumber('D'),
+
+				DISTRICT: Analyser.getColNumber('F'),
+				AGE: Analyser.getColNumber('I'),
+				GENDER: Analyser.getColNumber('J'),
+				ETHNICITY: Analyser.getColNumber('K'),
+				SUBJECT_ARMED: Analyser.getColNumber('W'),
+				TACTICS: Analyser.getColNumber('Y'),
+
+				SPECIAL_POLICE_GROUPS: Analyser.getColNumber('G'),
+				INCIDENT_TYPE: Analyser.getColNumber('GM'),
+
+				// INJURY
+				INJURIES: Analyser.getColNumber('GO'),
+				INJURY_CAUSE_1: Analyser.getColNumber('GP'),
+				INJURY_CAUSE_2: Analyser.getColNumber('GU'),
+				INJURY_CAUSE_3: Analyser.getColNumber('GZ'),
+
+				INJURY_TREATMENT_REQUIRED_1: Analyser.getColNumber('GS'),
+				INJURY_TREATMENT_RECEIVED_1: Analyser.getColNumber('GT'),
+				INJURY_TREATMENT_REQUIRED_2: Analyser.getColNumber('GX'),
+				INJURY_TREATMENT_RECEIVED_2: Analyser.getColNumber('GY'),
+				INJURY_TREATMENT_REQUIRED_3: Analyser.getColNumber('HC'),
+				INJURY_TREATMENT_RECEIVED_3: Analyser.getColNumber('HD'),
+
+				// DOG
+				DOG_PCA_1: Analyser.getColNumber('CU'),
+				DOG_PCA_2: Analyser.getColNumber('CZ'),
+
+				DOG_BITTEN_1: Analyser.getColNumber('CV'),
+				DOG_BITTEN_2: Analyser.getColNumber('DA'),
+
+				DOG_LOCATION_TYPE_1: Analyser.getColNumber('CW'),
+				DOG_LOCATION_TYPE_2: Analyser.getColNumber('DB'),
+
+				DOG_LOCATION_DESCRIPTION_1: Analyser.getColNumber('CX'),
+				DOG_LOCATION_DESCRIPTION_2: Analyser.getColNumber('DC'),
+
+				DOG_EFFECT_1: Analyser.getColNumber('CY'),
+				DOG_EFFECT_2: Analyser.getColNumber('DD'),
+
+				// TASER
+				TASER_METHOD_1: Analyser.getColNumber('DI'),
+				TASER_METHOD_2: Analyser.getColNumber('DW'),
+				TASER_METHOD_3: Analyser.getColNumber('EK'),
+
+				TASER_PCA_1: Analyser.getColNumber('DF'),
+				TASER_PCA_2: Analyser.getColNumber('DT'),
+				TASER_PCA_3: Analyser.getColNumber('EH')
+			};
+
+			arrayCols2017b = {}
+			arrayCols2017b[cols2017b.TACTICS] = '\n';
+			arrayCols2017b[cols2017b.SPECIAL_POLICE_GROUPS] = ', ';
+
+			config2017b = {
+				headerRows: 2,
+				cols: cols2017b,
+				aliases: {
+					ETHNICITY: [
+						[
+							'Pacific', // Not represented in data, but used as a label
+							'Pacific Island',
+							'Pacific Islander',
+							'Other - European/Pacific Islander',
+							'Other - Maori/Polynesian',
+							'Other - Papau New Guinea',
+							'Other - Samoan'
+						],
+						[
+							'African',
+							'Native African (or cultural group of African origin)'
+						],
+						[
+							'Pākehā', // Not represented in data, but used as a label
+							'European',
+							'Maori / European',
+							'Other - European/Pacific Islander'
+						],
+						[
+							'Māori', // Not represented in data, but used as a label
+							'Maori',
+							'Maori / European',
+							'Other - Maori/Polynesian'
+						]
+						// Should 'Middle Eastern' and 'Other - ARAB' be combined?
+					]
+				},
+				arrayCols: arrayCols2017b,
+				enumsMap: {
+					TASER_METHOD: [cols2017b.TASER_METHOD_1, cols2017b.TASER_METHOD_2, cols2017b.TASER_METHOD_3],
+					TASER_TYPE: [cols2017b.TASER_TYPE_1, cols2017b.TASER_TYPE_2, cols2017b.TASER_TYPE_3]
+				}
+			};
+		};
+
 		var initConfigs = function () {
 			init2016();
 			init2017a();
+			init2017b();
 		};
 		initConfigs();
 
 		var numFilesProcessed = 0;
-		var numFilesToProcess = 2;
+		var numFilesToProcess = 3;
 
 		var finalConfig = {};
 
@@ -238,14 +344,14 @@ require(
 		};
 
 		var filesProcessed = function (separateConfig) {
-			var combinedConfig = Analyser.combineData(separateConfig['2016'], separateConfig['2017a']);
+			var combinedConfig = Analyser.combineData(separateConfig['2016'], separateConfig['2017a'], separateConfig['2017b']);
 
-			exploratoryAnalysis(combinedConfig, separateConfig['2016'], separateConfig['2017a']);
+			exploratoryAnalysis(combinedConfig, separateConfig['2016'], separateConfig['2017a'], separateConfig['2017b']);
 			// articleCheck(separateConfig['2017a']);
-			buildVisualisation(combinedConfig, separateConfig['2016'], separateConfig['2017a']);
+			buildVisualisation(combinedConfig, separateConfig['2016'], separateConfig['2017a'], separateConfig['2017b']);
 		};
 
-		var exploratoryAnalysis = function (combinedConfig, config2016, config2017a) {
+		var exploratoryAnalysis = function (combinedConfig, config2016, config2017a, config2017b) {
 			var config = config2017a;
 
 			var rows = config.rows,
@@ -470,7 +576,7 @@ require(
 			console.log('% force events at non MH incidents involving a taser: ', percent(nonMhForceTaser.length, nonMhForce.length));
 		};
 
-		var buildVisualisation = function (combinedConfig, config2016, config2017a) {
+		var buildVisualisation = function (combinedConfig, config2016, config2017a, config2017b) {
 			var rows2016 = config2016.rows,
 				cols2016 = config2016.cols,
 				filterRows2016 = config2016.filters.filterRows,
@@ -478,6 +584,10 @@ require(
 				rows2017a = config2017a.rows,
 				cols2017a = config2017a.cols,
 				filterRows2017a = config2017a.filters.filterRows,
+
+				rows2017b = config2017b.rows,
+				cols2017b = config2017b.cols,
+				filterRows2017b = config2017b.filters.filterRows,
 
 				enums = config2017a.enums,
 				// enums = combinedConfig.enums,
@@ -557,6 +667,7 @@ require(
 
 			var data2016 = formatDataForChart(config2016);
 			var data2017a = formatDataForChart(config2017a);
+			var data2017b = formatDataForChart(config2017b);
 
 			// This data has been entered by hand,
 			// and is halved to make it directly comparable to July-December 2016
@@ -601,20 +712,23 @@ require(
 			var perPop = {
 				'2014': {},
 				'2016': {},
-				'2017a': {}
+				'2017a': {},
+				'2017b': {}
 			};
 
 			var perPakeha = {
 				'2014': {},
 				'2016': {},
-				'2017a': {}
+				'2017a': {},
+				'2017b': {}
 			};
 
-			var years = ['2014', '2016', '2017a'];
+			var years = ['2014', '2016', '2017a', '2017b'];
 			var data = {
 				'2014': data2014,
 				'2016': data2016,
-				'2017a': data2017a
+				'2017a': data2017a,
+				'2017b': data2017b
 			};
 
 			for (i = 0; i < enums.TACTICS.length; i++) {
@@ -765,5 +879,6 @@ require(
 
 		Analyser.loadFile('assets/data/Tactical Options 2016 - raw.csv', config2016, fileProcessed('2016'));
 		Analyser.loadFile('assets/data/Tactical Options 2017-01 - 2017-06 raw.csv', config2017a, fileProcessed('2017a'));
+		Analyser.loadFile('assets/data/Tactical Options 2017-07 - 2017-12 raw.csv', config2017b, fileProcessed('2017b'));
 	}
 );
