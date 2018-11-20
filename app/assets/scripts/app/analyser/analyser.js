@@ -52,7 +52,7 @@ define(
 				// };
 
 				// arrayCols = {};
-				// arrayCols[cols.TACTICS] = null;
+				// arrayCols[cols.TACTICS] = ' ';
 
 				// aliases = {
 				// 	ETHNICITY: [
@@ -91,7 +91,7 @@ define(
 					row = dataConfig.rows[i];
 
 					for (j in fileConfig.arrayCols) {
-						row[j] = row[j].trim().split(fileConfig.arrayCols[j] || '\n');
+						row[j] = row[j].trim().split(fileConfig.arrayCols[j] || ' ');
 					}
 				}
 
@@ -341,7 +341,7 @@ define(
 					filterRowsAnd,
 					filterRowsOr;
 
-				filterRows = function (rows, andToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
+				filterRows = function (rows, orToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
 					// Takes in a rows object (imported from csv),
 					// a boolean specifying whether it's an "and" or an "or" filter,
 					// and any number of pairs (at least one) of
@@ -351,7 +351,7 @@ define(
 					// specified contains a value in the array of values given
 					// for all column and value pairs
 
-					var and = andToggle,
+					var and = !orToggle,
 						startAt = 2,
 
 						filteredRows = [],
