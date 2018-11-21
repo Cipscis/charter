@@ -581,10 +581,13 @@ require(
 		};
 
 		var buildVisualisation = function (combinedConfig, configs) {
-			var years = ['2016', '2017a', '2017b'],
+			var years = ['all', '2016', '2017a', '2017b'],
 				enums = combinedConfig.enums,
 
 				i, j, k;
+
+			// "all" includes all data from CSVs, but not the manually entered 2014 data
+			configs['all'] = combinedConfig;
 
 			// Introduce ethnicity population data
 			//////////////////////////////////////
