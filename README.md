@@ -477,7 +477,6 @@ console.log(countrySummaryWithAliases);
 {
 	New Zealand: 6,
 	Aotearoa: 1,
-	Thailand: 1,
 	Germany: 1,
 	Australia: 1
 }
@@ -486,7 +485,6 @@ console.log(countrySummaryWithAliases);
 ```javascript
 {
 	New Zealand: 7,
-	Thailand: 1,
 	Germany: 1,
 	Australia: 1
 }
@@ -556,10 +554,10 @@ console.table(capitalTable);
 
 *Output:*
 
-|(index)|New Zealand|Thailand|Germany|Australia|
-|-------|-----------|--------|-------|---------|
-|false|6|0|1|1|
-|true|1|1|0|0|
+|(index)|New Zealand|Germany|Australia|
+|-------|-----------|-------|---------|
+|false|6|1|1|
+|true|1|0|0|
 
 #### getComparisonSummaryString
 
@@ -584,9 +582,9 @@ console.log(capitalTableString);
 *Output:*
 
 ```
-	New Zealand	Thailand	Germany	Australia
-false	6	0	1	1
-true	1	1	0	0
+	New Zealand	Germany	Australia
+false	6	1	1
+true	1	0	0
 ```
 
 ### fileConfig
