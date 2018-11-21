@@ -632,7 +632,7 @@ define(
 			///////////////////
 			// SUMMARY TOOLS //
 			///////////////////
-			createSubTable: function (rows, cols) {
+			createSubTable: function (rows, cols, arraySeparator) {
 				// Takes in a set of rows and a cols object formatted like this:
 				// {
 				// 	ETHNICITY: 3,
@@ -647,6 +647,8 @@ define(
 					table,
 					i, row, newRow;
 
+				arraySeparator = arraySeparator || ', ';
+
 				table = [];
 				for (i = 0; i < rows.length; i++) {
 					row = rows[i];
@@ -655,7 +657,7 @@ define(
 					for (colName in cols) {
 						// Join arrays so they display in console.table
 						if (row[cols[colName]] instanceof Array) {
-							newRow[colName] = row[cols[colName]].join(', ');
+							newRow[colName] = row[cols[colName]].join(arraySeparator);
 						} else {
 							newRow[colName] = row[cols[colName]];
 						}
@@ -667,7 +669,7 @@ define(
 			},
 
 			createSubTableString: function (rows, cols) {
-				var table = Analyser.createSubTable(rows, cols);
+				var table = Analyser.createSubTable(rows, cols, ',');
 				var tableString = Analyser._convertTableToString(table);
 
 				return tableString;
