@@ -213,7 +213,6 @@ Analyser.loadFile(filePathB, fileConfigB, fileBLoaded);
 |----|-------|----------|
 |Auckland|New Zealand|1614|
 |Tāupo|Aotearoa|32.907|
-|Bangkok|Thailand|8281|
 |Hamburg|Germany|1810|
 |Sydney|Australia|4841|
 |Hamilton|New Zealand|161.2|
