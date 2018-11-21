@@ -725,6 +725,15 @@ define(
 			}
 		};
 
-		return Charter;
+		return {
+			getDisplayNumber: Charter.getDisplayNumber,
+
+			createTable: Charter.createTable,
+			createBarChart: Charter.createBarChart,
+			createLineGraph: Charter.createLineGraph,
+			createScatterPlot: Charter.createScatterPlot,
+
+			updateBarChart: Charter.updateBarChart
+		};
 	}
 );
