@@ -39,8 +39,16 @@ define(
 				IO.saveFile(data, filename, 'application/json');
 			},
 
-			saveCsv: function (data, filename) {
+			saveCsv: function (data, filename, transpose) {
 				// Data expected as an array of arrays
+
+				if (transpose) {
+					data = data[0].map(function (col, i) {
+						return data.map(function (row) {
+							return row[i];
+						});
+					});
+				}
 
 				for (var i = 0; i < data.length; i++) {
 					data[i] = data[i].join(',');
@@ -48,6 +56,7 @@ define(
 				data = data.join('\n');
 
 				filename = filename + '.csv';
+
 				IO.saveFile(data, filename, 'text/csv');
 			},
 
