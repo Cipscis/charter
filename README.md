@@ -287,7 +287,7 @@ console.log(cityNames);
 *Output:*
 
 ```javascript
-['Auckland', 'Tāupo', 'Bangkok', 'Hamburg', 'Sydney', 'Hamilton', 'Wellington', 'Christchurch', 'Dunedin', 'Tauranga']
+['Auckland', 'Tāupo', 'Hamburg', 'Sydney', 'Hamilton', 'Wellington', 'Christchurch', 'Dunedin', 'Tauranga']
 ```
 
 #### getDerivedCol
@@ -357,7 +357,6 @@ console.log(table);
 |----|-------|----------|-------|----------------|--------------|
 |Auckland|New Zealand|1614|false|Bus,Train|1614000|
 |Tāupo|Aotearoa|32.907|false|Bus,Train|32907|
-|Bangkok|Thailand|8281|true|Bus,Train,Subway|8281000|
 |Hamburg|Germany|1810|false|Bus,Train,Ferry|1810000|
 |Sydney|Australia|4841|false|Bus,Train,Ferry|4841000|
 |Hamilton|New Zealand|161.2|false|Bus|161200|
@@ -399,7 +398,6 @@ console.table(summaryTable);
 |-------|----|----------|
 |0|Auckland|1614|
 |1|Tāupo|32.907|
-|2|Bangkok|8281|
 |3|Hamburg|1810|
 |4|Sydney|4841|
 |5|Hamilton|161.2|
@@ -437,7 +435,6 @@ console.log(summaryTableString);
 |----|----------|
 |Auckland|1614|
 |Tāupo|32.907|
-|Bangkok|8281|
 |Hamburg|1810|
 |Sydney|4841|
 |Hamilton|161.2|
