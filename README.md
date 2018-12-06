@@ -59,16 +59,16 @@ The example data, found in the files ```city example.csv``` and ```city example 
 #### loadFile
 
 ```javascript
-loadFile(filePath, fileConfig, callback)
+loadFile(fileInfo, fileConfig, callback)
 ```
 
-loadFile requests a file at the specified path via a GET request. It parses the CSV using [papaparse](https://www.papaparse.com/), then processes it internally according to the ```fileConfig``` object passed in before passing the processed ```dataConfig``` object to a specified ```callback``` function.
+loadFile either requests a file at the specified path via a GET request, or processes a file that has already been loaded, such as via a file input. It parses the CSV using [papaparse](https://www.papaparse.com/), then processes it internally according to the ```fileConfig``` object passed in before passing the processed ```dataConfig``` object to a specified ```callback``` function.
 
 When processing the data, Analyser will try to intelligently determine which cells contain numbers and which contain strings. Cells that seem to contain percentages will be converted to numbers, e.g. "50%" becomes ```0.5```.
 
 When converting numbers, it will assume the ```.``` character is used as a decimal point, and the ```,``` character may be used when representing numbers as a string but will be ignored. Some cultures use these characters differently when representing numbers, for example three hundred thousand and a quarter could be represented as ```300.000,25```. This form of numeric representation is **not supported**, so if it is used in your data be sure to convert it before processing it with Analyser.
 
-```filePath``` is a string representing the URL of a CSV file to load.
+```fileInfo``` is either a string representing the URL of a CSV file to load or a ```File``` object.
 
 ```fileConfig``` is a JavaScript object containing information on how the data should be processed. See the [fileConfig](#fileConfig) section for more information.
 
