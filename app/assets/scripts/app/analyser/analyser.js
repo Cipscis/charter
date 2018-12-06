@@ -8,18 +8,39 @@ define(
 			/////////////////////
 			// FILE PROCESSING //
 			/////////////////////
-			loadFile: function (filePath, fileConfig, callback) {
+			loadFile: function (fileInfo, fileConfig, callback) {
+				if (fileInfo instanceof File) {
+					Analyser._fileToString(fileInfo, fileConfig, callback);
+				}
+
 				var xhr = new XMLHttpRequest();
-				xhr.open('GET', filePath);
+				xhr.open('GET', fileInfo);
 				xhr.onload = function () {
 					if (xhr.status === 200) {
-						Analyser._fileLoaded(fileConfig, callback, xhr.responseText);
+						Analyser._fileLoaded(xhr.responseText, fileConfig, callback);
 					}
 				};
 				xhr.send();
 			},
 
-			_fileLoaded: function (fileConfig, callback, csv) {
+			_fileToString: function (file, fileConfig, callback) {
+				// Takes in a File object and converts it to a string,
+				// then passes it to _fileLoaded
+
+				var reader = new FileReader();
+				reader.onload = function (evt) {
+					if (reader.readyState === 2) { // DONE
+						Analyser._fileLoaded(reader.result, fileConfig, callback);
+					}
+				};
+
+				reader.readAsText(file);
+			},
+
+			_fileLoaded: function (csv, fileConfig, callback) {
+				// Clear any empty lines at the end
+				csv = csv.replace(/(\n\s*)+$/, '');
+
 				Analyser._parseCsv(csv, Analyser._fileParsed(fileConfig, callback));
 			},
 
