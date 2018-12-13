@@ -8,7 +8,7 @@ define(
 			/////////////////////
 			// FILE PROCESSING //
 			/////////////////////
-			loadFile: function (fileInfo, fileConfig, callback) {
+			_loadFile: function (fileInfo, fileConfig, callback) {
 				if (fileInfo instanceof File) {
 					Analyser._fileToString(fileInfo, fileConfig, callback);
 				}
@@ -21,6 +21,47 @@ define(
 					}
 				};
 				xhr.send();
+			},
+
+			loadFile: function (fileInfo1, fileConfig1, fileInfo2, fileConfig2, fileInfoN, fileConfigN, callback) {
+				// options should be an array containing objects which each have
+				// a fileInfo, and fileConfig. These will be passed into loadFile
+				// for each item in the array
+				var fileInfo;
+				var fileConfig;
+				var i;
+
+				var dataConfigArray = [];
+
+				var filesToLoad;
+				var filesLoaded = 0;
+
+				if (arguments.length < 3) {
+					console.error('Insufficient arguments provided to loadFile:', arguments);
+				} else if ((arguments.length % 2) === 0) {
+					console.error('Incorrect number of arguments provided to loadFile:', arguments);
+				}
+
+				filesToLoad = (arguments.length - 1) / 2;
+				callback = arguments[arguments.length-1];
+
+				var onFileLoad = function (i) {
+					return function (dataConfig) {
+						dataConfigArray[i] = dataConfig;
+
+						filesLoaded += 1;
+						if (filesLoaded >= filesToLoad) {
+							callback.apply(undefined, dataConfigArray);
+						}
+					};
+				};
+
+				for (i = 0; i < filesToLoad; i++) {
+					fileInfo = arguments[i*2];
+					fileConfig = arguments[i*2+1];
+
+					Analyser._loadFile(fileInfo, fileConfig, onFileLoad(i));
+				}
 			},
 
 			_fileToString: function (file, fileConfig, callback) {
@@ -621,7 +662,7 @@ define(
 				return derivedCol;
 			},
 
-			_addCol: function (rows, col) {
+			addCol: function (rows, col) {
 				// Edits the passed rows array to add an extra column
 				// to it, then returns the index of that new column
 
@@ -642,12 +683,12 @@ define(
 
 			addDerivedCol: function (rows, callback, optionalCol1, optionalCol2, optionalColN) {
 				// Works like getDerivedCol, but instead of returning
-				// the derived column directly it uses _addCol to add
+				// the derived column directly it uses addCol to add
 				// it to rows and returns the new column index.
 
 				var derivedCol = Analyser.getDerivedCol.apply(this, arguments);
 
-				return Analyser._addCol(rows, derivedCol);
+				return Analyser.addCol(rows, derivedCol);
 			},
 
 			///////////////////
@@ -932,11 +973,13 @@ define(
 
 		return {
 			loadFile: Analyser.loadFile,
+			loadFiles: Analyser.loadFiles,
 			combineData: Analyser.combineData,
 
 			getColNumber: Analyser.getColNumber,
 			getCol: Analyser.getCol,
 
+			addCol: Analyser.addCol,
 			getDerivedCol: Analyser.getDerivedCol,
 			addDerivedCol: Analyser.addDerivedCol,
 

@@ -107,7 +107,7 @@ define(
 				}
 			},
 
-			getDisplayNumber: function (number, axisConfig) {
+			_getDisplayNumber: function (number, axisConfig) {
 				// TODO: Allow minimum significant figures to be specified,
 				// so toFixed can be calculated for small scales
 
@@ -270,7 +270,7 @@ define(
 
 				for (i = 0; i <= axisConfig.gridlines; i++) {
 					value = ((max-min) * i / axisConfig.gridlines) + min;
-					displayValue = Charter.getDisplayNumber(value, axisConfig);
+					displayValue = Charter._getDisplayNumber(value, axisConfig);
 
 					axis.gridlines.push({
 						value: value,
@@ -281,7 +281,7 @@ define(
 
 				for (i = 0; i <= axisConfig.values; i++) {
 					value = ((max-min) * i / axisConfig.values) + min;
-					displayValue = Charter.getDisplayNumber(value, axisConfig);
+					displayValue = Charter._getDisplayNumber(value, axisConfig);
 
 					axis.values.push({
 						value: value,
@@ -293,7 +293,7 @@ define(
 				if (axisConfig.valuesAt.length) {
 					for (i = 0; i < axisConfig.valuesAt.length; i++) {
 						value = ((max-min) * (axisConfig.valuesAt[i] / max)) + min;
-						displayValue = Charter.getDisplayNumber(value, axisConfig);
+						displayValue = Charter._getDisplayNumber(value, axisConfig);
 
 						axis.gridlines.push({
 							value: value,
@@ -397,7 +397,7 @@ define(
 						dataPoint = dataSeries.dataPoints[j];
 
 						// Add commas for display values
-						dataPoint.displayValue = Charter.getDisplayNumber(dataPoint.value, axisConfig);
+						dataPoint.displayValue = Charter._getDisplayNumber(dataPoint.value, axisConfig);
 						dataPoint.label = chartData.labels[j];
 					}
 				}
@@ -568,23 +568,37 @@ define(
 			///////////////////////
 			// CREATING DISPLAYS //
 			///////////////////////
-			createTable: function (rows) {
+			createTable: function (rows, cols) {
 				// Create the necessary data structure to build a table of the data
 
-				var data = {
-						headers: rows[0],
-						rows: []
-					},
-					row,
-					i, j;
+				var reverseColMap = {};
+				var headers = [];
 
-				for (i = 1; i < rows.length; i++) {
+				var data;
+				var row;
+				var i, j;
+
+				for (i in cols) {
+					reverseColMap[cols[i]] = i;
+				}
+				for (i = 0; i < rows.length; i++) {
+					if (typeof reverseColMap[i] !== 'undefined') {
+						headers.push(reverseColMap[i]);
+					}
+				}
+
+				data = {
+					headers: headers,
+					rows: []
+				};
+
+				for (i = 0; i < rows.length; i++) {
 					row = {
 						cells: []
 					};
 
-					for (j = 0; j < rows[i].length; j++) {
-						row.cells.push(rows[i][j]);
+					for (j in cols) {
+						row.cells.push(rows[i][cols[j]]);
 					}
 
 					data.rows.push(row);
@@ -707,13 +721,13 @@ define(
 					.data(data);
 				bars
 					.style(axisConfig.horizontal ? 'width' : 'height', function (d) { return x(d) + '%'; })
-					.attr('title', function (d) { return Charter.getDisplayNumber(d, axisConfig); });
+					.attr('title', function (d) { return Charter._getDisplayNumber(d, axisConfig); });
 
 
 				tooltips = chart.selectAll('.js-chart-tooltip')
 					.data(data);
 				tooltips
-					.text(function (d) { return Charter.getDisplayNumber(d, axisConfig); });
+					.text(function (d) { return Charter._getDisplayNumber(d, axisConfig); });
 
 
 				if (titleText) {
@@ -726,8 +740,6 @@ define(
 		};
 
 		return {
-			getDisplayNumber: Charter.getDisplayNumber,
-
 			createTable: Charter.createTable,
 			createBarChart: Charter.createBarChart,
 			createLineGraph: Charter.createLineGraph,
