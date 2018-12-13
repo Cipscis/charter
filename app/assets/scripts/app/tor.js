@@ -333,29 +333,15 @@ require(
 
 		var finalConfig = {};
 
-		var fileProcessed = function (id) {
-			return function (config) {
-				numFilesProcessed++;
-				finalConfig[id] = config;
-				if (numFilesProcessed >= numFilesToProcess) {
-					filesProcessed(finalConfig);
-				}
-			};
+		var filesProcessed = function (config2016, config2017a, config2017b) {
+			var combinedConfig = Analyser.combineData(config2016, config2017a, config2017b);
+
+			// exploratoryAnalysis(combinedConfig, config2016, config2017a, config2017b);
+			// articleCheck(config2017a);
+			buildVisualisation(combinedConfig, config2016, config2017a, config2017b);
 		};
 
-		var filesProcessed = function (configs) {
-			var combinedConfig = Analyser.combineData(configs['2016'], configs['2017a'], configs['2017b']);
-
-			exploratoryAnalysis(combinedConfig, configs);
-			// articleCheck(configs['2017a']);
-			buildVisualisation(combinedConfig, configs);
-		};
-
-		var exploratoryAnalysis = function (combinedConfig, configs) {
-			var config2016 = configs['2016'],
-				config2017a = configs['2017a'],
-				config2017b = configs['2017b'];
-
+		var exploratoryAnalysis = function (combinedConfig, config2016, config2017a, config2017b) {
 			var config = config2017a;
 
 			var rows = config.rows,
@@ -580,11 +566,19 @@ require(
 			console.log('% force events at non MH incidents involving a taser: ', percent(nonMhForceTaser.length, nonMhForce.length));
 		};
 
-		var buildVisualisation = function (combinedConfig, configs) {
+		var buildVisualisation = function (combinedConfig, config2016, config2017a, config2017b) {
+			var configs = {
+				'2016': config2016,
+				'2017a': config2017a,
+				'2017b': config2017b
+			};
+
 			var years = ['all', '2016', '2017a', '2017b'],
 				enums = combinedConfig.enums,
 
 				i, j, k;
+
+			console.log(configs['2016'].rows.length);
 
 			// "all" includes all data from CSVs, but not the manually entered 2014 data
 			configs['all'] = combinedConfig;
@@ -860,8 +854,10 @@ require(
 			}, 100);
 		};
 
-		Analyser.loadFile('assets/data/Tactical Options 2016 - raw.csv', config2016, fileProcessed('2016'));
-		Analyser.loadFile('assets/data/Tactical Options 2017-01 - 2017-06 raw.csv', config2017a, fileProcessed('2017a'));
-		Analyser.loadFile('assets/data/Tactical Options 2017-07 - 2017-12 raw.csv', config2017b, fileProcessed('2017b'));
+		Analyser.loadFile(
+			'assets/data/Tactical Options 2016 - raw.csv', config2016,
+			'assets/data/Tactical Options 2017-01 - 2017-06 raw.csv', config2017a,
+			'assets/data/Tactical Options 2017-07 - 2017-12 raw.csv', config2017b,
+			filesProcessed);
 	}
 );
