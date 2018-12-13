@@ -183,12 +183,7 @@ $z-legend: 4;
 // LEGEND //
 ////////////
 .chart__legend {
-	// @include bp("m") {
-	// 	position: absolute;
-	// }
 	z-index: $z-legend;
-	top: 40px + ($axis-text-size * 1.5);
-	right: 0;
 
 	margin: 0;
 
@@ -197,11 +192,6 @@ $z-legend: 4;
 		display: table;
 		clear: both;
 	}
-}
-
-.chart__legend--left {
-	right: auto;
-	left: 60px;
 }
 
 .chart__legend-name {
