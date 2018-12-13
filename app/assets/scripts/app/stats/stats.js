@@ -58,6 +58,11 @@ define(
 				return variance;
 			},
 
+			sd: function (values) {
+				// Standard Variation
+				return Math.sqrt(Stats.variance(values));
+			},
+
 			max: function (values) {
 				var maxValue = values[0],
 					i, value;
@@ -106,9 +111,47 @@ define(
 				return range;
 			},
 
-			sd: function (values) {
-				// Standard Variation
-				return Math.sqrt(Stats.variance(values));
+			linearLeastSquares: function (y, x) {
+				// Takes in an array of values y, and optionally
+				// an equal length array of values x (if x is
+				// undefined it will be calculated as an even
+				// distribution from 0 to 100 of equal length to y)
+				// and calculates the corresponding y values for a
+				// linear least squares regression fit, returning
+				// an array of these values for the corresponding
+				// values given in or calculated for x
+
+				var i, fitY,
+
+					r,
+					sdY, sdX,
+					yMean, xMean,
+					a, b;
+
+				if (typeof x === 'undefined') {
+					// If x is undefined, assume even distribution
+					// from 0 to 100 of same length as y
+					x = [];
+					for (i = 0; i < y.length; i++) {
+						x.push(i / (y.length-1) * 100);
+					}
+				}
+
+				r = Stats.r(y, x);
+				sdY = Stats.sd(y);
+				sdX = Stats.sd(x);
+				yMean = Stats.mean(y);
+				xMean = Stats.mean(x);
+
+				b = r * sdY / sdX;
+				a = yMean - (b * xMean);
+
+				fitY = [];
+				for (i = 0; i < x.length; i++) {
+					fitY.push(a + b*x[i]);
+				}
+
+				return fitY;
 			},
 
 			r: function (y, x) {
@@ -137,48 +180,6 @@ define(
 				r = ((x.length * xySum) - (xSum * ySum)) / Math.sqrt(((x.length * xxSum) - Math.pow(xSum, 2)) * ((x.length * yySum) - Math.pow(ySum, 2)));
 
 				return r;
-			},
-
-			linearLeastSquares: function (y, x) {
-				// Takes in an array of values y, and optionally
-				// an equal length array of values x (if x is
-				// undefined it will be calculated as an even
-				// distribution from 0 to 100 of equal length to y)
-				// and calculates the corresponding y values for a
-				// linear least squares regression fit, returning
-				// an array of these values for the corresponding
-				// values given in or calculated for x
-
-				var i, fitY,
-
-					r,
-					sdY, sdX,
-					yMean, xMean,
-					a, b;
-
-				if (typeof x === 'undefined') {
-					// If x is undefined, assume even distribution from 0 to 100
-					x = [];
-					for (i = 0; i < y.length; i++) {
-						x.push(i / (y.length-1) * 100);
-					}
-				}
-
-				r = Stats.r(y, x);
-				sdY = Stats.sd(y);
-				sdX = Stats.sd(x);
-				yMean = Stats.mean(y);
-				xMean = Stats.mean(x);
-
-				b = r * sdY / sdX;
-				a = yMean - (b * xMean);
-
-				fitY = [];
-				for (i = 0; i < x.length; i++) {
-					fitY.push(a + b*x[i]);
-				}
-
-				return fitY;
 			},
 
 			r2: function (y, rY) {
@@ -236,6 +237,24 @@ define(
 			}
 		};
 
-		return Stats;
+		return {
+			sum: Stats.sum,
+			mean: Stats.mean,
+			median: Stats.median,
+
+			variance: Stats.variance,
+			sd: Stats.sd,
+
+			max: Stats.max,
+			min: Stats.min,
+			intRange: Stats.intRange,
+
+			linearLeastSquares: Stats.linearLeastSquares,
+			r: Stats.r,
+			r2: Stats.r2,
+
+			smooth: Stats.smooth,
+			chunk: Stats.chunk
+		};
 	}
 );

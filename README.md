@@ -1,8 +1,8 @@
 The Charter repository is a set of three tools for analysing and visualising data in JavaScript and HTML:
 
 - [Analyser](#analyser): Processes data from CSV files and allows it to be analysed
-- [Stats](#stats): A set of utility functions for analysing data
 - [Charter](#charter): Takes in formatted data and uses it to visualise data in HTML
+- [Stats](#stats): A set of utility functions for analysing data
 
 ## Analyser
 
@@ -47,6 +47,7 @@ The example data, found in the files ```city example.csv``` and ```city example 
 - [combineData](#combineData)
 - [getColNumber](#getColNumber)
 - [getCol](#getCol)
+- [addCol](#addCol)
 - [getDerivedCol](#getDerivedCol)
 - [addDerivedCol](#addDerivedCol)
 - [createSubTable](#createSubTable)
@@ -59,18 +60,20 @@ The example data, found in the files ```city example.csv``` and ```city example 
 #### loadFile
 
 ```javascript
-loadFile(fileInfo, fileConfig, callback)
+loadFile(fileInfo1, fileConfig1, fileInfo2, fileConfig2, fileInfoN, fileConfigN, callback)
 ```
 
-loadFile either requests a file at the specified path via a GET request, or processes a file that has already been loaded, such as via a file input. It parses the CSV using [papaparse](https://www.papaparse.com/), then processes it internally according to the ```fileConfig``` object passed in before passing the processed ```dataConfig``` object to a specified ```callback``` function.
+```loadFile``` takes in one or more pairs of ```fileInfo``` and ```fileConfig``` arguments, followed by a single ```callback```.
+
+For each specified file, ```loadFile``` either requests a file at the specified path via a GET request, or processes a file that has already been loaded, such as via a file input. It parses the CSV using [papaparse](https://www.papaparse.com/), then processes it internally according to the ```fileConfig``` object passed in before passing the processed ```dataConfig``` object to a specified ```callback``` function.
 
 When processing the data, Analyser will try to intelligently determine which cells contain numbers and which contain strings. Cells that seem to contain percentages will be converted to numbers, e.g. "50%" becomes ```0.5```.
 
 When converting numbers, it will assume the ```.``` character is used as a decimal point, and the ```,``` character may be used when representing numbers as a string but will be ignored. Some cultures use these characters differently when representing numbers, for example three hundred thousand and a quarter could be represented as ```300.000,25```. This form of numeric representation is **not supported**, so if it is used in your data be sure to convert it before processing it with Analyser.
 
-```fileInfo``` is either a string representing the URL of a CSV file to load or a ```File``` object.
+```fileInfo``` arguments are either a string representing the URL of a CSV file to load or a ```File``` object.
 
-```fileConfig``` is a JavaScript object containing information on how the data should be processed. See the [fileConfig](#fileConfig) section for more information.
+```fileConfig``` arguments are a JavaScript object containing information on how the data should be processed. See the [fileConfig](#fileConfig) section for more information.
 
 ```callback(dataConfig)``` is a function that will receive a ```dataConfig``` object representing the processed data. See the [dataConfig](#dataConfig) section for more information.
 
@@ -167,28 +170,7 @@ var fileConfigB = {
 };
 var filePathB = '/assets/data/city example 2.csv';
 
-var filesLoaded = 0;
-
-var dataConfigA;
-var dataConfigB;
-
-var fileALoaded = function (dataConfig) {
-	dataConfigA = dataConfig;
-	filesLoaded += 1;
-	if (filesLoaded === 2) {
-		bothFilesLoaded();
-	}
-};
-
-var fileBLoaded = function (dataConfig) {
-	dataConfigB = dataConfig;
-	filesLoaded += 1;
-	if (filesLoaded === 2) {
-		bothFilesLoaded();
-	}
-};
-
-var bothFilesLoaded = function () {
+var filesLoaded = function (dataConfigA, dataConfigB) {
 	var combinedDataConfig = Analyser.combineData(dataConfigA, dataConfigB);
 	analyseCombinedData(combinedDataConfig);
 };
@@ -203,8 +185,11 @@ var analyseCombinedData = function (dataConfig) {
 	console.log(table);
 };
 
-Analyser.loadFile(filePathA, fileConfigA, fileALoaded);
-Analyser.loadFile(filePathB, fileConfigB, fileBLoaded);
+Analyser.loadFile(
+	filePathA, fileConfigA,
+	filePathB, fileConfigB,
+	filesLoaded
+);
 ```
 
 *output:*
@@ -290,6 +275,66 @@ console.log(cityNames);
 ['Auckland', 'Tāupo', 'Hamburg', 'Sydney', 'Hamilton', 'Wellington', 'Christchurch', 'Dunedin', 'Tauranga']
 ```
 
+#### addCol
+
+```javascript
+addCol(rows, col)
+```
+
+Adds a new column to the set of rows, and returns the index of the new column so it can be added to the ```cols``` object and used to continue accessing the new column.
+
+```rows``` is an array of rows from a ```dataConfig``` object.
+
+```col``` is an array of the same length as ```rows```.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var previousYearPopulation = Analyser.getCol(rows, cols.POPULATION);
+
+previousYearPopulation.pop();
+rows.shift();
+
+cols.POPULATION_PREVIOUS = Analyser.addCol(rows, previousYearPopulation);
+
+var table = Analyser.createSubTableString(rows, cols);
+console.log(table);
+```
+
+*Output:*
+
+|YEAR|POPULATION|POPULATION_PREVIOUS|
+|----|----------|-------------------|
+|1992|3552200|3516000|
+|1993|3597800|3552200|
+|1994|3648300|3597800|
+|1995|3706700|3648300|
+|1996|3762300|3706700|
+|1997|3802700|3762300|
+|1998|3829200|3802700|
+|1993|3851100|3829200|
+|2000|3873100|3851100|
+|2001|3916200|3873100|
+|2002|3989500|3916200|
+|2003|4061600|3989500|
+|2004|4114300|4061600|
+|2005|4161000|4114300|
+|2006|4209100|4161000|
+|2007|4245700|4209100|
+|2008|4280300|4245700|
+|2009|4332100|4280300|
+|2010|4373900|4332100|
+|2011|4399400|4373900|
+|2012|4425900|4399400|
+|2013|4475800|4425900|
+|2014|4554600|4475800|
+|2015|4647300|4554600|
+|2016|4747200|4647300|
+|2017|4844400|4747200|
+
 #### getDerivedCol
 
 ```javascript
@@ -332,7 +377,7 @@ console.log(rawPopulation);
 addDerivedCol(rows, processFn, optionalCol1, optionalCol2, optionalColN)
 ```
 
-Does the same thing as ```getDerivedCol```, except the column that is created is added to each row in the ```rows``` array. The return value of ```addDerivedCol``` is the index of the new column, so it can be added to the ```cols``` object and used to continue accessing the new column.
+```Creates a new column as per ```getDerivedCol```, then passes it in to ```addCol``` and returns the index of the new column.
 
 *Example:*
 
@@ -888,3 +933,654 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));
 ```javascript
 ['Auckland', 'Hamburg', 'Sydney', 'Wellington']
 ```
+
+## Charter
+
+### Use
+
+Charter contains methods for generating HTML charts. These charts are intended to be accompanied by the CSS generated for them via ```_chart.scss```.
+
+These methods take in a ```chartData``` object, a ```numericAxisConfig``` for the independent axis, and a ```qualitativeAxisConfig``` for the dependent axis. The ```chartData``` object in turn contains an array of ```dataSeries``` objects.
+
+Some properties of these objects are only used by some types of charts.
+
+#### chartData
+
+```javascript
+{
+	title: 'Chart title',
+	showLegend: true,
+	showTooltips: true,
+	labels: ['Label 1', 'Label 2'],
+	dataSeries: [
+		{
+			name: 'dataSeriesName',
+			color: '#fff',
+			dataPoints: [1, 2]
+		}
+	],
+	stacked: true,
+	horizontal: true,
+	smoothing: 2
+}
+```
+
+```title``` is a string that will appear above the chart.
+
+```showLegend``` is a boolean value that, if true, will cause a legend to be rendered between the title and the chart.
+
+```showTooltips``` is a boolean value used only for bar charts. If true, the value of each bar will always be display at the end of each bar.
+
+If false, this value will only be shown when a bar is hovered over or is clicked on (the tooltip will remain shown so long as the bar retains keyboard focus).
+
+```labels``` is an array of strings to be used as the labels on the independent axis.
+
+```dataSeries``` is an array of ```dataSeries``` objects.
+
+```stacked``` is a boolean value used only for bar charts. If true, multiple ```dataSeries``` will be displayed as bars stacked on top of one another, instead the default display of having them next to each other within the same label.
+
+```horizontal``` is a boolean value used only for bar charts. If true, the independent axis will be the vertical axis, with bars extending from left to right instead of from top to bottom.
+
+```smoothing``` is an integer used only for line graphs and scatter plots. If set, the data will be smoothed using a rolling average of the specified size.
+
+#### dataSeries
+
+```javascript
+{
+	name: 'dataSeriesName',
+	color: '#fff',
+	dataPoints: [1, 2]
+}
+```
+
+```name``` is a string that will be used in a legend if one is shown.
+
+```color``` is the colour used to denote the data in this ```dataSeries``` on the chart. If unset, it will default to the colour set in the CSS (#999 in this project).
+
+```dataPoints``` is an array of numbers - the data you want to draw on the chart.
+
+#### numericAxisConfig
+
+```javascript
+{
+	values: 5,
+	valuesAt: [],
+	gridlines: null,
+
+	showTooltips: false,
+
+	toFixed: 0,
+	percentage: false,
+
+	roundTo: null,
+
+	min: 0,
+	max: null
+}
+```
+
+#### qualitativeAxisConfig
+
+```javascript
+{
+	valuesEvery: 1,
+	valuesSkip: 0,
+
+	gridlinesEvery: null,
+	gridlinesSkip: null
+}
+```
+
+## Stats
+
+### Use
+
+```Stats``` contains a number of utility functions for common tasks when dealing with sets of numbers.
+
+### Methods
+
+- [sum](#sum)
+- [mean](#mean)
+- [median](#median)
+- [variance](#variance)
+- [sd](#sd)
+- [max](#max)
+- [min](#min)
+- [intRange](#intRange)
+- [linearLeastSquares](#linearLeastSquares)
+- [r](#r)
+- [r2](#r2)
+- [smooth](#smooth)
+- [chunk](#chunk)
+
+#### sum
+
+```javascript
+sum(values)
+```
+
+Returns the sum of the set of numbers in the ```values``` array.
+
+```values``` is an array of numbers.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var populations = Analyser.getCol(rows, cols.POPULATION);
+var totalPopulation = Stats.sum(populations);
+
+console.log(populations);
+console.log(totalPopulation);
+```
+
+*Output:*
+
+```
+[1614, 32.907, 1810, 4841, 161.2, 381.9, 363.926, 114.347, 110.338]
+9429.617999999999
+```
+
+#### mean
+
+```javascript
+mean(values)
+```
+
+Calculates the mean average of the set of numbers in the ```values``` array.
+
+```values``` is an array of numbers.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var populations = Analyser.getCol(rows, cols.POPULATION);
+var meanPopulation = Stats.mean(populations);
+
+console.log(populations);
+console.log(meanPopulation);
+```
+
+*Output:*
+
+```
+[1614, 32.907, 1810, 4841, 161.2, 381.9, 363.926, 114.347, 110.338]
+1047.735333333333
+```
+
+#### median
+
+```javascript
+median(values)
+```
+
+Calculates the median average of the set of numbers in the ```values``` array.
+
+```values``` is an array of numbers.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var populations = Analyser.getCol(rows, cols.POPULATION);
+var medianPopulation = Stats.median(populations);
+
+console.log(populations);
+console.log(medianPopulation);
+```
+
+*Output:*
+
+```
+[1614, 32.907, 1810, 4841, 161.2, 381.9, 363.926, 114.347, 110.338]
+363.926
+```
+
+#### variance
+
+```javascript
+variance(values)
+```
+
+Calculates the variance of the set of numbers in the ```values``` array.
+
+```values``` is an array of numbers.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var populations = Analyser.getCol(rows, cols.POPULATION);
+var populationVariance = Stats.variance(populations);
+
+console.log(populations);
+console.log(populationVariance);
+```
+
+*Output:*
+
+```
+[1614, 32.907, 1810, 4841, 161.2, 381.9, 363.926, 114.347, 110.338]
+2470905.1007927503
+```
+
+#### sd
+
+```javascript
+sd(values)
+```
+
+Calculates the standard deviation of the set of numbers in the ```values``` array.
+
+```values``` is an array of numbers.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var populations = Analyser.getCol(rows, cols.POPULATION);
+var populationSD = Stats.sd(populations);
+
+console.log(populations);
+console.log(populationSD);
+```
+
+*Output:*
+
+```
+[1614, 32.907, 1810, 4841, 161.2, 381.9, 363.926, 114.347, 110.338]
+1571.9112890976864
+```
+
+#### max
+
+```javascript
+max(values)
+```
+
+Calculates the maximum of the set of numbers in the ```values``` array.
+
+```values``` is an array of numbers.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var populations = Analyser.getCol(rows, cols.POPULATION);
+var populationMax = Stats.max(populations);
+
+console.log(populations);
+console.log(populationMax);
+```
+
+*Output:*
+
+```
+[1614, 32.907, 1810, 4841, 161.2, 381.9, 363.926, 114.347, 110.338]
+4841
+```
+
+#### min
+
+```javascsript
+min(values)
+```
+
+Calculates the minimum of the set of numbers in the ```values``` array.
+
+```values``` is an array of numbers.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var populations = Analyser.getCol(rows, cols.POPULATION);
+var min = Stats.min(populations);
+
+console.log(populations);
+console.log(min);
+```
+
+*Output:*
+
+```
+[1614, 32.907, 1810, 4841, 161.2, 381.9, 363.926, 114.347, 110.338]
+32.907
+```
+
+#### intRange
+
+```javascript
+intRange(start, finish)
+```
+
+Creates an array of integers from a ```start``` value to a ```finish``` value.
+
+```start``` is a number. If it isn't an integer, it will be converted to one first via ```Math.round```.
+
+```finish``` is a number. If it isn't an integer, it will be converted to one first via ```Math.round```.
+
+*Example:*
+
+```javascript
+var intRange = Stats.intRange(0, 20);
+
+console.log(intRange);
+```
+
+*Output:*
+
+```
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+```
+
+#### linearLeastSquares
+
+```javascript
+linearLeastSquare(y, x)
+```
+
+Creates a linear regression fit for a set of data using the "least squares" method.
+
+```y``` is an array of values representing the data that will be fit.
+
+```x``` is an optional array of values representing the independent axis value for a given value in the ```y``` array. This is only necessary if the values in the ```y``` array are not evenly distributed across (e.g. one data point per year for a time series).
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var chartData;
+
+var dependentAxisConfig;
+var independentAxisConfig;
+
+var chart;
+
+var years = Analyser.getCol(rows, cols.YEAR);
+var population = Analyser.getCol(rows, cols.POPULATION);
+
+var linearFit = Stats.linearLeastSquares(population);
+
+chartData = {
+	title: 'Auckland city population over time',
+	showLegend: true,
+	labels: years,
+	dataSeries: [
+		{
+			name: 'Population',
+			color: '#f00',
+			dataPoints: population
+		},
+		{
+			name: 'Population linear fit',
+			color: 'rgba(255, 255, 255, 0.5)',
+			dataPoints: linearFit
+		}
+	]
+};
+
+dependentAxisConfig	= {
+	values: 5,
+	roundTo: 1000000,
+	min: null
+};
+
+independentAxisConfig = {
+	valuesEvery: 2
+};
+
+chart = Charter.createLineGraph(
+	chartData,
+	dependentAxisConfig,
+	independentAxisConfig
+);
+
+document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+```
+
+*Output:*
+
+#### r
+
+```javascript
+r(y, x)
+```
+
+Calculates the Pearson Correlation Coefficient between two sets of data of equal length.
+
+```y``` is an array of values.
+
+```x``` is an array of values of equal length to ```y```.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var years = Analyser.getCol(rows, cols.YEAR);
+var population = Analyser.getCol(rows, cols.POPULATION);
+
+var linearFit = Stats.linearLeastSquares(population);
+
+var r = Stats.r(linearFit, population);
+
+console.log(r);
+```
+
+*Output:*
+
+```
+0.9946786305281776
+```
+
+#### r2
+
+```javascript
+r2(y, x)
+```
+
+Calculates the r<sup>2</sup> value of a regression model, equivalent to the square of the Pearson Correlation Coefficient calculated by ```r```.
+
+```y``` is an array of values.
+
+```x``` is an array of values of equal length to ```y```.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var years = Analyser.getCol(rows, cols.YEAR);
+var population = Analyser.getCol(rows, cols.POPULATION);
+
+var linearFit = Stats.linearLeastSquares(population);
+
+var r2 = Stats.r2(linearFit, population);
+
+console.log(r2);
+```
+
+*Output:*
+
+```
+0.9893855780294109
+```
+
+#### smooth
+
+```javascript
+smooth(y, smoothness)
+```
+
+Smooths an array of data by converting it into a rolling average using a number of points based on its ```smoothness``` argument. The output array will be shorter than the input ```y``` array by one less than the value of ```smoothness```.
+
+```y``` is an array of values.
+
+```smoothness``` is an integer between ```1``` and the length of ```y``` (using a value of ```1``` will return the input ```y``` array).
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var chartData;
+
+var dependentAxisConfig;
+var independentAxisConfig;
+
+var chart;
+
+var years = Analyser.getCol(rows, cols.YEAR);
+var population = Analyser.getCol(rows, cols.POPULATION);
+
+var smoothness = 5;
+var smoothed = Stats.smooth(population, smoothness);
+
+chartData = {
+	title: 'Auckland city population over time',
+	showLegend: true,
+	labels: years.slice((smoothness-1)),
+	dataSeries: [
+		{
+			name: 'Smoothed population',
+			color: 'rgba(255, 255, 255, 0.5)',
+			dataPoints: smoothed
+		}
+	]
+};
+
+dependentAxisConfig	= {
+	values: 5,
+	roundTo: 1000000,
+	min: null
+};
+
+independentAxisConfig = {
+	valuesEvery: 2
+};
+
+chart = Charter.createLineGraph(
+	chartData,
+	dependentAxisConfig,
+	independentAxisConfig
+);
+
+document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+```
+
+*Output:*
+
+```
+```
+
+#### chunk
+
+```javascript
+chunk(y, chunkSize)
+```
+
+Converts an array of data into an array where each element is the sum of ```chunkSize``` elements of the input ```y``` array. This is useful, for example, for combining monthly data into yearly sums.
+
+The input ```y```array should be evenly divisible by ```chunkSize```, and the output array will by ```1/chunkSize``` as long as the input array.
+
+For example if ```chunkSize``` is ```3```, the output array will be one third as long as the input array, as each of its elements is the sum of ```3``` elements of the input array.
+
+```y``` is an array of values.
+
+```chunkSize``` is a positive integer.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var chartData;
+
+var dependentAxisConfig;
+var independentAxisConfig;
+
+var chart;
+
+var chunkSize = 5;
+// Make sure rows.length will be divisible by chunkSize after removing one
+while (((rows.length-1) % chunkSize) !== 0) {
+	rows.shift();
+}
+
+var lastYearPopulation = Analyser.getCol(rows, cols.POPULATION);
+
+// Remove last "last year population" and first year's row, so the
+// arrays line up as expected
+lastYearPopulation.pop();
+rows.shift();
+
+var years = Analyser.getCol(rows, cols.YEAR);
+
+cols.POPULATION_PREVIOUS = Analyser.addCol(rows, lastYearPopulation);
+cols.POPULATION_INCREASE = Analyser.addDerivedCol(rows, (row) => (row[cols.POPULATION] - row[cols.POPULATION_PREVIOUS]));
+
+var populationIncrease = Analyser.getCol(rows, cols.POPULATION_INCREASE);
+var chunkedPopulationIncrease = Stats.chunk(populationIncrease, chunkSize);
+
+var yearSets = [];
+for (var i = 0; i < years.length; i += chunkSize) {
+	yearSets.push(years[i] + '-' + years[i+(chunkSize-1)]);
+}
+
+chartData = {
+	title: 'Auckland city population increase',
+	showLegend: true,
+	labels: yearSets,
+	dataSeries: [
+		{
+			name: 'Population increase',
+			dataPoints: chunkedPopulationIncrease
+		}
+	]
+};
+
+dependentAxisConfig	= {
+	values: 5,
+	min: 0
+};
+
+independentAxisConfig = {};
+
+chart = Charter.createBarChart(
+	chartData,
+	dependentAxisConfig,
+	independentAxisConfig
+);
+
+document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+```
+
+*Output:*
+
+```
+```
+
+
+
