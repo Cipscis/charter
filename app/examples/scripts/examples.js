@@ -44,7 +44,7 @@ require(
 						console.log(table);
 					};
 
-					Analyser.loadFile('/assets/data/city example.csv', fileConfig, exploreData);
+					Analyser.loadFile('/examples/data/city example.csv', fileConfig, exploreData);
 				},
 				combineData: function () {
 					var fileConfigA = {
@@ -61,7 +61,7 @@ require(
 							]
 						}
 					};
-					var filePathA = '/assets/data/city example.csv';
+					var filePathA = '/examples/data/city example.csv';
 
 					var fileConfigB = {
 						headerRows: 1,
@@ -71,7 +71,7 @@ require(
 							POPULATION: Analyser.getColNumber('C')
 						}
 					};
-					var filePathB = '/assets/data/city example 2.csv';
+					var filePathB = '/examples/data/city example 2.csv';
 
 					var filesLoaded = function (dataConfigA, dataConfigB) {
 						var combinedDataConfig = Analyser.combineData(dataConfigA, dataConfigB);
@@ -842,8 +842,8 @@ require(
 			};
 
 			Analyser.loadFile(
-				'/assets/data/city example.csv', fileConfigA,
-				'/assets/data/city example 3.csv', fileConfigB,
+				'/examples/data/city example.csv', fileConfigA,
+				'/examples/data/city example 3.csv', fileConfigB,
 				filesLoaded
 			);
 		};
