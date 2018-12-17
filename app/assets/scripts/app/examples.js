@@ -338,7 +338,7 @@ require(
 
 					chart = Charter.createBarChart(chartData, dependentAxisConfig);
 
-					document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+					$('#chart-area').append(chart);
 				},
 				createLineGraph: function (dataConfig) {
 					var rows = dataConfig.rows;
@@ -388,7 +388,7 @@ require(
 						independentAxisConfig
 					);
 
-					document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+					$('#chart-area').append(chart);
 				},
 				createScatterPlot: function (dataConfig) {
 					var rows = dataConfig.rows;
@@ -438,7 +438,44 @@ require(
 						independentAxisConfig
 					);
 
-					document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+					$('#chart-area').append(chart);
+				},
+				updateBarChart: function (dataConfig) {
+					var rows = dataConfig.rows;
+					var cols = dataConfig.cols;
+
+					var chartData;
+
+					var dependentAxisConfig;
+					var independentAxisConfig;
+
+					var chart;
+
+					var cityNames = Analyser.getCol(rows, cols.NAME);
+
+					chartData = {
+						title: 'City Populations',
+						showTooltips: true,
+						labels: cityNames,
+						dataSeries: [
+							{
+								dataPoints: Analyser.getCol(rows, cols.POPULATION)
+							}
+						]
+					};
+
+					dependentAxisConfig = {
+						roundTo: 100,
+						values: 2
+					};
+
+					chart = Charter.createBarChart(chartData, dependentAxisConfig);
+
+					$('#chart-area').append(chart);
+
+					window.setTimeout(function () {
+						Charter.updateBarChart(chart[0], [1, 2, 3, 4, 5, 6, 7, 8, 9], 'New title');
+					}, 1000);
 				}
 			},
 			stats: {
@@ -570,7 +607,7 @@ require(
 						independentAxisConfig
 					);
 
-					document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+					$('#chart-area').append(chart);
 				},
 				r: function (dataConfig) {
 					var rows = dataConfig.rows;
@@ -645,7 +682,7 @@ require(
 						independentAxisConfig
 					);
 
-					document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+					$('#chart-area').append(chart);
 				},
 				chunk: function (dataConfig) {
 					var rows = dataConfig.rows;
@@ -709,13 +746,13 @@ require(
 						independentAxisConfig
 					);
 
-					document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+					$('#chart-area').append(chart);
 				}
 			}
 		};
 
 		// tests.analyser.loadFile();
-		tests.analyser.combineData();
+		// tests.analyser.combineData();
 		// tests.analyser.getColNumber();
 
 		var runTest = function (dataConfigA, dataConfigB) {
@@ -745,7 +782,7 @@ require(
 			// tests.charter.createLineGraph(dataConfigB);
 			// tests.charter.createScatterPlot(dataConfigB);
 
-			// tests.charter.updateBarChart(dataConfigB);
+			tests.charter.updateBarChart(dataConfigA);
 
 			// STATS
 			// tests.stats.sum(dataConfigA);
@@ -800,28 +837,15 @@ require(
 				}
 			};
 
-			var filesLoaded = function () {
+			var filesLoaded = function (dataConfigA, dataConfigB) {
 				runTest(dataConfigA, dataConfigB);
 			};
-			var dataConfigA;
-			var dataConfigB;
-			var dataLoadedA = function (dataConfig) {
-				dataConfigA = dataConfig;
 
-				if (dataConfigB) {
-					filesLoaded(dataConfigA, dataConfigB);
-				}
-			};
-			var dataLoadedB = function (dataConfig) {
-				dataConfigB = dataConfig;
-
-				if (dataConfigA) {
-					filesLoaded(dataConfigA, dataConfigB);
-				}
-			};
-
-			Analyser.loadFile('/assets/data/city example.csv', fileConfigA, dataLoadedA);
-			Analyser.loadFile('/assets/data/city example 3.csv', fileConfigB, dataLoadedB);
+			Analyser.loadFile(
+				'/assets/data/city example.csv', fileConfigA,
+				'/assets/data/city example 3.csv', fileConfigB,
+				filesLoaded
+			);
 		};
 		loadFiles();
 	}
