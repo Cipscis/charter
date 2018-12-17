@@ -1031,6 +1031,301 @@ If false, this value will only be shown when a bar is hovered over or is clicked
 }
 ```
 
+### Methods
+
+- [createTable](#createTable)
+- [createBarChart](#createBarChart)
+- [createLineGraph](#createLineGraph)
+- [createScatterPlot](#createScatterPlot)
+- [updateBarChart](#updateBarChart)
+
+#### createTable
+
+```javascript
+createTable(rows, cols)
+```
+
+Creates an HTML string of a table containing the data it received.
+
+```rows``` is an array of rows from a ```dataConfig``` object.
+
+```cols``` is a columns object as created for a ```fileConfig``` object.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var table = Charter.createTable(rows, cols);
+
+document.getElementById('chart-area').innerHTML = table;
+```
+
+*Output:*
+
+```
+```
+
+#### createBarChart
+
+```javascript
+createBarChart(chartData, dependentAxisConfig, independentAxisConfig)
+```
+
+Creates a jQuery object of an element containiner a bar chart, which can be inserted into the DOM.
+
+```chartData``` is a ```chartData``` object.
+
+```dependentAxisConfig``` is a ```numericAxisConfig``` object.
+
+```independentAxisConfig``` is a ```qualitativeAxisConfig``` object.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var chartData;
+
+var dependentAxisConfig;
+var independentAxisConfig;
+
+var chart;
+
+var cityNames = Analyser.getCol(rows, cols.NAME);
+
+chartData = {
+	title: 'City Populations',
+	showTooltips: true,
+	labels: cityNames,
+	dataSeries: [
+		{
+			dataPoints: Analyser.getCol(rows, cols.POPULATION)
+		}
+	]
+};
+
+dependentAxisConfig = {
+	horizontal: true,
+	roundTo: 100,
+	values: 2
+};
+
+chart = Charter.createBarChart(chartData, dependentAxisConfig);
+
+$('#chart-area').append(chart);
+```
+
+*Output:*
+
+```
+```
+
+#### createLineGraph
+
+```javascript
+createLineGraph(chartData, dependentAxisConfig, independentAxisConfig)
+```
+
+Creates a jQuery object of an element containiner a line graph, which can be inserted into the DOM.
+
+```chartData``` is a ```chartData``` object.
+
+```dependentAxisConfig``` is a ```numericAxisConfig``` object.
+
+```independentAxisConfig``` is a ```qualitativeAxisConfig``` object.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var chartData;
+
+var dependentAxisConfig;
+var independentAxisConfig;
+
+var chart;
+
+var years = Analyser.getCol(rows, cols.YEAR);
+var population = Analyser.getCol(rows, cols.POPULATION);
+
+chartData = {
+	title: 'Auckland city population over time',
+	showLegend: true,
+	labels: years,
+	dataSeries: [
+		{
+			name: 'Population',
+			color: '#f00',
+			dataPoints: population
+		},
+		{
+			name: 'Population linear fit',
+			color: 'rgba(255, 255, 255, 0.5)',
+			dataPoints: Stats.linearLeastSquares(population)
+		}
+	]
+};
+
+dependentAxisConfig	= {
+	values: 5,
+	roundTo: 1000000,
+	min: null
+};
+
+independentAxisConfig = {
+	valuesEvery: 2
+};
+
+chart = Charter.createLineGraph(
+	chartData,
+	dependentAxisConfig,
+	independentAxisConfig
+);
+
+$('#chart-area').append(chart);
+```
+
+*Output:*
+
+```
+```
+
+#### createScatterPlot
+
+```javascript
+createScatterPlot(chartData, dependentAxisConfig, independentAxisConfig)
+```
+
+Creates a jQuery object of an element containiner a line graph, which can be inserted into the DOM.
+
+```chartData``` is a ```chartData``` object.
+
+```dependentAxisConfig``` is a ```numericAxisConfig``` object.
+
+```independentAxisConfig``` is a ```qualitativeAxisConfig``` object.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var chartData;
+
+var dependentAxisConfig;
+var independentAxisConfig;
+
+var chart;
+
+var years = Analyser.getCol(rows, cols.YEAR);
+var population = Analyser.getCol(rows, cols.POPULATION);
+
+chartData = {
+	title: 'Auckland city population over time',
+	showLegend: true,
+	labels: years,
+	dataSeries: [
+		{
+			name: 'Population',
+			color: '#f00',
+			dataPoints: population
+		},
+		{
+			name: 'Population linear fit',
+			color: 'rgba(255, 255, 255, 0.5)',
+			dataPoints: Stats.linearLeastSquares(population)
+		}
+	]
+};
+
+dependentAxisConfig	= {
+	values: 5,
+	roundTo: 10000,
+	min: null
+};
+
+independentAxisConfig = {
+	valuesEvery: 2
+};
+
+chart = Charter.createScatterPlot(
+	chartData,
+	dependentAxisConfig,
+	independentAxisConfig
+);
+
+$('#chart-area').append(chart);
+```
+
+*Output:*
+
+```
+```
+
+#### updateBarChart
+
+```javascript
+updateBarChart(chart, data, titleText)
+```
+
+Updates the values and optionally the title of an existing bar chart, using jQuery and d3.
+
+```chart``` is an ```Element``` object, which will be converted into a jQuery object via ```$(chart)```.
+
+```data``` is an array of numbers, corresponding to the values of each bar in the chart being updated.
+
+```titleText``` is an optional string to replace the current title of the chart.
+
+*Example:*
+
+```javascript
+var rows = dataConfig.rows;
+var cols = dataConfig.cols;
+
+var chartData;
+
+var dependentAxisConfig;
+var independentAxisConfig;
+
+var chart;
+
+var cityNames = Analyser.getCol(rows, cols.NAME);
+
+chartData = {
+	title: 'City Populations',
+	showTooltips: true,
+	labels: cityNames,
+	dataSeries: [
+		{
+			dataPoints: Analyser.getCol(rows, cols.POPULATION)
+		}
+	]
+};
+
+dependentAxisConfig = {
+	roundTo: 100,
+	values: 2
+};
+
+chart = Charter.createBarChart(chartData, dependentAxisConfig);
+
+$('#chart-area').append(chart);
+
+window.setTimeout(function () {
+	Charter.updateBarChart(chart[0], [1, 2, 3, 4, 5, 6, 7, 8, 9], 'New title');
+}, 1000);
+```
+
+*Output:*
+
+```
+```
+
 ## Stats
 
 ### Use
@@ -1353,7 +1648,7 @@ chart = Charter.createLineGraph(
 	independentAxisConfig
 );
 
-document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+$('#chart-area').append(chart);
 ```
 
 *Output:*
@@ -1486,7 +1781,7 @@ chart = Charter.createLineGraph(
 	independentAxisConfig
 );
 
-document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+$('#chart-area').append(chart);
 ```
 
 *Output:*
@@ -1574,7 +1869,7 @@ chart = Charter.createBarChart(
 	independentAxisConfig
 );
 
-document.getElementById('chart-area').outerHTML = chart[0].outerHTML;
+$('#chart-area').append(chart);
 ```
 
 *Output:*
