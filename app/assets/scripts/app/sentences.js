@@ -108,7 +108,6 @@ require(
 				chartData = {
 					title: '',
 					showLegend: true,
-					legendLeft: true,
 					labels: [],
 					dataSeries: []
 				};

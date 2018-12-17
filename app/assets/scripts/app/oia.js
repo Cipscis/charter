@@ -224,8 +224,7 @@ require(
 					}
 				],
 				stacked: true,
-				showLegend: true,
-				legendLeft: true
+				showLegend: true
 			};
 
 			var barAxisConfig = {
