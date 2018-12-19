@@ -7,6 +7,9 @@ require(
 		'stats/stats'
 	],
 	function ($, Charter, Analyser, Stats) {
+		var baseUrl = '/charter/app/'; // For Github pages
+		// var baseUrl = '/'; // For local development
+
 		var tests = {
 			analyser: {
 				loadFile: function () {
@@ -44,7 +47,7 @@ require(
 						console.log(table);
 					};
 
-					Analyser.loadFile('/examples/data/city example.csv', fileConfig, exploreData);
+					Analyser.loadFile(baseUrl + 'examples/data/city example.csv', fileConfig, exploreData);
 				},
 				combineData: function () {
 					var fileConfigA = {
@@ -61,7 +64,7 @@ require(
 							]
 						}
 					};
-					var filePathA = '/examples/data/city example.csv';
+					var filePathA = baseUrl + 'examples/data/city example.csv';
 
 					var fileConfigB = {
 						headerRows: 1,
@@ -71,7 +74,7 @@ require(
 							POPULATION: Analyser.getColNumber('C')
 						}
 					};
-					var filePathB = '/examples/data/city example 2.csv';
+					var filePathB = baseUrl + 'examples/data/city example 2.csv';
 
 					var filesLoaded = function (dataConfigA, dataConfigB) {
 						var combinedDataConfig = Analyser.combineData(dataConfigA, dataConfigB);
@@ -796,8 +799,8 @@ require(
 			};
 
 			Analyser.loadFile(
-				'/examples/data/city example.csv', fileConfigA,
-				'/examples/data/city example 3.csv', fileConfigB,
+				baseUrl + 'examples/data/city example.csv', fileConfigA,
+				baseUrl + 'examples/data/city example 3.csv', fileConfigB,
 				onFilesLoaded
 			);
 		};
