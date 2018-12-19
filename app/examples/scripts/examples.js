@@ -987,17 +987,10 @@ require(
 			}
 		};
 
-		var runTestEvent = function (e) {
-			var $link = $(e.target);
-			var testName = $link.attr('href').replace(/#/, '');
-
-			runTest(testName);
-		};
 		var runTestHistoryEvent = function () {
 			runTest();
 		}
 
-		$('.js-test-link').on('click', runTestEvent);
 		window.onpopstate = runTestHistoryEvent;
 
 		runTest();
