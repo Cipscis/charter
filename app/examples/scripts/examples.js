@@ -7,6 +7,9 @@ require(
 		'stats/stats'
 	],
 	function ($, Charter, Analyser, Stats) {
+		// var baseUrl = '/charter/app/'; // For Github pages
+		var baseUrl = '/'; // For local development
+
 		var tests = {
 			analyser: {
 				loadFile: function () {
@@ -44,7 +47,7 @@ require(
 						console.log(table);
 					};
 
-					Analyser.loadFile('/examples/data/city example.csv', fileConfig, exploreData);
+					Analyser.loadFile(baseUrl + 'examples/data/city example.csv', fileConfig, exploreData);
 				},
 				combineData: function () {
 					var fileConfigA = {
@@ -61,7 +64,7 @@ require(
 							]
 						}
 					};
-					var filePathA = '/examples/data/city example.csv';
+					var filePathA = baseUrl + 'examples/data/city example.csv';
 
 					var fileConfigB = {
 						headerRows: 1,
@@ -71,7 +74,7 @@ require(
 							POPULATION: Analyser.getColNumber('C')
 						}
 					};
-					var filePathB = '/examples/data/city example 2.csv';
+					var filePathB = baseUrl + 'examples/data/city example 2.csv';
 
 					var filesLoaded = function (dataConfigA, dataConfigB) {
 						var combinedDataConfig = Analyser.combineData(dataConfigA, dataConfigB);
@@ -372,7 +375,7 @@ require(
 						]
 					};
 
-					dependentAxisConfig	= {
+					dependentAxisConfig = {
 						values: 5,
 						roundTo: 1000000,
 						min: null
@@ -422,7 +425,7 @@ require(
 						]
 					};
 
-					dependentAxisConfig	= {
+					dependentAxisConfig = {
 						values: 5,
 						roundTo: 10000,
 						min: null
@@ -591,7 +594,7 @@ require(
 						]
 					};
 
-					dependentAxisConfig	= {
+					dependentAxisConfig = {
 						values: 5,
 						roundTo: 1000000,
 						min: null
@@ -666,7 +669,7 @@ require(
 						]
 					};
 
-					dependentAxisConfig	= {
+					dependentAxisConfig = {
 						values: 5,
 						roundTo: 1000000,
 						min: null
@@ -733,7 +736,7 @@ require(
 						]
 					};
 
-					dependentAxisConfig	= {
+					dependentAxisConfig = {
 						values: 5,
 						min: 0
 					};
@@ -751,60 +754,11 @@ require(
 			}
 		};
 
-		// tests.analyser.loadFile();
-		// tests.analyser.combineData();
-		// tests.analyser.getColNumber();
+		var filesLoaded = false;
+		var dataConfigA;
+		var dataConfigB;
 
-		var runTest = function (dataConfigA, dataConfigB) {
-			// ANALYSER
-			// tests.analyser.getCol(dataConfigA);
-			// tests.analyser.addCol(dataConfigB);
-			// tests.analyser.getDerivedCol(dataConfigA);
-			// tests.analyser.addDerivedCol(dataConfigA);
-			// tests.analyser.createSubTable(dataConfigA);
-			// tests.analyser.createSubTableString(dataConfigA);
-			// tests.analyser.getColSummary(dataConfigA);
-			// tests.analyser.getColAsDataSeries(dataConfigA);
-			// tests.analyser.getComparisonSummary(dataConfigA);
-			// tests.analyser.getComparisonSummaryString(dataConfigA);
-
-			// tests.analyser.rows(dataConfigA);
-			// tests.analyser.enums(dataConfigA);
-
-			// tests.analyser.filterRows(dataConfigA);
-			// tests.analyser.filterRowsAnd(dataConfigA);
-			// tests.analyser.filterRowsOr(dataConfigA);
-
-
-			// CHARTER
-			// tests.charter.createTable(dataConfigB);
-			// tests.charter.createBarChart(dataConfigA);
-			// tests.charter.createLineGraph(dataConfigB);
-			// tests.charter.createScatterPlot(dataConfigB);
-
-			tests.charter.updateBarChart(dataConfigA);
-
-			// STATS
-			// tests.stats.sum(dataConfigA);
-			// tests.stats.mean(dataConfigA);
-			// tests.stats.median(dataConfigA);
-
-			// tests.stats.variance(dataConfigA);
-			// tests.stats.sd(dataConfigA);
-
-			// tests.stats.max(dataConfigA);
-			// tests.stats.min(dataConfigA);
-			// tests.stats.intRange();
-
-			// tests.stats.linearLeastSquares(dataConfigB);
-			// tests.stats.r(dataConfigB);
-			// tests.stats.r2(dataConfigB);
-
-			// tests.stats.smooth(dataConfigB);
-			// tests.stats.chunk(dataConfigB);
-		};
-
-		var loadFiles = function () {
+		var loadFiles = function (testName) {
 			var fileConfigA = {
 				headerRows: 1,
 				cols: {
@@ -837,16 +791,215 @@ require(
 				}
 			};
 
-			var filesLoaded = function (dataConfigA, dataConfigB) {
-				runTest(dataConfigA, dataConfigB);
+			var onFilesLoaded = function (a, b) {
+				filesLoaded = true;
+				dataConfigA = a;
+				dataConfigB = b;
+				runTest(testName);
 			};
 
 			Analyser.loadFile(
-				'/examples/data/city example.csv', fileConfigA,
-				'/examples/data/city example 3.csv', fileConfigB,
-				filesLoaded
+				baseUrl + 'examples/data/city example.csv', fileConfigA,
+				baseUrl + 'examples/data/city example 3.csv', fileConfigB,
+				onFilesLoaded
 			);
 		};
-		loadFiles();
+
+		var runTest = function (testName) {
+			var testName = testName || document.location.hash.replace(/#/, '');
+			var testFn;
+			var indentLevels;
+
+			if (!filesLoaded) {
+				loadFiles(testName);
+				return;
+			}
+
+			if (testName) {
+				console.log('');
+				console.log('Running test:', testName);
+
+				// Clear output
+				$('#chart-area').html('');
+				$('#test-source').html('');
+
+				switch (testName) {
+					// Analyser
+					case 'loadFile':
+						var testFn = tests.analyser.loadFile;
+						testFn();
+						break;
+					case 'combineData':
+						var testFn = tests.analyser.combineData;
+						testFn();
+						break;
+					case 'getColNumber':
+						var testFn = tests.analyser.getColNumber;
+						testFn();
+						break;
+					case 'getCol':
+						var testFn = tests.analyser.getCol;
+						testFn(dataConfigA);
+						break;
+					case 'addCol':
+						var testFn = tests.analyser.addCol;
+						testFn(dataConfigB);
+						break;
+					case 'getDerivedCol':
+						var testFn = tests.analyser.getDerivedCol;
+						testFn(dataConfigA);
+						break;
+					case 'addDerivedCol':
+						var testFn = tests.analyser.addDerivedCol;
+						testFn(dataConfigA);
+						break;
+					case 'createSubTable':
+						var testFn = tests.analyser.createSubTable;
+						testFn(dataConfigA);
+						break;
+					case 'createSubTableString':
+						var testFn = tests.analyser.createSubTableString;
+						testFn(dataConfigA);
+						break;
+					case 'getColSummary':
+						var testFn = tests.analyser.getColSummary;
+						testFn(dataConfigA);
+						break;
+					case 'getColAsDataSeries':
+						var testFn = tests.analyser.getColAsDataSeries;
+						testFn(dataConfigA);
+						break;
+					case 'getComparisonSummary':
+						var testFn = tests.analyser.getComparisonSummary;
+						testFn(dataConfigA);
+						break;
+					case 'getComparisonSummaryString':
+						var testFn = tests.analyser.getComparisonSummaryString;
+						testFn(dataConfigA);
+						break;
+					case 'rows':
+						var testFn = tests.analyser.rows;
+						testFn(dataConfigA);
+						break;
+					case 'enums':
+						var testFn = tests.analyser.enums;
+						testFn(dataConfigA);
+						break;
+					case 'filterRows':
+						var testFn = tests.analyser.filterRows;
+						testFn(dataConfigA);
+						break;
+					case 'filterRowsAnd':
+						var testFn = tests.analyser.filterRowsAnd;
+						testFn(dataConfigA);
+						break;
+					case 'filterRowsOr':
+						var testFn = tests.analyser.filterRowsOr;
+						testFn(dataConfigA);
+						break;
+
+					// Charter
+					case 'createTable':
+						var testFn = tests.charter.createTable;
+						testFn(dataConfigB);
+						break;
+					case 'createBarChart':
+						var testFn = tests.charter.createBarChart;
+						testFn(dataConfigA);
+						break;
+					case 'createLineGraph':
+						var testFn = tests.charter.createLineGraph;
+						testFn(dataConfigB);
+						break;
+					case 'createScatterPlot':
+						var testFn = tests.charter.createScatterPlot;
+						testFn(dataConfigB);
+						break;
+					case 'updateBarChart':
+						var testFn = tests.charter.updateBarChart;
+						testFn(dataConfigA);
+						break;
+
+					// Stats
+					case 'sum':
+						var testFn = tests.stats.sum;
+						testFn(dataConfigA);
+						break;
+					case 'mean':
+						var testFn = tests.stats.mean;
+						testFn(dataConfigA);
+						break;
+					case 'median':
+						var testFn = tests.stats.median;
+						testFn(dataConfigA);
+						break;
+					case 'variance':
+						var testFn = tests.stats.variance;
+						testFn(dataConfigA);
+						break;
+					case 'sd':
+						var testFn = tests.stats.sd;
+						testFn(dataConfigA);
+						break;
+					case 'max':
+						var testFn = tests.stats.max;
+						testFn(dataConfigA);
+						break;
+					case 'min':
+						var testFn = tests.stats.min;
+						testFn(dataConfigA);
+						break;
+					case 'intRange':
+						var testFn = tests.stats.intRange;
+						testFn();
+						break;
+					case 'linearLeastSquares':
+						var testFn = tests.stats.linearLeastSquares;
+						testFn(dataConfigB);
+						break;
+					case 'r':
+						var testFn = tests.stats.r;
+						testFn(dataConfigB);
+						break;
+					case 'r2':
+						var testFn = tests.stats.r2;
+						testFn(dataConfigB);
+						break;
+					case 'smooth':
+						var testFn = tests.stats.smooth;
+						testFn(dataConfigB);
+						break;
+					case 'chunk':
+						var testFn = tests.stats.chunk;
+						testFn(dataConfigB);
+						break;
+
+					default:
+						console.error('Test not recognised');
+						break;
+				}
+
+				if (testFn) {
+					testFn = testFn.toString();
+					indentLevels = testFn.match(/\t+/)[0].length-1;
+					$('#test-source').html(testFn.replace(new RegExp('^\t{' + indentLevels + '}', 'mg'), ''));
+				}
+			}
+		};
+
+		var runTestEvent = function (e) {
+			var $link = $(e.target);
+			var testName = $link.attr('href').replace(/#/, '');
+
+			runTest(testName);
+		};
+		var runTestHistoryEvent = function () {
+			runTest();
+		}
+
+		$('.js-test-link').on('click', runTestEvent);
+		window.onpopstate = runTestHistoryEvent;
+
+		runTest();
 	}
 );
