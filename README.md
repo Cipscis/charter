@@ -4,7 +4,7 @@ The Charter repository is a set of three tools for analysing and visualising dat
 - [Charter](#charter): Takes in formatted data and uses it to visualise data in HTML
 - [Stats](#stats): A set of utility functions for analysing data
 
-The examples in this documentation can be run at <a href="https://cipscis.github.io/charter/app/examples/" target="_blank">https://cipscis.github.io/charter/app/examples/</a>. Each example is accompanied by a link to a page where you can see it run and produce its output.
+The examples in this documentation can be run at [https://cipscis.github.io/charter/app/examples/](https://cipscis.github.io/charter/app/examples/). Each example is accompanied by a link to a page where you can see it run and produce its output.
 
 ## Analyser
 
@@ -81,7 +81,7 @@ When converting numbers, it will assume the ```.``` character is used as a decim
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#loadFile" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#loadFile)
 
 ```javascript
 var fileConfig = {
@@ -147,7 +147,7 @@ All rows and relevant associated objects (e.g. aliases, enums) are combined, wit
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#combineData" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#combineData)
 
 ```javascript
 var fileConfigA = {
@@ -230,7 +230,7 @@ This function is typically only used to create the ```cols``` object for a ```fi
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#getColNumber" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#getColNumber)
 
 ```javascript
 var cols = {
@@ -268,7 +268,7 @@ Returns a single array representing the values of a single column for a set of r
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#getCol" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#getCol)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -299,7 +299,7 @@ Adds a new column to the set of rows, and returns the index of the new column so
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#addCol" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#addCol)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -363,7 +363,7 @@ Creates a column of data that is the result of passing an individual row and any
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#getDerivedCol" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#getDerivedCol)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -440,7 +440,7 @@ Creates an object suitable for passing into ```console.table```, using the rows 
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#createSubTable" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#createSubTable)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -479,7 +479,7 @@ Calls ```createSubTable``` and converts the result into a string that separates 
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#createSubTableString" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#createSubTableString)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -524,7 +524,7 @@ Returns an object containing a count of each time a value occurred in one or mor
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#getColSummary" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#getColSummary)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -573,7 +573,7 @@ Returns a ```dataSeries``` array as used by [Charter](#Charter). Each element in
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#getColAsDataSeries" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#getColAsDataSeries)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -611,7 +611,7 @@ Creates an object that can be used with ```console.table``` with the values of `
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#getComparisonSummary" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#getComparisonSummary)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -640,7 +640,7 @@ Calls ```getComparisonSummary``` and converts the result into a string that sepa
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#getComparisonSummaryString" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#getComparisonSummaryString)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -678,7 +678,7 @@ You don't need to include every column that is in a spreadsheet in the cols obje
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#cols" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#cols)
 
 ```javascript
 var cols = {
@@ -697,7 +697,7 @@ It represents the columns in a CSV whose cells contain multiple values, separate
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#arrayCols" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#arrayCols)
 
 ```javascript
 // Assuming cells in the PET_NAMES column can have values such as 'Snuffles,Rex,Boss Bird'
@@ -736,7 +736,7 @@ The enums that are collected in data processing this way can be useful in genera
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#enumsMap" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#enumsMap)
 
 ```javascript
 var enumsMap = {
@@ -784,7 +784,7 @@ A ```dataConfig``` object is created by data processing functions, and is used f
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#rows" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#rows)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -811,7 +811,7 @@ Auckland
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#enums" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#enums)
 
 ```javascript
 // dataConfig.enums
@@ -863,7 +863,7 @@ It returns a new ```rows``` array.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#filterRows" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#filterRows)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -930,7 +930,7 @@ Identical to the ```filterRows``` function, but without the ```andToggle``` argu
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#filterRowsAnd" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#filterRowsAnd)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -960,7 +960,7 @@ Identical to the ```filterRows``` function, but without the ```andToggle``` argu
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#filterRowsOr" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#filterRowsOr)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1099,7 +1099,7 @@ Creates an HTML string of a table containing the data it received.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#createTable" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#createTable)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1131,7 +1131,7 @@ Creates a jQuery object of an element containiner a bar chart, which can be inse
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#createBarChart" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#createBarChart)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1189,7 +1189,7 @@ Creates a jQuery object of an element containiner a line graph, which can be ins
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#createLineGraph" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#createLineGraph)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1263,7 +1263,7 @@ Creates a jQuery object of an element containiner a line graph, which can be ins
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#createScatterPlot" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#createScatterPlot)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1337,7 +1337,7 @@ Updates the values and optionally the title of an existing bar chart, using jQue
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#updateBarChart" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#updateBarChart)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1416,7 +1416,7 @@ Returns the sum of the set of numbers in the ```values``` array.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#sum" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#sum)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1448,7 +1448,7 @@ Calculates the mean average of the set of numbers in the ```values``` array.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#mean" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#mean)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1480,7 +1480,7 @@ Calculates the median average of the set of numbers in the ```values``` array.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#median" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#median)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1512,7 +1512,7 @@ Calculates the variance of the set of numbers in the ```values``` array.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#variance" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#variance)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1544,7 +1544,7 @@ Calculates the standard deviation of the set of numbers in the ```values``` arra
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#sd" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#sd)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1576,7 +1576,7 @@ Calculates the maximum of the set of numbers in the ```values``` array.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#max" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#max)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1608,7 +1608,7 @@ Calculates the minimum of the set of numbers in the ```values``` array.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#min" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#min)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1642,7 +1642,7 @@ Creates an array of integers from a ```start``` value to a ```finish``` value.
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#intRange" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#intRange)
 
 ```javascript
 var intRange = Stats.intRange(0, 20);
@@ -1670,7 +1670,7 @@ Creates a linear regression fit for a set of data using the "least squares" meth
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#linearLeastSquares" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#linearLeastSquares)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1741,7 +1741,7 @@ Calculates the Pearson Correlation Coefficient between two sets of data of equal
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#r" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#r)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1777,7 +1777,7 @@ Calculates the r<sup>2</sup> value of a regression model, equivalent to the squa
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#r2" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#r2)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1813,7 +1813,7 @@ Smooths an array of data by converting it into a rolling average using a number 
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#smooth" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#smooth)
 
 ```javascript
 var rows = dataConfig.rows;
@@ -1887,7 +1887,7 @@ For example if ```chunkSize``` is ```3```, the output array will be one third as
 
 *Example:*
 
-<a href="https://cipscis.github.io/charter/app/examples/#chunk" target="_blank">link</a>
+[link](https://cipscis.github.io/charter/app/examples/#chunk)
 
 ```javascript
 var rows = dataConfig.rows;
