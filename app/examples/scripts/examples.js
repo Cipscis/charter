@@ -220,6 +220,38 @@ require(
 					console.log(capitalTableString);
 				},
 
+				enumsMap: function () {
+					var fileConfig = {
+						headerRows: 1,
+						cols: {
+							NAME: Analyser.getColNumber('A'),
+							COUNTRY: Analyser.getColNumber('B'),
+							POPULATION: Analyser.getColNumber('C'),
+							CAPITAL: Analyser.getColNumber('D'),
+							PUBLIC_TRANSPORT: Analyser.getColNumber('E'),
+							MAYOR_2012: Analyser.getColNumber('F'),
+							MAYOR_2018: Analyser.getColNumber('G')
+						},
+						arrayCols: {},
+						aliases: {
+							COUNTRY: [
+								['New Zealand', 'Aotearoa']
+							]
+						},
+						enumsMap: {}
+					};
+					fileConfig.arrayCols[fileConfig.cols.PUBLIC_TRANSPORT] = ',';
+					fileConfig.arrayCols[fileConfig.cols.MAYOR_2018] = ',';
+
+					fileConfig.enumsMap.MAYOR = [fileConfig.cols.MAYOR_2012, fileConfig.cols.MAYOR_2018];
+
+					var exploreData = function (dataConfig) {
+						console.log(dataConfig.enums);
+					};
+
+					Analyser.loadFile(baseUrl + 'examples/data/city example.csv', fileConfig, exploreData);
+				},
+
 				rows: function (dataConfig) {
 					var rows = dataConfig.rows;
 					var cols = dataConfig.cols;
@@ -876,6 +908,10 @@ require(
 					case 'getComparisonSummaryString':
 						var testFn = tests.analyser.getComparisonSummaryString;
 						testFn(dataConfigA);
+						break;
+					case 'enumsMap':
+						var testFn = tests.analyser.enumsMap;
+						testFn();
 						break;
 					case 'rows':
 						var testFn = tests.analyser.rows;
