@@ -4,11 +4,10 @@
   "description": "A framework for analysing and visualising data",
   "main": "server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "test": "node server/server.js | node server/build.js"
+    "start": "node server/server.js | node server/build.js"
   },
   "dependencies": {
-    "express": "^4.15.3"
+    "express": "^4.16.4"
   },
   "engines": {
     "node": "8.x"
@@ -17,7 +16,7 @@
     "url": "https://github.com/Cipscis/charter.git"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-sass": "^3.1.0"
+    "gulp": "^4.0.0",
+    "gulp-sass": "^4.0.2"
   }
 }

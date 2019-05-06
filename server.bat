@@ -1,1 +1,1 @@
-npm install --production && npm start
+npm install && npm start
