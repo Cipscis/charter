@@ -7,8 +7,7 @@ require(
 		'stats/stats'
 	],
 	function ($, Charter, Analyser, Stats) {
-		// var baseUrl = '/charter/app/'; // For Github pages
-		var baseUrl = '/'; // For local development
+		var baseUrl = '/charter/app/'; // For Github pages
 
 		var tests = {
 			analyser: {
