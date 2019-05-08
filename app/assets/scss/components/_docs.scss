@@ -1,0 +1,54 @@
+.docs-example {
+	margin: 20px 0;
+
+	display: grid;
+
+	grid-template-areas:
+		"code"
+		"output";
+	grid-template-columns: 1fr;
+	@include bp("l") {
+		grid-template-areas:
+			"code output";
+		grid-template-columns: 3fr 2fr;
+	}
+	grid-gap: 20px;
+
+	max-width: 100%;
+}
+.docs-example--code-only {
+	grid-template-areas: "code";
+	grid-template-columns: 1fr;
+}
+
+.docs-example__code-container {
+	margin: 0 !important;
+	grid-area: code;
+	min-width: 0;
+
+	position: relative;
+}
+.docs-example__code {
+	&[contenteditable="true"] {
+		box-shadow: 0 0 5px var(--shadow);
+
+		&::before {
+			content: "✏️";
+
+			opacity: 0.2;
+			pointer-events: none;
+
+			position: absolute;
+			right: 7px;
+			top: 0;
+		}
+	}
+}
+
+.docs-example__output-container {
+	margin: 0 !important;
+	grid-area: output;
+	min-width: 0;
+}
+
+.docs-example__output {}

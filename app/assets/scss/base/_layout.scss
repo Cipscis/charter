@@ -1,0 +1,25 @@
+body {
+	padding: 60px 0 160px;
+}
+
+:root {
+	--layout-gap: 20px;
+}
+
+@mixin layout($width: 900px) {
+	margin: 0 auto;
+	padding: 0 var(--layout-gap);
+	> * {
+		--layout-gap: 0;
+	}
+	max-width: $width;
+	position: relative;
+}
+
+.layout {
+	@include layout();
+}
+
+.layout--wide {
+	@include layout(1200px);
+}
