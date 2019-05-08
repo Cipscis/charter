@@ -106,7 +106,7 @@ require(
 					},
 					{
 						name: 'Prisoner population linear fit (r^2=' + Stats.r2(linearFit, totalPop).toFixed(3) + ')',
-						color: '#fff',
+						color: '#000',
 						dataPoints: linearFit
 					}
 				]
