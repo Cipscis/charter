@@ -1,15 +1,158 @@
 $white: #fff;
+$grey--lightest: #eee;
 $grey--lighter: #ccc;
 $grey--light: #999;
 $grey: #666;
+$grey--mid: #444;
 $grey--dark: #333;
 $black: #000;
 
-html {
-	background: $grey--dark;
-	color: $white;
+$blue--pale: darken(#def, 10%);
+$blue--pale-dark: darken($blue--pale, 10%);
 
-	a {
-		color: $white;
+$blue--dim: darken($blue--pale, 40%);
+$blue--dim-light: darken($blue--pale, 30%);
+
+
+$green--pale: darken(#dfe, 10%);
+$green--pale-dark: darken($green--pale, 10%);
+
+$green--dim: darken($green--pale, 60%);
+$green--dim-light: darken($green--pale, 50%);
+
+$red--pale: #fee;
+
+$base-font-family: "Roboto Slab", "Times New Roman", Times, serif;
+$heading-font-family: "Roboto", Arial, sans-serif;
+
+
+:root,
+.light-mode {
+	--primary-background: #{$white};
+	--primary-background-active: #{$grey--lightest};
+	--primary-color: #{$grey--dark};
+	--primary-color-low-contrast: #{$grey--light};
+
+	--shadow: #{rgba($black, 0.4)};
+	--overlay: #{rgba($black, 0.4)};
+
+	--border: #{$grey--light};
+
+	--offset-background: #{$grey--lightest};
+	--offset-color: var(--primary-color);
+	--offset-color-low-contrast: #{$grey--light};
+	--offset-border-low-contrast: #{$grey--lighter};
+
+	--clickable-background: #{$grey--lightest};
+	--clickable-background-active: #{$grey--lighter};
+	--clickable-color: var(--primary-color);
+
+	--highlight-background: #{$green--pale};
+	--highlight-background-active: #{$green--pale-dark};
+
+	--highlight-bar: #{$blue--pale};
+	--highlight-bar-active: #{$blue--pale-dark};
+
+	--error-background: #{$red--pale};
+	--error-color: red;
+	--error-border: red;
+
+	--status-success: green;
+	--status-error: red;
+}
+
+.dark-mode {
+	--primary-background: #{$grey--dark};
+	--primary-background-active: #{$grey--mid};
+	--primary-color: #{$grey--lightest};
+	--primary-color-low-contrast: #{$grey--light};
+
+	--shadow: #{rgba($white, 0.4)};
+	--overlay: rgba(34, 34, 34, 0.7);
+
+	--border: #{$grey--lighter};
+
+	--offset-background: #{$grey};
+	--offset-color: var(--primary-color);
+	--offset-color-low-contrast: #{$grey--light};
+	--offset-border-low-contrast: #{$grey--mid};
+
+	--clickable-background: #{$grey};
+	--clickable-background-active: #{$grey--light};
+	--clickable-color: var(--primary-color);
+
+	--highlight-background: #{$green--dim};
+	--highlight-background-active: #{$green--dim-light};
+
+	--highlight-bar: #{$blue--dim};
+	--highlight-bar-active: #{$blue--dim-light};
+
+	--error-background: #755;
+	--error-color: red;
+	--error-border: red;
+
+	--status-success: green;
+	--status-error: red;
+}
+
+
+
+@mixin contrast($background, $color: null, $active: null) {
+	background: $background;
+
+	@if ($color) {
+		color: $color;
 	}
+
+	@if ($active) {
+		&:hover,
+		&:focus {
+			background: $active;
+		}
+		&:focus-within {
+			background: $active;
+		}
+	}
+}
+
+
+@mixin contrast-primary {
+	@include contrast(
+		var(--primary-background),
+		var(--primary-color)
+	);
+}
+
+@mixin contrast-primary-active {
+	@include contrast(
+		var(--primary-background),
+		var(--primary-color),
+		var(--primary-background-active)
+	);
+}
+
+@mixin contrast-offset {
+	@include contrast(
+		var(--offset-background),
+		var(--offset-color)
+	);
+}
+
+@mixin contrast-clickable {
+	@include contrast(
+		var(--clickable-background),
+		var(--clickable-color),
+		var(--clickable-background-active)
+	);
+}
+
+
+body,
+.light-mode,
+.dark-mode {
+	@include contrast-primary;
+}
+
+.is-error {
+	color: var(--error-color);
 }
