@@ -1,4 +1,4 @@
 var gulp = require('gulp');
-require('./gulpfile.js');
+var tasks = require('./gulpfile.js');
 
-gulp.start('sass:watch');
+tasks.build();
