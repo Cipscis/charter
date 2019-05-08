@@ -1,5 +1,5 @@
 require.config({
-	baseUrl: '/assets/scripts/app/',
+	baseUrl: '/charter/app/assets/scripts/app/',
 	paths: {
 		'lib': '../lib',
 		'util': '../util',
