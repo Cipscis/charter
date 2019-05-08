@@ -26,9 +26,23 @@
 	width: 100%;
 	padding: 20px;
 	background: $grey;
+
+	color: var(--primary-color);
+
+	p {
+		margin: 10px 0;
+		&:first-child {
+			margin-top: 0;
+		}
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 }
 
 .card__title {
 	display: block;
 	font-weight: bold;
+
+	color: var(--primary-color);
 }

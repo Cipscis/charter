@@ -504,6 +504,14 @@ body {
   .layout--wide > * {
     --layout-gap: 0; }
 
+.layout--extra-wide {
+  margin: 0 auto;
+  padding: 0 var(--layout-gap);
+  max-width: 1600px;
+  position: relative; }
+  .layout--extra-wide > * {
+    --layout-gap: 0; }
+
 .grid {
   padding: 0;
   list-style: none;
@@ -998,11 +1006,19 @@ body {
 .card__body {
   width: 100%;
   padding: 20px;
-  background: #666; }
+  background: #666;
+  color: var(--primary-color); }
+  .card__body p {
+    margin: 10px 0; }
+    .card__body p:first-child {
+      margin-top: 0; }
+    .card__body p:last-child {
+      margin-bottom: 0; }
 
 .card__title {
   display: block;
-  font-weight: bold; }
+  font-weight: bold;
+  color: var(--primary-color); }
 
 .button, .tabs__display {
   display: block;

@@ -23,3 +23,7 @@ body {
 .layout--wide {
 	@include layout(1200px);
 }
+
+.layout--extra-wide {
+	@include layout(1600px);
+}
