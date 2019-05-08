@@ -973,7 +973,6 @@ define(
 
 		return {
 			loadFile: Analyser.loadFile,
-			loadFiles: Analyser.loadFiles,
 			combineData: Analyser.combineData,
 
 			getColNumber: Analyser.getColNumber,
