@@ -9,8 +9,10 @@ define(
 		const docs = (function () {
 			const selectors = {
 				example: '.js-doc-example',
-				code: '.js-doc-example-code',
-				output: '.js-doc-example-output'
+				code: '.js-doc-example-code, .js-doc-example-code-chart',
+				output: '.js-doc-example-output',
+
+				chartCode: '.js-doc-example-code-chart'
 			};
 
 			const dataSelectors = {
@@ -142,7 +144,11 @@ define(
 							logFnOutput(fnOutput);
 						}
 
-						module._renderOutput(output, $output);
+						if ($code.matches(selectors.chartCode)) {
+							module._renderOutputChart(output, $output);
+						} else {
+							module._renderOutput(output, $output);
+						}
 					} catch (e) {
 						// console.error(e.message);
 					}
@@ -246,6 +252,23 @@ define(
 					$span.classList.add(classes.codeEntry);
 					$span.classList.add(entry.type);
 					$span.innerText = entryData;
+				},
+
+				_renderOutputChart: function (output, $output) {
+					let chart = output.find(a => a.type === 'output');
+					let $chart;
+
+					if (chart) {
+						$chart = chart.content;
+					}
+
+					$output.innerHTML = '';
+
+					if ($chart.jquery) {
+						$chart.appendTo($output);
+					} else {
+						$output.innerHTML = $chart;
+					}
 				},
 
 				_handleCodeInput: function (e) {

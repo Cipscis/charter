@@ -312,9 +312,11 @@
 				<li><a href="#getComparisonSummary">getComparisonSummary</a></li>
 				<li><a href="#getComparisonSummaryString">getComparisonSummaryString</a></li>
 			</ul>
+		</div>
 
-			<section>
-				<h4 id="loadFile">loadFile</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="loadFile">loadFile</h4>
 
 				<code class="code code--block">loadFile(fileInfo1, fileConfig1, fileInfo2, fileConfig2, fileInfoN, fileConfigN, callback)</code>
 
@@ -333,10 +335,11 @@
 				<p><code>callback</code> is a function that will receive a <code>dataConfig</code> object representing the processed data. See the <a href="#dataConfig">dataConfig</a> section for more information.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var fileConfig = {
+			<div class="docs-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">var fileConfig = {
 	headerRows: 1,
 	cols: {
 		NAME: Analyser.getColNumber('A'),
@@ -371,108 +374,109 @@ var exploreData = function (dataConfig) {
 };
 
 Analyser.loadFile('/charter/app/docs/data/city example.csv', fileConfig, exploreData);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output"><table class="code__entry table"><thead>
-									<tr>
-										<th>NAME</th>
-										<th>COUNTRY</th>
-										<th>POPULATION</th>
-										<th>CAPITAL</th>
-										<th>PUBLIC_TRANSPORT</th>
-										<th>MAYOR_2012</th>
-										<th>MAYOR_2018</th>
-									</tr>
-								</thead><tbody>
-									<tr>
-										<td>Auckland</td>
-										<td>New Zealand</td>
-										<td>1614</td>
-										<td>false</td>
-										<td>Bus,Train</td>
-										<td>Len Brown</td>
-										<td>Phil Goff</td>
-									</tr>
-									<tr>
-										<td>Tāupo</td>
-										<td>Aotearoa</td>
-										<td>32.907</td>
-										<td>false</td>
-										<td>Bus,Train</td>
-										<td>Rick Cooper</td>
-										<td>David Trewavas</td>
-									</tr>
-									<tr>
-										<td>Hamburg</td>
-										<td>Germany</td>
-										<td>1810</td>
-										<td>false</td>
-										<td>Bus,Train,Ferry</td>
-										<td>Olaf Scholz</td>
-										<td>Katharina Fegebank,Peter Tschentscher</td>
-									</tr>
-									<tr>
-										<td>Sydney</td>
-										<td>Australia</td>
-										<td>4841</td>
-										<td>false</td>
-										<td>Bus,Train,Ferry</td>
-										<td>Clover Moore</td>
-										<td>Clover Moore</td>
-									</tr>
-									<tr>
-										<td>Hamilton</td>
-										<td>New Zealand</td>
-										<td>161.2</td>
-										<td>false</td>
-										<td>Bus</td>
-										<td>Julia Hardaker</td>
-										<td>Andrew King</td>
-									</tr>
-									<tr>
-										<td>Wellington</td>
-										<td>New Zealand</td>
-										<td>381.9</td>
-										<td>true</td>
-										<td>Bus,Train,Ferry,Cable Car</td>
-										<td>Celia Wade-Brown</td>
-										<td>Justin Lester</td>
-									</tr>
-									<tr>
-										<td>Christchurch</td>
-										<td>New Zealand</td>
-										<td>363.926</td>
-										<td>false</td>
-										<td>Bus</td>
-										<td>Bob Parker</td>
-										<td>Lianne Dalziel</td>
-									</tr>
-									<tr>
-										<td>Dunedin</td>
-										<td>New Zealand</td>
-										<td>114.347</td>
-										<td>false</td>
-										<td>Bus</td>
-										<td>Dave Cull</td>
-										<td>Dave Cull</td>
-									</tr>
-									<tr>
-										<td>Tauranga</td>
-										<td>New Zealand</td>
-										<td>110.338</td>
-										<td>false</td>
-										<td>Bus</td>
-										<td>Stuart Crosby</td>
-										<td>Greg Brownless</td>
-									</tr>
-								</tbody></table></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="combineData">combineData</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output"><table class="code__entry table"><thead>
+								<tr>
+									<th>NAME</th>
+									<th>COUNTRY</th>
+									<th>POPULATION</th>
+									<th>CAPITAL</th>
+									<th>PUBLIC_TRANSPORT</th>
+									<th>MAYOR_2012</th>
+									<th>MAYOR_2018</th>
+								</tr>
+							</thead><tbody>
+								<tr>
+									<td>Auckland</td>
+									<td>New Zealand</td>
+									<td>1614</td>
+									<td>false</td>
+									<td>Bus,Train</td>
+									<td>Len Brown</td>
+									<td>Phil Goff</td>
+								</tr>
+								<tr>
+									<td>Tāupo</td>
+									<td>Aotearoa</td>
+									<td>32.907</td>
+									<td>false</td>
+									<td>Bus,Train</td>
+									<td>Rick Cooper</td>
+									<td>David Trewavas</td>
+								</tr>
+								<tr>
+									<td>Hamburg</td>
+									<td>Germany</td>
+									<td>1810</td>
+									<td>false</td>
+									<td>Bus,Train,Ferry</td>
+									<td>Olaf Scholz</td>
+									<td>Katharina Fegebank,Peter Tschentscher</td>
+								</tr>
+								<tr>
+									<td>Sydney</td>
+									<td>Australia</td>
+									<td>4841</td>
+									<td>false</td>
+									<td>Bus,Train,Ferry</td>
+									<td>Clover Moore</td>
+									<td>Clover Moore</td>
+								</tr>
+								<tr>
+									<td>Hamilton</td>
+									<td>New Zealand</td>
+									<td>161.2</td>
+									<td>false</td>
+									<td>Bus</td>
+									<td>Julia Hardaker</td>
+									<td>Andrew King</td>
+								</tr>
+								<tr>
+									<td>Wellington</td>
+									<td>New Zealand</td>
+									<td>381.9</td>
+									<td>true</td>
+									<td>Bus,Train,Ferry,Cable Car</td>
+									<td>Celia Wade-Brown</td>
+									<td>Justin Lester</td>
+								</tr>
+								<tr>
+									<td>Christchurch</td>
+									<td>New Zealand</td>
+									<td>363.926</td>
+									<td>false</td>
+									<td>Bus</td>
+									<td>Bob Parker</td>
+									<td>Lianne Dalziel</td>
+								</tr>
+								<tr>
+									<td>Dunedin</td>
+									<td>New Zealand</td>
+									<td>114.347</td>
+									<td>false</td>
+									<td>Bus</td>
+									<td>Dave Cull</td>
+									<td>Dave Cull</td>
+								</tr>
+								<tr>
+									<td>Tauranga</td>
+									<td>New Zealand</td>
+									<td>110.338</td>
+									<td>false</td>
+									<td>Bus</td>
+									<td>Stuart Crosby</td>
+									<td>Greg Brownless</td>
+								</tr>
+							</tbody></table></samp>
+					</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="combineData">combineData</h4>
 
 				<code class="code code--block">combineData(dataConfig1, dataConfig2, dataConfigN)</code>
 
@@ -481,10 +485,11 @@ Analyser.loadFile('/charter/app/docs/data/city example.csv', fileConfig, explore
 				<p>All rows and relevant associated objects (e.g. aliases, enums) are combined, with the assumption that there are no rows duplicated between different configs. Only columns shared by each <code>dataConfig</code> object's set of columns are kept in the combined output; any columns that are not shared by each <code>dataConfig</code> will be discarded.</p>
 
 				<p>(city example.csv, city example 2.csv)</p>
+			</div>
 
-				<div class="docs-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var fileConfigA = {
+			<div class="docs-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">var fileConfigA = {
 	headerRows: 1,
 	cols: {
 		NAME: Analyser.getColNumber('A'),
@@ -530,88 +535,89 @@ Analyser.loadFile(
 	filePathB, fileConfigB,
 	filesLoaded
 );</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output"><table class="code__entry table"><thead>
-									<tr>
-										<th>NAME</th>
-										<th>COUNTRY</th>
-										<th>POPULATION</th>
-									</tr>
-								</thead><tbody>
-									<tr>
-										<td>Auckland</td>
-										<td>New Zealand</td>
-										<td>1614</td>
-									</tr>
-									<tr>
-										<td>Tāupo</td>
-										<td>Aotearoa</td>
-										<td>32.907</td>
-									</tr>
-									<tr>
-										<td>Hamburg</td>
-										<td>Germany</td>
-										<td>1810</td>
-									</tr>
-									<tr>
-										<td>Sydney</td>
-										<td>Australia</td>
-										<td>4841</td>
-									</tr>
-									<tr>
-										<td>Hamilton</td>
-										<td>New Zealand</td>
-										<td>161.2</td>
-									</tr>
-									<tr>
-										<td>Wellington</td>
-										<td>New Zealand</td>
-										<td>381.9</td>
-									</tr>
-									<tr>
-										<td>Christchurch</td>
-										<td>New Zealand</td>
-										<td>363.926</td>
-									</tr>
-									<tr>
-										<td>Dunedin</td>
-										<td>New Zealand</td>
-										<td>114.347</td>
-									</tr>
-									<tr>
-										<td>Tauranga</td>
-										<td>New Zealand</td>
-										<td>110.338</td>
-									</tr>
-									<tr>
-										<td>Semarang</td>
-										<td>Indonesia</td>
-										<td>1556</td>
-									</tr>
-									<tr>
-										<td>Islamabad</td>
-										<td>Pakistan</td>
-										<td>1015</td>
-									</tr>
-									<tr>
-										<td>New Taipei City</td>
-										<td>Taiwan</td>
-										<td>3972</td>
-									</tr>
-									<tr>
-										<td>Nagoya</td>
-										<td>Japan</td>
-										<td>2296</td>
-									</tr>
-								</tbody></table></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="getColNumber">getColNumber</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output"><table class="code__entry table"><thead>
+								<tr>
+									<th>NAME</th>
+									<th>COUNTRY</th>
+									<th>POPULATION</th>
+								</tr>
+							</thead><tbody>
+								<tr>
+									<td>Auckland</td>
+									<td>New Zealand</td>
+									<td>1614</td>
+								</tr>
+								<tr>
+									<td>Tāupo</td>
+									<td>Aotearoa</td>
+									<td>32.907</td>
+								</tr>
+								<tr>
+									<td>Hamburg</td>
+									<td>Germany</td>
+									<td>1810</td>
+								</tr>
+								<tr>
+									<td>Sydney</td>
+									<td>Australia</td>
+									<td>4841</td>
+								</tr>
+								<tr>
+									<td>Hamilton</td>
+									<td>New Zealand</td>
+									<td>161.2</td>
+								</tr>
+								<tr>
+									<td>Wellington</td>
+									<td>New Zealand</td>
+									<td>381.9</td>
+								</tr>
+								<tr>
+									<td>Christchurch</td>
+									<td>New Zealand</td>
+									<td>363.926</td>
+								</tr>
+								<tr>
+									<td>Dunedin</td>
+									<td>New Zealand</td>
+									<td>114.347</td>
+								</tr>
+								<tr>
+									<td>Tauranga</td>
+									<td>New Zealand</td>
+									<td>110.338</td>
+								</tr>
+								<tr>
+									<td>Semarang</td>
+									<td>Indonesia</td>
+									<td>1556</td>
+								</tr>
+								<tr>
+									<td>Islamabad</td>
+									<td>Pakistan</td>
+									<td>1015</td>
+								</tr>
+								<tr>
+									<td>New Taipei City</td>
+									<td>Taiwan</td>
+									<td>3972</td>
+								</tr>
+								<tr>
+									<td>Nagoya</td>
+									<td>Japan</td>
+									<td>2296</td>
+								</tr>
+							</tbody></table></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="getColNumber">getColNumber</h4>
 
 				<code class="code code--block">getColNumber(colName)</code>
 
@@ -621,9 +627,9 @@ Analyser.loadFile(
 
 				<p><code>colName</code> is a string representing the letter-based name of a column. It is <b>not</b> case sensitive.</p>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var cols = {
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var cols = {
 	NAME: Analyser.getColNumber('A'),
 	COUNTRY: Analyser.getColNumber('B'),
 	POPULATION: Analyser.getColNumber('C'),
@@ -631,16 +637,17 @@ Analyser.loadFile(
 };
 
 console.log(cols);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="getCol">getCol</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="getCol">getCol</h4>
 
 				<code class="code code--block">getCol(rows, colNum)</code>
 
@@ -651,25 +658,27 @@ console.log(cols);</code>
 				<p><code>colNum</code> is the index of a column, typically represented by an element of the <code>cols</code> object from a <code>dataConfig</code> object.</p>
 
 				<p>(city examples.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var cityNames = Analyser.getCol(rows, cols.NAME);
 
 console.log(cityNames);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="addCol">addCol</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="addCol">addCol</h4>
 
 				<code class="code code--block">addCol(rows, col)</code>
 
@@ -681,9 +690,9 @@ console.log(cityNames);</code>
 
 				<p>(city example 3.csv)</p>
 
-				<div class="docs-example js-doc-example" data-method-input="city example 3.csv">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example" data-method-input="city example 3.csv">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var previousYearPopulation = Analyser.getCol(rows, cols.POPULATION);
@@ -701,16 +710,17 @@ var subCols = {
 
 var table = Analyser.createSubTable(rows, subCols);
 console.table(table);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="getDerivedCol">getDerivedCol</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="getDerivedCol">getDerivedCol</h4>
 
 				<code class="code code--block">getDerivedCol(rows, processFn, optionalCol1, optionalCol2, optionalColN)</code>
 
@@ -725,10 +735,11 @@ console.table(table);</code>
 				<p>The values passed through to the <code>optionalValue1, optionalValue2, optionalValueN</code> arguments correspond to the values at the current row for the optional specified columns.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var getRawPopulation = function (rows) {
@@ -739,26 +750,28 @@ var getRawPopulation = function (rows) {
 var rawPopulation = Analyser.getDerivedCol(rows, getRawPopulation);
 
 console.log(rawPopulation);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="addDerivedCol">addDerivedCol</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="addDerivedCol">addDerivedCol</h4>
 
 				<code class="code code--block">addDerivedCol(rows, processFn, optionalCol1, optionalCol2, optionalColN)</code>
 
 				<p>Creates a new column as per <code>getDerivedCol</code>, then passes it in to <code>addCol</code> and returns the index of the new column.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var getRawPopulation = function (rows) {
@@ -775,16 +788,17 @@ var summaryCols = {
 
 var table = Analyser.createSubTable(rows, summaryCols);
 console.table(table);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="createSubTable">createSubTable</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="createSubTable">createSubTable</h4>
 
 				<code class="code code--block">createSubTable(rows, cols)</code>
 
@@ -795,10 +809,11 @@ console.table(table);</code>
 				<p><code>cols</code> is a columns object as created for a <code>fileConfig</code> object.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var summaryCols = {
@@ -808,26 +823,28 @@ var summaryCols = {
 
 var summaryTable = Analyser.createSubTable(rows, summaryCols);
 console.table(summaryTable);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="createSubTableString">createSubTableString</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="createSubTableString">createSubTableString</h4>
 
 				<code class="code code--block">createSubTableString(rows, cols)</code>
 
 				<p>Calls <code>createSubTable</code> and converts the result into a string that separates cells by tabs and rows by newlines, so it can be copied and pasted into a spreadsheet.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var summaryCols = {
@@ -837,16 +854,17 @@ var summaryCols = {
 
 var summaryTableString = Analyser.createSubTableString(rows, summaryCols);
 console.log(summaryTableString);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="getColSummary">getColSummary</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="getColSummary">getColSummary</h4>
 
 				<code class="code code--block">getColSummary(rows, cols, aliasList)</code>
 
@@ -859,10 +877,11 @@ console.log(summaryTableString);</code>
 				<p><code>aliasList</code> (optional) is an object specifying aliases as used in a <code>fileConfig</code> object. If an <code>aliasList</code> is passed in, the count in the summary object will combine values in a single alias into the same count, and report them using the label of the alias.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var aliases = dataConfig.aliases;
 
@@ -871,16 +890,17 @@ console.log(countrySummary);
 
 var countrySummaryWithAliases = Analyser.getColSummary(rows, cols.COUNTRY, aliases.COUNTRY);
 console.log(countrySummaryWithAliases);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="getColAsDataSeries">getColAsDataSeries</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="getColAsDataSeries">getColAsDataSeries</h4>
 
 				<code class="code code--block">getColAsDataSeries(rows, col, labels)</code>
 
@@ -893,26 +913,28 @@ console.log(countrySummaryWithAliases);</code>
 				<p><code>labels</code> is an array of labels, where each label is a value that appears in some cells in the specified column.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var labels = Analyser.getCol(rows, cols.COUNTRY);
 
 var dataSeries = Analyser.getColAsDataSeries(rows, cols.COUNTRY, labels);
 console.log(dataSeries);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="getComparisonSummary">getComparisonSummary</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="getComparisonSummary">getComparisonSummary</h4>
 
 				<code class="code code--block">getComparisonSummary(rows, headerCol, headerAliases, varCol, varAliases)</code>
 
@@ -929,56 +951,60 @@ console.log(dataSeries);</code>
 				<p><code>varAliases</code> (optional) is a set of aliases as used for a <code>fileConfig</code> object, to be applied to the values of <code>varCol</code>.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var aliases = dataConfig.aliases;
 
 var capitalTable = Analyser.getComparisonSummary(rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
 
 console.table(capitalTable);</code>
-					</div>
+				</div>
 
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
-				</section>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
 			</section>
+		</section>
 
-			<section>
-				<h4 id="getComparisonSummaryString">getComparisonSummaryString</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="getComparisonSummaryString">getComparisonSummaryString</h4>
 
 				<code class="code code--block">getComparisonSummaryString(rows, headerCol, headerAliases, varCol, varAliases)</code>
 
 				<p>Calls <code>getComparisonSummary</code> and converts the result into a string that separates cells by tabs and rows by newlines, so it can be copied and pasted into a spreadsheet.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var aliases = dataConfig.aliases;
 
 var capitalTableString = Analyser.getComparisonSummaryString(rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
 
 console.log(capitalTableString);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
+
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
 
 			<h3 id="fileConfig">fileConfig</h3>
 
 			<p>A <code>fileConfig</code> object is required by the <code>loadFile</code> function, and is used to determine how the data in a file is processed. It contains the following properties:</p>
 
-			<section>
-				<h4 id="headerRows">headerRows</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="headerRows">headerRows</h4>
 
 				<p><code>headerRows</code> (optional) is the number of rows at the top of the CSV file that are not part of the data. These rows will be ignored when Analyser processes the file.</p>
 
@@ -989,60 +1015,66 @@ console.log(capitalTableString);</code>
 				<p><code>cols</code> is an object where each key is the label to use for a column, and the value is the index of the column. <code>Analyser.getColNumber</code> can be used to convert letter-based spreadsheet column labels to numbers.</p>
 
 				<p>You don't need to include every column that is in a spreadsheet in the cols object. Any that you don't include will be ignored when processing the data, and not included in the output.</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code docs-example--code-only">var cols = {
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code docs-example--code-only">var cols = {
 	NAME: Analyser.getColNumber('A'),
 	COUNTRY: Analyser.getColNumber('B'),
 	POPULATION: Analyser.getColNumber('C'),
 	CAPITAL: Analyser.getColNumber('D')
 };</code>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="arrayCols">arrayCols</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="arrayCols">arrayCols</h4>
 
 				<p><code>arrayCols</code> is an object where each element's key is the index of a column, and its value is either null or a string.</p>
 
 				<p>It represents the columns in a CSV whose cells contain multiple values, separated by some delimiter. The value of an <code>arrayCols</code> element is the delimiter used to separate values in these cells. If a delimiter is not defined here, a single space character is used by default.</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code docs-example--code-only">// Assuming cells in the PUBLIC_TRANSPORT column
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code docs-example--code-only">// Assuming cells in the PUBLIC_TRANSPORT column
 // can have values such as 'Bus,Train'
 
 var arrayCols = {};
 arrayCols[fileConfig.cols.PUBLIC_TRANSPORT] = ',';</code>
 
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="aliases">aliases</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="aliases">aliases</h4>
 
 				<p><code>aliases</code> (optional) is an object where each property, which must share its name with a column as defined in the <code>cols</code> object, is an array of arrays. Each array represents a set of values that should be considered to belong to the same set.</p>
 
 				<p>The first value in an array of aliases should be considered the label of the set of aliases. This label does not need to appear in the data itself.</p>
 
 				<p>A value can appear in multiple alias arrays. If it does, it may be counted multiple times as it will be considered a member of all sets simultaneously.</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var aliases = {
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">var aliases = {
 	COUNTRY: [
 		['New Zealand', 'Aotearoa']
 	]
 };</code>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="enumsMap">enumsMap</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="enumsMap">enumsMap</h4>
 
 				<p><code>enumsMap</code> (optional) is an object where each property, which must share its name with a column as defined in the <code>cols</code> object, is an array of column indices. This map is used when creating the <code>enums</code> object available when analysing data, and tells the processor that enums from the columns in each array should be combined into the same set.</p>
 
@@ -1115,51 +1147,59 @@ Analyser.loadFile(baseUrl + 'docs/data/city example.csv', fileConfig, exploreDat
 
 			<p>A <code>dataConfig</code> object is created by data processing functions, and is used for analysing processed data. It contains the following properties:</p>
 
-			<section>
-				<h4 id="cols">cols</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="cols">cols</h4>
 
 				<p><code>cols</code> is the cols object from the <code>fileConfig</code> passed in to <code>loadFile</code>.</p>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="rows">rows</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="rows">rows</h4>
 
 				<p><code>rows</code> is an array of arrays, where each element in the outer array represents a row in the processed CSV and each element in an inner array represents a cell in the processed CSV. The index of each element in a row is determined by the value associated with its column in the <code>cols</code> object, and should be accessed using it:</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var firstRowName = rows[0][cols.NAME];
 
 console.log(firstRowName);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="aliases">aliases</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="aliases">aliases</h4>
 
 				<p><code>aliases</code> is the aliases object from the <code>fileConfig</code> used to process this data. See the section on (filters)[filters] for examples on how aliases can be used once the data has been processed.</p>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="enums">enums</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="enums">enums</h4>
 
 				<p><code>enums</code> is an object where each element, which shares a name with each element of the <code>cols</code> object, is an array of all values that can be found in that column. If an <code>enumsMap</code> is used, enums collected for multiple columns can be combined into one set.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">// dataConfig.enums
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">// dataConfig.enums
 {
 	NAME: [
 		'Auckland', 'Tāupo', 'Hamburg', 'Sydney', 'Hamilton', 'Wellington', 'Christchurch', 'Dunedin', 'Tauranga'
@@ -1180,16 +1220,19 @@ console.log(firstRowName);</code>
 		'Len Brown', 'Phil Goff', 'Rick Cooper', 'David Trewavas', 'Olaf Scholz', 'Katharina Fegebank', 'Peter Tschentscher', 'Clover Moore', 'Julia Hardaker', 'Andrew King', 'Celia Wade-Brown', 'Justin Lester', 'Bob Parker', 'Lianne Dalziel', 'Dave Cull', 'Stuart Crosby', 'Greg Brownless'
 	]
 }</code>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="filters">filters</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="filters">filters</h4>
 
 				<p><code>filters</code> is an object containing a set of filter functions that use the aliases from the <code>fileConfig</code> object used to process this data. It contains the following filter functions:</p>
+			</div>
 
-				<section>
+			<section>
+				<div class="content">
 					<h5 id="filterRows">filterRows</h5>
 
 					<code class="code code--block">filterRows(rows, orToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
@@ -1209,10 +1252,11 @@ console.log(firstRowName);</code>
 					<p><code>values1, &hellip;, values2, &hellip;, valuesN</code> are each either a single value to filter by, an array of values to filter by (if the value of a cell matches any value in this array, it will pass the filter), or a function that takes in the value of a cell and returns a boolean value.</p>
 
 					<p>(city example.csv)</p>
+				</div>
 
-					<div class="docs-example js-doc-example">
-						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var filterRows = dataConfig.filters.filterRows;
 
@@ -1221,16 +1265,16 @@ var newZealandCities = filterRows(rows,
 	cols.COUNTRY, 'New Zealand'
 );
 console.log(Analyser.getCol(newZealandCities, cols.NAME));</code>
-						</div>
-
-						<div class="docs-example__output-container">
-							<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-						</div>
 					</div>
 
-					<div class="docs-example js-doc-example">
-						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var filterRows = dataConfig.filters.filterRows;
 
@@ -1239,16 +1283,16 @@ var citiesWithTrains = filterRows(rows,
 	cols.PUBLIC_TRANSPORT, 'Train'
 );
 console.log(Analyser.getCol(citiesWithTrains, cols.NAME));</code>
-						</div>
-
-						<div class="docs-example__output-container">
-							<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-						</div>
 					</div>
 
-					<div class="docs-example js-doc-example">
-						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var filterRows = dataConfig.filters.filterRows;
 
@@ -1257,16 +1301,16 @@ var australasiaCities = filterRows(rows,
 	cols.COUNTRY, ['New Zealand', 'Australia']
 );
 console.log(Analyser.getCol(australasiaCities, cols.NAME));</code>
-						</div>
-
-						<div class="docs-example__output-container">
-							<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-						</div>
 					</div>
 
-					<div class="docs-example js-doc-example">
-						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var filterRows = dataConfig.filters.filterRows;
 
@@ -1275,16 +1319,16 @@ var largerCities = filterRows(rows,
 	cols.POPULATION, a => a >= 300
 );
 console.log(Analyser.getCol(largerCities, cols.NAME));</code>
-						</div>
-
-						<div class="docs-example__output-container">
-							<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-						</div>
 					</div>
 
-					<div class="docs-example js-doc-example">
-						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var filterRows = dataConfig.filters.filterRows;
 
@@ -1294,16 +1338,16 @@ var largeCapitalCities = filterRows(rows,
 	cols.CAPITAL, a => a === 'true'
 );
 console.log(Analyser.getCol(largeCapitalCities, cols.NAME));</code>
-						</div>
-
-						<div class="docs-example__output-container">
-							<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-						</div>
 					</div>
 
-					<div class="docs-example js-doc-example">
-						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var filterRows = dataConfig.filters.filterRows;
 
@@ -1313,15 +1357,16 @@ var veryLargeOrCapitalCities = filterRows(rows, true,
 	cols.CAPITAL, a => a === 'true'
 );
 console.log(Analyser.getCol(veryLargeOrCapitalCities, cols.NAME));</code>
-						</div>
-
-						<div class="docs-example__output-container">
-							<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-						</div>
 					</div>
-				</section>
 
-				<section>
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<div class="content">
 					<h5 id="filterRowsAnd">filterRowsAnd</h5>
 
 					<code class="code code--block">filterRowsAnd(rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
@@ -1329,10 +1374,11 @@ console.log(Analyser.getCol(veryLargeOrCapitalCities, cols.NAME));</code>
 					<p>Identical to the <code>filterRows</code> function, but without the <code>andToggle</code> argument. Because this parameter of <code>filterRows</code> defaults to true, <code>filterRows</code> can be used in exactly the same way as <code>filterRowsAnd</code>.</p>
 
 					<p>(city example.csv)</p>
+				</div>
 
-					<div class="docs-example js-doc-example">
-						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var filterRowsAnd = dataConfig.filters.filterRowsAnd;
 
@@ -1341,14 +1387,15 @@ var newZealandCapital = filterRowsAnd(rows,
 	cols.CAPITAL, a => a === 'true'
 );
 console.log(Analyser.getCol(newZealandCapital, cols.NAME));</code>
-						</div>
+					</div>
 
-						<div class="docs-example__output-container">
-							<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-						</div>
-				</section>
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+			</section>
 
-				<section>
+			<section>
+				<div class="content">
 					<h5 id="filterRowsOr">filterRowsOr</h5>
 
 					<code class="code code--block">filterRowsOr(rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
@@ -1356,10 +1403,11 @@ console.log(Analyser.getCol(newZealandCapital, cols.NAME));</code>
 					<p>Identical to the <code>filterRows</code> function, but without the <code>andToggle</code> argument and applying an OR filter.</p>
 
 					<p>(city example.csv)</p>
+				</div>
 
-					<div class="docs-example js-doc-example">
-						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 var filterRowsOr = dataConfig.filters.filterRowsOr;
 
@@ -1368,15 +1416,16 @@ var largeOrCapitalCities = filterRowsOr(rows,
 	cols.CAPITAL, a => a === 'true'
 );
 console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
-						</div>
-
-						<div class="docs-example__output-container">
-							<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-						</div>
 					</div>
-				</section>
-			</section>
 
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+			</section>
+		</section>
+
+		<div class="content">
 			<h2 id="charter">Charter</h2>
 
 			<h3>Use</h3>
@@ -1386,9 +1435,11 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 			<p>These methods take in a <code>chartData</code> object, a <code>numericAxisConfig</code> for the independent axis, and a <code>qualitativeAxisConfig</code> for the dependent axis. The <code>chartData</code> object in turn contains an array of <code>dataSeries</code> objects.</p>
 
 			<p>Some properties of these objects are only used by some types of charts.</p>
+		</div>
 
-			<section>
-				<h4 id="chartData">chartData</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="chartData">chartData</h4>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
@@ -1428,10 +1479,12 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 				<p><code>horizontal</code> is a boolean value used only for bar charts. If true, the independent axis will be the vertical axis, with bars extending from left to right instead of from top to bottom.</p>
 
 				<p><code>smoothing</code> is an integer used only for line graphs and scatter plots. If set, the data will be smoothed using a rolling average of the specified size.</p>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="dataSeries">dataSeries</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="dataSeries">dataSeries</h4>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
@@ -1448,10 +1501,12 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 				<p><code>color</code> is the colour used to denote the data in this <code>dataSeries</code> on the chart. If unset, it will default to the colour set in the CSS (#999 in this project).</p>
 
 				<p><code>dataPoints</code> is an array of numbers - the data you want to draw on the chart.</p>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="numericAxisConfig">numericAxisConfig</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="numericAxisConfig">numericAxisConfig</h4>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
@@ -1470,12 +1525,13 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 	min: 0,
 	max: null
 }</code>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="qualitativeAxisConfig">qualitativeAxisConfig</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="qualitativeAxisConfig">qualitativeAxisConfig</h4>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
@@ -1486,10 +1542,11 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 	gridlinesEvery: null,
 	gridlinesSkip: null
 }</code>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
+		<div class="content">
 			<h3>Methods</h3>
 
 			<ul>
@@ -1499,9 +1556,11 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 				<li><a href="#createScatterPlot">createScatterPlot</a></li>
 				<li><a href="#updateBarChart">updateBarChart</a></li>
 			</ul>
+		</div>
 
-			<section>
-				<h4 id="createTable">createTable</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="createTable">createTable</h4>
 
 				<code class="code code--block">createTable(rows, cols)</code>
 
@@ -1513,20 +1572,27 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 
 				<p>(city example 3.csv)</p>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
+			</div>
+
+			<div class="docs-example docs-example--chart-output js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code-chart">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var table = Charter.createTable(rows, cols);
 
-document.getElementById('chart-area').innerHTML = table;</code>
-					</div>
+return table;</code>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="createBarChart">createBarChart</h4>
+				<div class="docs-example__output-container">
+					<div class="panel js-doc-example-output"></div>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="createBarChart">createBarChart</h4>
 
 				<code class="code code--block">createBarChart(chartData, dependentAxisConfig, independentAxisConfig)</code>
 
@@ -1539,16 +1605,16 @@ document.getElementById('chart-area').innerHTML = table;</code>
 				<p><code>independentAxisConfig</code> is a <code>qualitativeAxisConfig</code> object.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
+			<div class="docs-example docs-example--chart-output js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code-chart">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var chartData;
 
 var dependentAxisConfig;
-var independentAxisConfig;
 
 var chart;
 
@@ -1573,13 +1639,18 @@ dependentAxisConfig = {
 
 chart = Charter.createBarChart(chartData, dependentAxisConfig);
 
-$('#chart-area').append(chart);</code>
-					</div>
+return chart;</code>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="createLineGraph">createLineGraph</h4>
+				<div class="docs-example__output-container">
+					<div class="panel js-doc-example-output"></div>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="createLineGraph">createLineGraph</h4>
 
 				<code class="code code--block">createLineGraph(chartData, dependentAxisConfig, independentAxisConfig)</code>
 
@@ -1592,10 +1663,11 @@ $('#chart-area').append(chart);</code>
 				<p><code>independentAxisConfig</code> is a <code>qualitativeAxisConfig</code> object.</p>
 
 				<p>(city example 3.csv)</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
+			<div class="docs-example docs-example--chart-output js-doc-example" data-doc-example-input="city example 3.csv">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code-chart">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var chartData;
@@ -1620,7 +1692,7 @@ chartData = {
 		},
 		{
 			name: 'Population linear fit',
-			color: 'rgba(255, 255, 255, 0.5)',
+			color: 'rgba(0, 0, 0, 0.5)',
 			dataPoints: Stats.linearLeastSquares(population)
 		}
 	]
@@ -1642,13 +1714,18 @@ chart = Charter.createLineGraph(
 	independentAxisConfig
 );
 
-$('#chart-area').append(chart);</code>
-					</div>
+return chart;</code>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="createScatterPlot">createScatterPlot</h4>
+				<div class="docs-example__output-container">
+					<div class="panel js-doc-example-output"></div>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="createScatterPlot">createScatterPlot</h4>
 
 				<code class="code code--block">createScatterPlot(chartData, dependentAxisConfig, independentAxisConfig)</code>
 
@@ -1661,10 +1738,11 @@ $('#chart-area').append(chart);</code>
 				<p><code>independentAxisConfig</code> is a <code>qualitativeAxisConfig</code> object.</p>
 
 				<p>(city example 3.csv)</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
+			<div class="docs-example docs-example--chart-output js-doc-example" data-doc-example-input="city example 3.csv">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code-chart">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var chartData;
@@ -1689,7 +1767,7 @@ chartData = {
 		},
 		{
 			name: 'Population linear fit',
-			color: 'rgba(255, 255, 255, 0.5)',
+			color: 'rgba(0, 0, 0, 0.5)',
 			dataPoints: Stats.linearLeastSquares(population)
 		}
 	]
@@ -1711,14 +1789,18 @@ chart = Charter.createScatterPlot(
 	independentAxisConfig
 );
 
-$('#chart-area').append(chart);
-						</code>
-					</div>
+return chart;</code>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="updateBarChart">updateBarChart</h4>
+				<div class="docs-example__output-container">
+					<div class="panel js-doc-example-output"></div>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="updateBarChart">updateBarChart</h4>
 
 				<code class="code code--block">updateBarChart(chart, data, titleText)</code>
 
@@ -1731,10 +1813,11 @@ $('#chart-area').append(chart);
 				<p><code>titleText</code> is an optional string to replace the current title of the chart.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var chartData;
@@ -1769,10 +1852,11 @@ $('#chart-area').append(chart);
 window.setTimeout(function () {
 	Charter.updateBarChart(chart[0], [1, 2, 3, 4, 5, 6, 7, 8, 9], 'New title');
 }, 1000);</code>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
+		<div class="content">
 			<h2 id="stats">Stats</h2>
 
 			<h3>Use</h3>
@@ -1796,9 +1880,11 @@ window.setTimeout(function () {
 				<li><a href="#smooth">smooth</a></li>
 				<li><a href="#chunk">chunk</a></li>
 			</ul>
+		</div>
 
-			<section>
-				<h4 id="sum">sum</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="sum">sum</h4>
 
 				<code class="code code--block">sum(values)</code>
 
@@ -1807,10 +1893,11 @@ window.setTimeout(function () {
 				<p><code>values</code> is an array of numbers.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var populations = Analyser.getCol(rows, cols.POPULATION);
@@ -1818,16 +1905,17 @@ var totalPopulation = Stats.sum(populations);
 
 console.log(populations);
 console.log(totalPopulation);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="mean">mean</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="mean">mean</h4>
 
 				<code class="code code--block">mean(values)</code>
 
@@ -1836,10 +1924,11 @@ console.log(totalPopulation);</code>
 				<p><code>values</code> is an array of numbers.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var populations = Analyser.getCol(rows, cols.POPULATION);
@@ -1847,16 +1936,17 @@ var meanPopulation = Stats.mean(populations);
 
 console.log(populations);
 console.log(meanPopulation);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="median">median</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="median">median</h4>
 
 				<code class="code code--block">median(values)</code>
 
@@ -1865,10 +1955,11 @@ console.log(meanPopulation);</code>
 				<p><code>values</code> is an array of numbers.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var populations = Analyser.getCol(rows, cols.POPULATION);
@@ -1876,16 +1967,17 @@ var medianPopulation = Stats.median(populations);
 
 console.log(populations);
 console.log(medianPopulation);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="variance">variance</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="variance">variance</h4>
 
 				<code class="code code--block">variance(values)</code>
 
@@ -1894,10 +1986,11 @@ console.log(medianPopulation);</code>
 				<p><code>values</code> is an array of numbers.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var populations = Analyser.getCol(rows, cols.POPULATION);
@@ -1905,16 +1998,17 @@ var populationVariance = Stats.variance(populations);
 
 console.log(populations);
 console.log(populationVariance);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="sd">sd</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="sd">sd</h4>
 
 				<code class="code code--block">sd(values)</code>
 
@@ -1923,10 +2017,11 @@ console.log(populationVariance);</code>
 				<p><code>values</code> is an array of numbers.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var populations = Analyser.getCol(rows, cols.POPULATION);
@@ -1934,16 +2029,17 @@ var populationSD = Stats.sd(populations);
 
 console.log(populations);
 console.log(populationSD);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="max">max</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="max">max</h4>
 
 				<code class="code code--block">max(values)</code>
 
@@ -1952,10 +2048,11 @@ console.log(populationSD);</code>
 				<p><code>values</code> is an array of numbers.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var populations = Analyser.getCol(rows, cols.POPULATION);
@@ -1963,16 +2060,17 @@ var populationMax = Stats.max(populations);
 
 console.log(populations);
 console.log(populationMax);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="min">min</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="min">min</h4>
 
 				<code class="code code--block">min(values)</code>
 
@@ -1981,10 +2079,11 @@ console.log(populationMax);</code>
 				<p><code>values</code> is an array of numbers.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var populations = Analyser.getCol(rows, cols.POPULATION);
@@ -1992,16 +2091,17 @@ var min = Stats.min(populations);
 
 console.log(populations);
 console.log(min);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="intRange">intRange</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="intRange">intRange</h4>
 
 				<code class="code code--block">intRange(start, finish)</code>
 
@@ -2011,21 +2111,22 @@ console.log(min);</code>
 
 				<p><code>finish</code> is a number. If it isn't an integer, it will be converted to one first via <code>Math.round</code>.</p>
 
-				<div class="docs-example js-doc-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var intRange = Stats.intRange(3, 5);
+			<div class="docs-example js-doc-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var intRange = Stats.intRange(3, 5);
 
 console.log(intRange);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="linearLeastSquares">linearLeastSquares</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="linearLeastSquares">linearLeastSquares</h4>
 
 				<code class="code code--block">linearLeastSquare(y, x)</code>
 
@@ -2036,10 +2137,11 @@ console.log(intRange);</code>
 				<p><code>x</code> is an optional array of values representing the independent axis value for a given value in the <code>y</code> array. This is only necessary if the values in the <code>y</code> array are not evenly distributed across (e.g. one data point per year for a time series).</p>
 
 				<p>(city example 3.csv)</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var chartData;
@@ -2089,12 +2191,13 @@ chart = Charter.createLineGraph(
 );
 
 $('#chart-area').append(chart);</code>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="r">r</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="r">r</h4>
 
 				<code class="code code--block">r(y, x)</code>
 
@@ -2119,16 +2222,17 @@ var linearFit = Stats.linearLeastSquares(population);
 var r = Stats.r(linearFit, population);
 
 console.log(r);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="r2">r2</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="r2">r2</h4>
 
 				<code class="code code--block">r2(y, x)</code>
 
@@ -2153,16 +2257,17 @@ var linearFit = Stats.linearLeastSquares(population);
 var r2 = Stats.r2(linearFit, population);
 
 console.log(r2);</code>
-					</div>
-
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
-					</div>
 				</div>
-			</section>
 
-			<section>
-				<h4 id="smooth">smooth</h4>
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+				</div>
+			</div>
+		</section>
+
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="smooth">smooth</h4>
 
 				<code class="code code--block">smooth(y, smoothness)</code>
 
@@ -2173,10 +2278,11 @@ console.log(r2);</code>
 				<p><code>smoothness</code> is an integer between <code>1</code> and the length of <code>y</code> (using a value of <code>1</code> will return the input <code>y</code> array).</p>
 
 				<p>(city example 3.csv)</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var chartData;
@@ -2222,12 +2328,13 @@ chart = Charter.createLineGraph(
 );
 
 $('#chart-area').append(chart);</code>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section>
-				<h4 id="chunk">chunk</h4>
+		<section class="docs-method">
+			<div class="content">
+				<h4 class="docs-method__heading" id="chunk">chunk</h4>
 
 				<code class="code code--block">chunk(y, chunkSize)</code>
 
@@ -2242,10 +2349,11 @@ $('#chart-area').append(chart);</code>
 				<p><code>chunkSize</code> is a positive integer.</p>
 
 				<p>(city example 3.csv)</p>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var chartData;
@@ -2307,10 +2415,9 @@ chart = Charter.createBarChart(
 );
 
 $('#chart-area').append(chart);</code>
-					</div>
 				</div>
-			</section>
-		</div>
+			</div>
+		</section>
 	</div>
 </body>
 </html>
