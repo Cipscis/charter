@@ -626,6 +626,7 @@ Analyser.loadFile(
 				<p>This function is typically only used to create the <code>cols</code> object for a <code>fileConfig</code>.</p>
 
 				<p><code>colName</code> is a string representing the letter-based name of a column. It is <b>not</b> case sensitive.</p>
+			</div>
 
 			<div class="docs-example js-doc-example">
 				<div class="docs-example__code-container">
@@ -689,6 +690,7 @@ console.log(cityNames);</code>
 				<p><code>col</code> is an array of the same length as <code>rows</code>.</p>
 
 				<p>(city example 3.csv)</p>
+			</div>
 
 			<div class="docs-example js-doc-example" data-method-input="city example 3.csv">
 				<div class="docs-example__code-container">
@@ -967,7 +969,7 @@ console.table(capitalTable);</code>
 				<div class="docs-example__output-container">
 					<samp class="code code--block docs-example__output js-doc-example-output"></samp>
 				</div>
-			</section>
+			</div>
 		</section>
 
 		<section class="docs-method">
@@ -1083,10 +1085,11 @@ arrayCols[fileConfig.cols.PUBLIC_TRANSPORT] = ',';</code>
 				<p>The enums that are collected in data processing this way can be useful in generating labels for graphs, for example.</p>
 
 				<p>(city example.csv)</p>
+			</div>
 
-				<div class="docs-example">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var fileConfig = {
+			<div class="docs-example">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">var fileConfig = {
 	headerRows: 1,
 	cols: {
 		NAME: Analyser.getColNumber('A'),
@@ -1115,10 +1118,10 @@ var exploreData = function (dataConfig) {
 };
 
 Analyser.loadFile(baseUrl + 'docs/data/city example.csv', fileConfig, exploreData);</code>
-					</div>
+				</div>
 
-					<div class="docs-example__output-container">
-						<samp class="code code--block docs-example__output">// dataConfig.enums
+				<div class="docs-example__output-container">
+					<samp class="code code--block docs-example__output">// dataConfig.enums
 {
 	'CAPITAL': [
 		'false', 'true'
@@ -1139,13 +1142,15 @@ Analyser.loadFile(baseUrl + 'docs/data/city example.csv', fileConfig, exploreDat
 		'Bus', 'Train', 'Ferry', 'Cable Car'
 	]
 }</samp>
-					</div>
 				</div>
-			</section>
+			</div>
+		</section>
 
+		<div class="content">
 			<h3 id="dataConfig">dataConfig</h3>
 
 			<p>A <code>dataConfig</code> object is created by data processing functions, and is used for analysing processed data. It contains the following properties:</p>
+		</div>
 
 		<section class="docs-method">
 			<div class="content">
@@ -1392,6 +1397,7 @@ console.log(Analyser.getCol(newZealandCapital, cols.NAME));</code>
 					<div class="docs-example__output-container">
 						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
 					</div>
+				</div>
 			</section>
 
 			<section>
@@ -1507,10 +1513,11 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 		<section class="docs-method">
 			<div class="content">
 				<h4 class="docs-method__heading" id="numericAxisConfig">numericAxisConfig</h4>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">{
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">{
 	values: 5,
 	valuesAt: [],
 	gridlines: null,
@@ -1532,10 +1539,11 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 		<section class="docs-method">
 			<div class="content">
 				<h4 class="docs-method__heading" id="qualitativeAxisConfig">qualitativeAxisConfig</h4>
+			</div>
 
-				<div class="docs-example docs-example--code-only">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">{
+			<div class="docs-example docs-example--code-only">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code">{
 	valuesEvery: 1,
 	valuesSkip: 0,
 
@@ -2208,10 +2216,11 @@ $('#chart-area').append(chart);</code>
 				<p><code>x</code> is an array of values of equal length to <code>y</code>.</p>
 
 				<p>(city example 3.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example" data-doc-example-input="city example 3.csv">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example" data-doc-example-input="city example 3.csv">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var years = Analyser.getCol(rows, cols.YEAR);
@@ -2243,10 +2252,11 @@ console.log(r);</code>
 				<p><code>x</code> is an array of values of equal length to <code>y</code>.</p>
 
 				<p>(city example 3.csv)</p>
+			</div>
 
-				<div class="docs-example js-doc-example" data-doc-example-input="city example 3.csv">
-					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
+			<div class="docs-example js-doc-example" data-doc-example-input="city example 3.csv">
+				<div class="docs-example__code-container">
+					<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
 var cols = dataConfig.cols;
 
 var years = Analyser.getCol(rows, cols.YEAR);
@@ -2385,7 +2395,7 @@ var populationIncrease = Analyser.getCol(rows, cols.POPULATION_INCREASE);
 var chunkedPopulationIncrease = Stats.chunk(populationIncrease, chunkSize);
 
 var yearSets = [];
-for (var i = 0; i < years.length; i += chunkSize) {
+for (var i = 0; i &lt; years.length; i += chunkSize) {
 	yearSets.push(years[i] + '-' + years[i+(chunkSize-1)]);
 }
 
