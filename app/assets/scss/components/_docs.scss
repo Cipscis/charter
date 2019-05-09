@@ -20,6 +20,12 @@
 	grid-template-areas: "code";
 	grid-template-columns: 1fr;
 }
+.docs-example--chart-output {
+	grid-template-areas:
+		"code"
+		"output";
+	grid-template-columns: 1fr;
+}
 
 .docs-example__code-container {
 	margin: 0 !important;
@@ -52,3 +58,12 @@
 }
 
 .docs-example__output {}
+
+
+.docs-method {
+	margin: 60px 0;
+}
+
+.docs-method__heading {
+	font-size: 24px;
+}
