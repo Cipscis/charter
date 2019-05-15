@@ -1,3 +1,124 @@
+//////////////
+// DOCS NAV //
+//////////////
+.docs-nav {
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	max-height: 100%;
+	overflow: auto;
+
+	padding: 10px;
+	background: var(--primary-background);
+	box-shadow: 0 0 5px var(--shadow);
+}
+
+.docs-nav__trigger-input {
+	position: absolute;
+	display: block;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+$docs-nav-trigger-height: 24px;
+$docs-nav-trigger-width: $docs-nav-trigger-height * 1.2;
+$docs-nav-trigger-bar-size: 4px;
+.docs-nav__trigger-display {
+	cursor: pointer;
+
+	display: block;
+	height: $docs-nav-trigger-height;
+	width: $docs-nav-trigger-width;
+	background: var(--primary-background);
+
+	position: relative;
+	&::before {
+		content: "";
+		position: absolute;
+		top: -10px;
+		right: -10px;
+		bottom: -10px;
+		left: -10px;
+	}
+
+	+ .docs-nav__list {
+		margin-top: 20px;
+	}
+}
+.docs-nav__trigger-display-line {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: $docs-nav-trigger-bar-size;
+	background: var(--border);
+	transition: all 0.3s;
+	&:nth-child(1) {
+		top: 0;
+	}
+	&:nth-child(2) {
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	&:nth-child(3) {
+		bottom: 0;
+	}
+}
+
+.docs-nav__trigger-input:checked ~ {
+	.docs-nav__trigger-display {
+		.docs-nav__trigger-display-line {
+			&:nth-child(1) {
+				transform: translateY(#{($docs-nav-trigger-height / 2) - ($docs-nav-trigger-bar-size / 2)}) rotate(45deg);
+			}
+			&:nth-child(2) {
+				opacity: 0;
+			}
+			&:nth-child(3) {
+				transform: translateY(-#{($docs-nav-trigger-height / 2) - ($docs-nav-trigger-bar-size / 2)}) rotate(-45deg);
+			}
+		}
+	}
+	.docs-nav__list {
+		&, .docs-nav__list {
+			display: block;
+		}
+	}
+}
+
+.docs-nav__list {
+	display: none;
+	margin: 0;
+	padding: 0;
+
+	background: var(--primary-background);
+	list-style: none;
+	.docs-nav__list {
+		padding-left: 20px;
+	}
+}
+
+//////////////////
+// DOCS SECTION //
+//////////////////
+.docs-section {
+	padding-top: 40px;
+	+ .docs-section {
+		margin-top: 40px;
+		border-top: 2px solid var(--border);
+	}
+}
+
+.docs-section__title {
+	margin-top: 0;
+}
+
+
+//////////////////
+// DOCS EXAMPLE //
+//////////////////
 .docs-example {
 	margin: 20px 0;
 
