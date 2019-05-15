@@ -54,6 +54,7 @@ $docs-nav-trigger-bar-size: 4px;
 	width: 100%;
 	height: $docs-nav-trigger-bar-size;
 	background: var(--border);
+	opacity: 0.5;
 	transition: all 0.3s;
 	&:nth-child(1) {
 		top: 0;
@@ -64,6 +65,13 @@ $docs-nav-trigger-bar-size: 4px;
 	}
 	&:nth-child(3) {
 		bottom: 0;
+	}
+}
+
+.docs-nav__trigger-display:hover,
+.docs-nav__trigger-input:focus ~ .docs-nav__trigger-display {
+	.docs-nav__trigger-display-line {
+		opacity: 1;
 	}
 }
 
