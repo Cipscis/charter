@@ -12,16 +12,15 @@
 
 <body>
 	<script type="text/javascript">
-		require(['/charter/app/docs/docs.js']);
+		require(['/charter/app/docs/docs.js', '/charter/app/docs/menu.js']);
 	</script>
 
-	<nav class="docs-nav">
-		<input type="checkbox" class="docs-nav__trigger-input" id="nav-trigger" />
-		<label class="docs-nav__trigger-display" for="nav-trigger" title="Navigation">
-			<span class="docs-nav__trigger-display-line"></span>
-			<span class="docs-nav__trigger-display-line"></span>
-			<span class="docs-nav__trigger-display-line"></span>
-		</label>
+	<nav class="docs-nav js-menu">
+		<button class="docs-nav__toggle js-menu-toggle" title="Navigation">
+			<span class="docs-nav__toggle-line"></span>
+			<span class="docs-nav__toggle-line"></span>
+			<span class="docs-nav__toggle-line"></span>
+		</button>
 
 		<ol class="docs-nav__list">
 			<li>
