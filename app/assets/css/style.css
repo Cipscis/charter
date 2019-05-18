@@ -1061,33 +1061,32 @@ body {
   padding: 10px;
   background: var(--primary-background);
   box-shadow: 0 0 5px var(--shadow); }
+  .docs-nav[aria-expanded="true"] .docs-nav__list {
+    display: block; }
 
-.docs-nav__trigger-input {
-  position: absolute;
-  display: block;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none; }
-
-.docs-nav__trigger-display {
+.docs-nav__toggle {
+  border: none;
+  border-radius: 0;
+  padding: 0;
   cursor: pointer;
   display: block;
   height: 24px;
   width: 28.8px;
   background: var(--primary-background);
   position: relative; }
-  .docs-nav__trigger-display::before {
+  .docs-nav__toggle::before {
     content: "";
     position: absolute;
     top: -10px;
     right: -10px;
     bottom: -10px;
     left: -10px; }
-  .docs-nav__trigger-display + .docs-nav__list {
+  .docs-nav__toggle + .docs-nav__list {
     margin-top: 20px; }
+  .docs-nav__toggle:hover .docs-nav__toggle-line, .docs-nav__toggle:focus .docs-nav__toggle-line {
+    opacity: 1; }
 
-.docs-nav__trigger-display-line {
+.docs-nav__toggle-line {
   position: absolute;
   left: 0;
   width: 100%;
@@ -1095,29 +1094,22 @@ body {
   background: var(--border);
   opacity: 0.5;
   transition: all 0.3s; }
-  .docs-nav__trigger-display-line:nth-child(1) {
+  .docs-nav__toggle-line:nth-child(1) {
     top: 0; }
-  .docs-nav__trigger-display-line:nth-child(2) {
+  .docs-nav__toggle-line:nth-child(2) {
     top: 50%;
     transform: translateY(-50%); }
-  .docs-nav__trigger-display-line:nth-child(3) {
+  .docs-nav__toggle-line:nth-child(3) {
     bottom: 0; }
 
-.docs-nav__trigger-display:hover .docs-nav__trigger-display-line,
-.docs-nav__trigger-input:focus ~ .docs-nav__trigger-display .docs-nav__trigger-display-line {
-  opacity: 1; }
-
-.docs-nav__trigger-input:checked ~ .docs-nav__trigger-display .docs-nav__trigger-display-line:nth-child(1) {
+.docs-nav[aria-expanded="true"] .docs-nav__toggle-line:nth-child(1) {
   transform: translateY(10px) rotate(45deg); }
 
-.docs-nav__trigger-input:checked ~ .docs-nav__trigger-display .docs-nav__trigger-display-line:nth-child(2) {
+.docs-nav[aria-expanded="true"] .docs-nav__toggle-line:nth-child(2) {
   opacity: 0; }
 
-.docs-nav__trigger-input:checked ~ .docs-nav__trigger-display .docs-nav__trigger-display-line:nth-child(3) {
+.docs-nav[aria-expanded="true"] .docs-nav__toggle-line:nth-child(3) {
   transform: translateY(-10px) rotate(-45deg); }
-
-.docs-nav__trigger-input:checked ~ .docs-nav__list, .docs-nav__trigger-input:checked ~ .docs-nav__list .docs-nav__list {
-  display: block; }
 
 .docs-nav__list {
   display: none;

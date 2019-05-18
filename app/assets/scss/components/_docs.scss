@@ -12,26 +12,25 @@
 	padding: 10px;
 	background: var(--primary-background);
 	box-shadow: 0 0 5px var(--shadow);
+
+	&[aria-expanded="true"] .docs-nav__list {
+		display: block;
+	}
 }
 
-.docs-nav__trigger-input {
-	position: absolute;
-	display: block;
-	width: 1px;
-	height: 1px;
-	opacity: 0;
-	pointer-events: none;
-}
+$docs-nav-toggle-height: 24px;
+$docs-nav-toggle-width: $docs-nav-toggle-height * 1.2;
+$docs-nav-toggle-bar-size: 4px;
+.docs-nav__toggle {
+	border: none;
+	border-radius: 0;
+	padding: 0;
 
-$docs-nav-trigger-height: 24px;
-$docs-nav-trigger-width: $docs-nav-trigger-height * 1.2;
-$docs-nav-trigger-bar-size: 4px;
-.docs-nav__trigger-display {
 	cursor: pointer;
 
 	display: block;
-	height: $docs-nav-trigger-height;
-	width: $docs-nav-trigger-width;
+	height: $docs-nav-toggle-height;
+	width: $docs-nav-toggle-width;
 	background: var(--primary-background);
 
 	position: relative;
@@ -47,12 +46,19 @@ $docs-nav-trigger-bar-size: 4px;
 	+ .docs-nav__list {
 		margin-top: 20px;
 	}
+
+	&:hover,
+	&:focus {
+		.docs-nav__toggle-line {
+			opacity: 1;
+		}
+	}
 }
-.docs-nav__trigger-display-line {
+.docs-nav__toggle-line {
 	position: absolute;
 	left: 0;
 	width: 100%;
-	height: $docs-nav-trigger-bar-size;
+	height: $docs-nav-toggle-bar-size;
 	background: var(--border);
 	opacity: 0.5;
 	transition: all 0.3s;
@@ -68,30 +74,16 @@ $docs-nav-trigger-bar-size: 4px;
 	}
 }
 
-.docs-nav__trigger-display:hover,
-.docs-nav__trigger-input:focus ~ .docs-nav__trigger-display {
-	.docs-nav__trigger-display-line {
-		opacity: 1;
-	}
-}
-
-.docs-nav__trigger-input:checked ~ {
-	.docs-nav__trigger-display {
-		.docs-nav__trigger-display-line {
-			&:nth-child(1) {
-				transform: translateY(#{($docs-nav-trigger-height / 2) - ($docs-nav-trigger-bar-size / 2)}) rotate(45deg);
-			}
-			&:nth-child(2) {
-				opacity: 0;
-			}
-			&:nth-child(3) {
-				transform: translateY(-#{($docs-nav-trigger-height / 2) - ($docs-nav-trigger-bar-size / 2)}) rotate(-45deg);
-			}
+.docs-nav[aria-expanded="true"] {
+	.docs-nav__toggle-line {
+		&:nth-child(1) {
+			transform: translateY(#{($docs-nav-toggle-height / 2) - ($docs-nav-toggle-bar-size / 2)}) rotate(45deg);
 		}
-	}
-	.docs-nav__list {
-		&, .docs-nav__list {
-			display: block;
+		&:nth-child(2) {
+			opacity: 0;
+		}
+		&:nth-child(3) {
+			transform: translateY(-#{($docs-nav-toggle-height / 2) - ($docs-nav-toggle-bar-size / 2)}) rotate(-45deg);
 		}
 	}
 }
