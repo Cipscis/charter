@@ -2,10 +2,12 @@ define(
 	[
 		'charter/charter',
 		'analyser/analyser',
-		'stats/stats'
+		'stats/stats',
+
+		'/charter/app/docs/menu.js'
 	],
 
-	function (Charter, Analyser, Stats) {
+	function (Charter, Analyser, Stats, menu) {
 		const docs = (function () {
 			const selectors = {
 				example: '.js-doc-example',
@@ -30,6 +32,8 @@ define(
 			const module = {
 				init: function () {
 					module._loadFiles(module._filesLoaded);
+
+					menu.init();
 				},
 
 				_loadFiles: function (callback) {

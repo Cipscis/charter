@@ -1,9 +1,10 @@
 define(
 	[
-		'/charter/app/docs/activate.js'
+		'/charter/app/docs/activate.js',
+		'/charter/app/docs/keybinding.js'
 	],
 
-	function (activate) {
+	function (activate, keys) {
 		const menu = (function () {
 			const selectors = {
 				menu: '.js-menu',
@@ -18,6 +19,7 @@ define(
 			const module = {
 				init: function () {
 					module._initEvents();
+					module._initShortcuts();
 				},
 
 				_initEvents: function () {
@@ -26,6 +28,24 @@ define(
 					$menus.forEach($menu => {
 						activate($menu.querySelectorAll(selectors.toggle), module._toggleEvent);
 					});
+				},
+
+				_initShortcuts: function () {
+					keys.bind('m', module._openFirstMenu, false, true);
+					keys.bind('escape', module._closeOpenMenus);
+				},
+
+				_openFirstMenu: function () {
+					let $menu = document.querySelector(selectors.menu);
+					module._toggle($menu);
+
+					$menu.querySelector(selectors.toggle).focus();
+				},
+
+				_closeOpenMenus: function () {
+					let $menus = Array.from(document.querySelectorAll(selectors.menu)).filter($menu => module._getState($menu) === States.OPENED);
+
+					$menus.forEach($menu => module._setState($menu, States.CLOSED));
 				},
 
 				_toggleEvent: function (e) {
@@ -81,7 +101,6 @@ define(
 			};
 		})();
 
-		// Self-initialise
-		menu.init();
+		return menu;
 	}
 );
