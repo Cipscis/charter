@@ -89,13 +89,11 @@
 
 .content code,
 .code {
-	display: inline-block;
-	vertical-align: bottom;
+	display: inline;
 
 	@include contrast-offset;
 
-	padding: 0 7px;
-	margin-top: 2px;
+	padding: 3px 7px;
 	border-radius: 5px;
 	font-family: monospace;
 	white-space: pre;
@@ -118,6 +116,7 @@
 .code--block {
 	display: block;
 	min-height: 30px;
+	padding: 0 7px;
 	margin: 20px 0;
 	&:first-child {
 		margin-top: 0;

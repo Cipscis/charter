@@ -409,12 +409,10 @@ h1, h2, h3, h4, h5, h6 {
 .code,
 .content var,
 .var {
-  display: inline-block;
-  vertical-align: bottom;
+  display: inline;
   background: var(--offset-background);
   color: var(--offset-color);
-  padding: 0 7px;
-  margin-top: 2px;
+  padding: 3px 7px;
   border-radius: 5px;
   font-family: monospace;
   white-space: pre;
@@ -437,6 +435,7 @@ h1, h2, h3, h4, h5, h6 {
 .code--block {
   display: block;
   min-height: 30px;
+  padding: 0 7px;
   margin: 20px 0; }
   .content .code--block:first-child,
   .code--block:first-child {
