@@ -1011,10 +1011,10 @@ body {
       flex: 0 1 50%; } }
   @media (min-width: 1024px) {
     .card {
-      flex: 0 1 33%; } }
+      flex: 0 1 25%; } }
   @media (min-width: 1440px) {
     .card {
-      flex: 0 1 20%; } }
+      flex: 0 1 50%; } }
 
 .card__body {
   width: 100%;
