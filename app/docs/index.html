@@ -29,6 +29,7 @@
 					<li><a class="a" href="#analyser-loadfile">loadFile</a></li>
 					<li><a class="a" href="#analyser-combinedata">combineData</a></li>
 					<li><a class="a" href="#analyser-getcolnumber">getColNumber</a></li>
+					<li><a class="a" href="#analyser-getcolnumbers">getColNumbers</a></li>
 					<li><a class="a" href="#analyser-getcol">getCol</a></li>
 					<li><a class="a" href="#analyser-addcol">addCol</a></li>
 					<li><a class="a" href="#analyser-getderivedcol">getDerivedCol</a></li>
@@ -412,15 +413,15 @@
 					<div class="docs-example__code-container">
 						<code class="code code--block docs-example__code">var fileConfig = {
 	headerRows: 1,
-	cols: {
-		NAME: Analyser.getColNumber('A'),
-		COUNTRY: Analyser.getColNumber('B'),
-		POPULATION: Analyser.getColNumber('C'),
-		CAPITAL: Analyser.getColNumber('D'),
-		PUBLIC_TRANSPORT: Analyser.getColNumber('E'),
-		MAYOR_2012: Analyser.getColNumber('F'),
-		MAYOR_2018: Analyser.getColNumber('G')
-	},
+	cols: Analyser.getColNumbers({
+		NAME: 'A',
+		COUNTRY: 'B',
+		POPULATION: 'C',
+		CAPITAL: 'D',
+		PUBLIC_TRANSPORT: 'E',
+		MAYOR_2012: 'F',
+		MAYOR_2018: 'G'
+	}),
 	arrayCols: {},
 	aliases: {
 		COUNTRY: [
@@ -562,12 +563,12 @@ Analyser.loadFile('/charter/app/docs/data/city example.csv', fileConfig, explore
 					<div class="docs-example__code-container">
 						<code class="code code--block docs-example__code">var fileConfigA = {
 	headerRows: 1,
-	cols: {
-		NAME: Analyser.getColNumber('A'),
-		COUNTRY: Analyser.getColNumber('B'),
-		POPULATION: Analyser.getColNumber('C'),
-		CAPITAL: Analyser.getColNumber('D')
-	},
+	cols: Analyser.getColNumbers({
+		NAME: 'A',
+		COUNTRY: 'B',
+		POPULATION: 'C',
+		CAPITAL: 'D'
+	}),
 	aliases: {
 		COUNTRY: [
 			['New Zealand', 'Aotearoa']
@@ -578,11 +579,11 @@ var filePathA = '/charter/app/docs/data/city example.csv';
 
 var fileConfigB = {
 	headerRows: 1,
-	cols: {
-		NAME: Analyser.getColNumber('A'),
-		COUNTRY: Analyser.getColNumber('B'),
-		POPULATION: Analyser.getColNumber('C')
-	}
+	cols: Analyser.getColNumbers({
+		NAME: 'A',
+		COUNTRY: 'B',
+		POPULATION: 'C'
+	})
 };
 var filePathB = '/charter/app/docs/data/city example 2.csv';
 
@@ -694,7 +695,7 @@ Analyser.loadFile(
 
 					<p>Converts the letter-based name of a column, as commonly used in spreadsheet software, into an integer index.</p>
 
-					<p>This function is typically only used to create the <code>cols</code> object for a <code>fileConfig</code>.</p>
+					<p>Typically, it is easier to use <code>getColNumbers</code> when creating a <code>cols</code> object for a <code>fileConfig</code>.</p>
 
 					<p><code>colName</code> is a string representing the letter-based name of a column. It is <b>not</b> case sensitive.</p>
 				</div>
@@ -707,6 +708,35 @@ Analyser.loadFile(
 	POPULATION: Analyser.getColNumber('C'),
 	OTHER_COL: Analyser.getColNumber('HV')
 };
+
+console.log(cols);</code>
+					</div>
+
+					<div class="docs-example__output-container">
+						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+			</section>
+
+			<section class="docs-method">
+				<div class="content">
+					<h4 class="docs-method__heading" id="analyser-getcolnumbers">getColNumbers</h4>
+
+					<code class="code code--block">getColNumbers(colObject)</code>
+
+					<p>Takes in a flat object where the value of each property is a string that could be parsed by <code>getColNumber</code>, and returns a new object in which each property has been transformed into the appropriate integer index.</p>
+
+					<p>This function is typically only used to create the <code>cols</code> object for a <code>fileConfig</code>.</p>
+				</div>
+
+				<div class="docs-example js-doc-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code js-doc-example-code">var cols = Analyser.getColNumbers({
+	NAME: 'A',
+	COUNTRY: 'B',
+	POPULATION: 'C',
+	OTHER_COL: 'HV',
+});
 
 console.log(cols);</code>
 					</div>
@@ -1085,19 +1115,19 @@ console.log(capitalTableString);</code>
 
 					<h4 id="analyser-fileconfig-cols">cols</h4>
 
-					<p><code>cols</code> is an object where each key is the label to use for a column, and the value is the index of the column. <code>Analyser.getColNumber</code> can be used to convert letter-based spreadsheet column labels to numbers.</p>
+					<p><code>cols</code> is an object where each key is the label to use for a column, and the value is the index of the column. <code>Analyser.getColNumbers</code> can be used to convert letter-based spreadsheet column labels to numbers.</p>
 
 					<p>You don't need to include every column that is in a spreadsheet in the cols object. Any that you don't include will be ignored when processing the data, and not included in the output.</p>
 				</div>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code docs-example--code-only">var cols = {
-	NAME: Analyser.getColNumber('A'),
-	COUNTRY: Analyser.getColNumber('B'),
-	POPULATION: Analyser.getColNumber('C'),
-	CAPITAL: Analyser.getColNumber('D')
-};</code>
+						<code class="code code--block docs-example__code docs-example--code-only">var cols = Analyser.getColNumbers({
+	NAME: 'A',
+	COUNTRY: 'B',
+	POPULATION: 'C',
+	CAPITAL: 'D'
+});</code>
 					</div>
 				</div>
 			</section>
@@ -1162,15 +1192,15 @@ var arrayCols = {};
 					<div class="docs-example__code-container">
 						<code class="code code--block docs-example__code">var fileConfig = {
 	headerRows: 1,
-	cols: {
-		NAME: Analyser.getColNumber('A'),
-		COUNTRY: Analyser.getColNumber('B'),
-		POPULATION: Analyser.getColNumber('C'),
-		CAPITAL: Analyser.getColNumber('D'),
-		PUBLIC_TRANSPORT: Analyser.getColNumber('E'),
-		MAYOR_2012: Analyser.getColNumber('F'),
-		MAYOR_2018: Analyser.getColNumber('G')
-	},
+	cols: Analyser.getColNumbers({
+		NAME: 'A',
+		COUNTRY: 'B',
+		POPULATION: 'C',
+		CAPITAL: 'D',
+		PUBLIC_TRANSPORT: 'E',
+		MAYOR_2012: 'F',
+		MAYOR_2018: 'G'
+	}),
 	arrayCols: {},
 	aliases: {
 		COUNTRY: [
