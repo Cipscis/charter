@@ -614,6 +614,18 @@ define(
 				return rowNumber;
 			},
 
+			getColNumbers: function (cols) {
+				// Takes in a flat object and runs each property through getColNumber
+				var key;
+				var newCols = {};
+
+				for (key in cols) {
+					newCols[key] = Analyser.getColNumber(cols[key]);
+				}
+
+				return newCols;
+			},
+
 			getCol: function (rows, colNum) {
 				var i, row,
 					col;
