@@ -22,61 +22,69 @@ require(
 
 		// July-December 2016 //
 		var init2016 = function () {
-			cols2016 = {
-				ID: Analyser.getColNumber('A'),
-				MONTH: Analyser.getColNumber('C'),
-				YEAR: Analyser.getColNumber('D'),
+			cols2016 = Analyser.getColNumbers({
+				ID: 'A',
+				MONTH: 'C',
+				YEAR: 'D',
+				TIME: 'E',
 
-				DISTRICT: Analyser.getColNumber('F'),
-				AGE: Analyser.getColNumber('I'),
-				GENDER: Analyser.getColNumber('J'),
-				ETHNICITY: Analyser.getColNumber('K'),
-				SUBJECT_ARMED: Analyser.getColNumber('L'),
-				TACTICS: Analyser.getColNumber('M'),
+				DISTRICT: 'F',
+				AGE: 'I',
+				GENDER: 'J',
+				ETHNICITY: 'K',
+				SUBJECT_ARMED: 'L',
+				TACTICS: 'M',
 
-				INCIDENT_TYPE: Analyser.getColNumber('FS'),
+				INCIDENT_TYPE: 'FS',
 
 				// INJURY
-				INJURIES: Analyser.getColNumber('FT'),
-				INJURY_CAUSE_1: Analyser.getColNumber('FU'),
-				INJURY_CAUSE_2: Analyser.getColNumber('FZ'),
-				INJURY_CAUSE_3: Analyser.getColNumber('GE'),
+				INJURIES: 'FT',
+				INJURY_CAUSE_1: 'FU',
+				INJURY_CAUSE_2: 'FZ',
+				INJURY_CAUSE_3: 'GE',
 
-				INJURY_TREATMENT_REQUIRED_1: Analyser.getColNumber('FX'),
-				INJURY_TREATMENT_RECEIVED_1: Analyser.getColNumber('FY'),
-				INJURY_TREATMENT_REQUIRED_2: Analyser.getColNumber('GC'),
-				INJURY_TREATMENT_RECEIVED_2: Analyser.getColNumber('GD'),
-				INJURY_TREATMENT_REQUIRED_3: Analyser.getColNumber('GH'),
-				INJURY_TREATMENT_RECEIVED_3: Analyser.getColNumber('GI'),
+				INJURY_SITE_1: 'FV',
+				INJURY_SITE_2: 'GA',
+				INJURY_SITE_3: 'GF',
+
+				INJURY_TREATMENT_REQUIRED_1: 'FX',
+				INJURY_TREATMENT_RECEIVED_1: 'FY',
+				INJURY_TREATMENT_REQUIRED_2: 'GC',
+				INJURY_TREATMENT_RECEIVED_2: 'GD',
+				INJURY_TREATMENT_REQUIRED_3: 'GH',
+				INJURY_TREATMENT_RECEIVED_3: 'GI',
 
 				// DOG
-				DOG_PCA_1: Analyser.getColNumber('CH'),
-				DOG_PCA_2: Analyser.getColNumber('CM'),
+				DOG_PCA_1: 'CH',
+				DOG_PCA_2: 'CM',
 
-				DOG_BITTEN_1: Analyser.getColNumber('CI'),
-				DOG_BITTEN_2: Analyser.getColNumber('CH'),
+				DOG_BITTEN_1: 'CI',
+				DOG_BITTEN_2: 'CH',
 
-				DOG_LOCATION_TYPE_1: Analyser.getColNumber('CJ'),
-				DOG_LOCATION_TYPE_2: Analyser.getColNumber('CO'),
+				DOG_LOCATION_TYPE_1: 'CJ',
+				DOG_LOCATION_TYPE_2: 'CO',
 
-				DOG_LOCATION_DESCRIPTION_1: Analyser.getColNumber('CK'),
-				DOG_LOCATION_DESCRIPTION_2: Analyser.getColNumber('CP'),
+				DOG_LOCATION_DESCRIPTION_1: 'CK',
+				DOG_LOCATION_DESCRIPTION_2: 'CP',
 
-				DOG_EFFECT_1: Analyser.getColNumber('CL'),
-				DOG_EFFECT_2: Analyser.getColNumber('CQ'),
+				DOG_EFFECT_1: 'CL',
+				DOG_EFFECT_2: 'CQ',
 
 				// TASER
-				TASER_METHOD_1: Analyser.getColNumber('CU'),
-				TASER_METHOD_2: Analyser.getColNumber('DH'),
-				TASER_METHOD_3: Analyser.getColNumber('DU'),
+				TASER_METHOD_1: 'CU',
+				TASER_METHOD_2: 'DH',
+				TASER_METHOD_3: 'DU',
 
-				TASER_PCA_1: Analyser.getColNumber('CS'),
-				TASER_PCA_2: Analyser.getColNumber('DF'),
-				TASER_PCA_3: Analyser.getColNumber('DS')
-			};
+				TASER_PCA_1: 'CS',
+				TASER_PCA_2: 'DF',
+				TASER_PCA_3: 'DS'
+			});
 
 			arrayCols2016 = {};
 			arrayCols2016[cols2016.TACTICS] = '\n';
+			arrayCols2016[cols2016.INJURY_SITE_1] = '\n';
+			arrayCols2016[cols2016.INJURY_SITE_2] = '\n';
+			arrayCols2016[cols2016.INJURY_SITE_3] = '\n';
 
 			config2016 = {
 				headerRows: 2,
@@ -120,63 +128,71 @@ require(
 
 		// January-June 2017 //
 		var init2017a = function () {
-			cols2017a = {
-				ID: Analyser.getColNumber('A'),
-				MONTH: Analyser.getColNumber('C'),
-				YEAR: Analyser.getColNumber('D'),
+			cols2017a = Analyser.getColNumbers({
+				ID: 'A',
+				MONTH: 'C',
+				YEAR: 'D',
+				TIME: 'E',
 
-				DISTRICT: Analyser.getColNumber('F'),
-				AGE: Analyser.getColNumber('I'),
-				GENDER: Analyser.getColNumber('J'),
-				ETHNICITY: Analyser.getColNumber('K'),
-				SUBJECT_ARMED: Analyser.getColNumber('W'),
-				TACTICS: Analyser.getColNumber('Y'),
+				DISTRICT: 'F',
+				AGE: 'I',
+				GENDER: 'J',
+				ETHNICITY: 'K',
+				SUBJECT_ARMED: 'W',
+				TACTICS: 'Y',
 
-				SPECIAL_POLICE_GROUPS: Analyser.getColNumber('G'),
-				INCIDENT_TYPE: Analyser.getColNumber('GM'),
+				SPECIAL_POLICE_GROUPS: 'G',
+				INCIDENT_TYPE: 'GM',
 
 				// INJURY
-				INJURIES: Analyser.getColNumber('GO'),
-				INJURY_CAUSE_1: Analyser.getColNumber('GP'),
-				INJURY_CAUSE_2: Analyser.getColNumber('GU'),
-				INJURY_CAUSE_3: Analyser.getColNumber('GZ'),
+				INJURIES: 'GO',
+				INJURY_CAUSE_1: 'GP',
+				INJURY_CAUSE_2: 'GU',
+				INJURY_CAUSE_3: 'GZ',
 
-				INJURY_TREATMENT_REQUIRED_1: Analyser.getColNumber('GS'),
-				INJURY_TREATMENT_RECEIVED_1: Analyser.getColNumber('GT'),
-				INJURY_TREATMENT_REQUIRED_2: Analyser.getColNumber('GX'),
-				INJURY_TREATMENT_RECEIVED_2: Analyser.getColNumber('GY'),
-				INJURY_TREATMENT_REQUIRED_3: Analyser.getColNumber('HC'),
-				INJURY_TREATMENT_RECEIVED_3: Analyser.getColNumber('HD'),
+				INJURY_SITE_1: 'GQ',
+				INJURY_SITE_2: 'GV',
+				INJURY_SITE_3: 'HA',
+
+				INJURY_TREATMENT_REQUIRED_1: 'GS',
+				INJURY_TREATMENT_RECEIVED_1: 'GT',
+				INJURY_TREATMENT_REQUIRED_2: 'GX',
+				INJURY_TREATMENT_RECEIVED_2: 'GY',
+				INJURY_TREATMENT_REQUIRED_3: 'HC',
+				INJURY_TREATMENT_RECEIVED_3: 'HD',
 
 				// DOG
-				DOG_PCA_1: Analyser.getColNumber('CU'),
-				DOG_PCA_2: Analyser.getColNumber('CZ'),
+				DOG_PCA_1: 'CU',
+				DOG_PCA_2: 'CZ',
 
-				DOG_BITTEN_1: Analyser.getColNumber('CV'),
-				DOG_BITTEN_2: Analyser.getColNumber('DA'),
+				DOG_BITTEN_1: 'CV',
+				DOG_BITTEN_2: 'DA',
 
-				DOG_LOCATION_TYPE_1: Analyser.getColNumber('CW'),
-				DOG_LOCATION_TYPE_2: Analyser.getColNumber('DB'),
+				DOG_LOCATION_TYPE_1: 'CW',
+				DOG_LOCATION_TYPE_2: 'DB',
 
-				DOG_LOCATION_DESCRIPTION_1: Analyser.getColNumber('CX'),
-				DOG_LOCATION_DESCRIPTION_2: Analyser.getColNumber('DC'),
+				DOG_LOCATION_DESCRIPTION_1: 'CX',
+				DOG_LOCATION_DESCRIPTION_2: 'DC',
 
-				DOG_EFFECT_1: Analyser.getColNumber('CY'),
-				DOG_EFFECT_2: Analyser.getColNumber('DD'),
+				DOG_EFFECT_1: 'CY',
+				DOG_EFFECT_2: 'DD',
 
 				// TASER
-				TASER_METHOD_1: Analyser.getColNumber('DI'),
-				TASER_METHOD_2: Analyser.getColNumber('DW'),
-				TASER_METHOD_3: Analyser.getColNumber('EK'),
+				TASER_METHOD_1: 'DI',
+				TASER_METHOD_2: 'DW',
+				TASER_METHOD_3: 'EK',
 
-				TASER_PCA_1: Analyser.getColNumber('DF'),
-				TASER_PCA_2: Analyser.getColNumber('DT'),
-				TASER_PCA_3: Analyser.getColNumber('EH')
-			};
+				TASER_PCA_1: 'DF',
+				TASER_PCA_2: 'DT',
+				TASER_PCA_3: 'EH',
+			});
 
 			arrayCols2017a = {};
 			arrayCols2017a[cols2017a.TACTICS] = '\n';
 			arrayCols2017a[cols2017a.SPECIAL_POLICE_GROUPS] = ', ';
+			arrayCols2017a[cols2017a.INJURY_SITE_1] = '\n';
+			arrayCols2017a[cols2017a.INJURY_SITE_2] = '\n';
+			arrayCols2017a[cols2017a.INJURY_SITE_3] = '\n';
 
 			config2017a = {
 				headerRows: 2,
@@ -222,63 +238,71 @@ require(
 
 		// July-December 2017 //
 		var init2017b = function () {
-			cols2017b = {
-				ID: Analyser.getColNumber('A'),
-				MONTH: Analyser.getColNumber('C'),
-				YEAR: Analyser.getColNumber('D'),
+			cols2017b = Analyser.getColNumbers({
+				ID: 'A',
+				MONTH: 'C',
+				YEAR: 'D',
+				TIME: 'E',
 
-				DISTRICT: Analyser.getColNumber('F'),
-				AGE: Analyser.getColNumber('I'),
-				GENDER: Analyser.getColNumber('J'),
-				ETHNICITY: Analyser.getColNumber('K'),
-				SUBJECT_ARMED: Analyser.getColNumber('W'),
-				TACTICS: Analyser.getColNumber('Y'),
+				DISTRICT: 'F',
+				AGE: 'I',
+				GENDER: 'J',
+				ETHNICITY: 'K',
+				SUBJECT_ARMED: 'W',
+				TACTICS: 'Y',
 
-				SPECIAL_POLICE_GROUPS: Analyser.getColNumber('G'),
-				INCIDENT_TYPE: Analyser.getColNumber('GM'),
+				SPECIAL_POLICE_GROUPS: 'G',
+				INCIDENT_TYPE: 'GM',
 
 				// INJURY
-				INJURIES: Analyser.getColNumber('GO'),
-				INJURY_CAUSE_1: Analyser.getColNumber('GP'),
-				INJURY_CAUSE_2: Analyser.getColNumber('GU'),
-				INJURY_CAUSE_3: Analyser.getColNumber('GZ'),
+				INJURIES: 'GO',
+				INJURY_CAUSE_1: 'GP',
+				INJURY_CAUSE_2: 'GU',
+				INJURY_CAUSE_3: 'GZ',
 
-				INJURY_TREATMENT_REQUIRED_1: Analyser.getColNumber('GS'),
-				INJURY_TREATMENT_RECEIVED_1: Analyser.getColNumber('GT'),
-				INJURY_TREATMENT_REQUIRED_2: Analyser.getColNumber('GX'),
-				INJURY_TREATMENT_RECEIVED_2: Analyser.getColNumber('GY'),
-				INJURY_TREATMENT_REQUIRED_3: Analyser.getColNumber('HC'),
-				INJURY_TREATMENT_RECEIVED_3: Analyser.getColNumber('HD'),
+				INJURY_SITE_1: 'GQ',
+				INJURY_SITE_2: 'GV',
+				INJURY_SITE_3: 'HA',
+
+				INJURY_TREATMENT_REQUIRED_1: 'GS',
+				INJURY_TREATMENT_RECEIVED_1: 'GT',
+				INJURY_TREATMENT_REQUIRED_2: 'GX',
+				INJURY_TREATMENT_RECEIVED_2: 'GY',
+				INJURY_TREATMENT_REQUIRED_3: 'HC',
+				INJURY_TREATMENT_RECEIVED_3: 'HD',
 
 				// DOG
-				DOG_PCA_1: Analyser.getColNumber('CU'),
-				DOG_PCA_2: Analyser.getColNumber('CZ'),
+				DOG_PCA_1: 'CU',
+				DOG_PCA_2: 'CZ',
 
-				DOG_BITTEN_1: Analyser.getColNumber('CV'),
-				DOG_BITTEN_2: Analyser.getColNumber('DA'),
+				DOG_BITTEN_1: 'CV',
+				DOG_BITTEN_2: 'DA',
 
-				DOG_LOCATION_TYPE_1: Analyser.getColNumber('CW'),
-				DOG_LOCATION_TYPE_2: Analyser.getColNumber('DB'),
+				DOG_LOCATION_TYPE_1: 'CW',
+				DOG_LOCATION_TYPE_2: 'DB',
 
-				DOG_LOCATION_DESCRIPTION_1: Analyser.getColNumber('CX'),
-				DOG_LOCATION_DESCRIPTION_2: Analyser.getColNumber('DC'),
+				DOG_LOCATION_DESCRIPTION_1: 'CX',
+				DOG_LOCATION_DESCRIPTION_2: 'DC',
 
-				DOG_EFFECT_1: Analyser.getColNumber('CY'),
-				DOG_EFFECT_2: Analyser.getColNumber('DD'),
+				DOG_EFFECT_1: 'CY',
+				DOG_EFFECT_2: 'DD',
 
 				// TASER
-				TASER_METHOD_1: Analyser.getColNumber('DI'),
-				TASER_METHOD_2: Analyser.getColNumber('DW'),
-				TASER_METHOD_3: Analyser.getColNumber('EK'),
+				TASER_METHOD_1: 'DI',
+				TASER_METHOD_2: 'DW',
+				TASER_METHOD_3: 'EK',
 
-				TASER_PCA_1: Analyser.getColNumber('DF'),
-				TASER_PCA_2: Analyser.getColNumber('DT'),
-				TASER_PCA_3: Analyser.getColNumber('EH')
-			};
+				TASER_PCA_1: 'DF',
+				TASER_PCA_2: 'DT',
+				TASER_PCA_3: 'EH',
+			});
 
 			arrayCols2017b = {}
 			arrayCols2017b[cols2017b.TACTICS] = '\n';
 			arrayCols2017b[cols2017b.SPECIAL_POLICE_GROUPS] = ', ';
+			arrayCols2017b[cols2017b.INJURY_SITE_1] = '\n';
+			arrayCols2017b[cols2017b.INJURY_SITE_2] = '\n';
+			arrayCols2017b[cols2017b.INJURY_SITE_3] = '\n';
 
 			config2017b = {
 				headerRows: 2,
@@ -327,11 +351,6 @@ require(
 			init2017b();
 		};
 		initConfigs();
-
-		var numFilesProcessed = 0;
-		var numFilesToProcess = 3;
-
-		var finalConfig = {};
 
 		var filesProcessed = function (config2016, config2017a, config2017b) {
 			var combinedConfig = Analyser.combineData(config2016, config2017a, config2017b);
