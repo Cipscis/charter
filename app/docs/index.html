@@ -695,6 +695,8 @@ Analyser.loadFile(
 
 					<p>Converts the letter-based name of a column, as commonly used in spreadsheet software, into an integer index.</p>
 
+					<p>If a value passed in cannot be converted in this way, <code>null</code> will be returned.</p>
+
 					<p>Typically, it is easier to use <code>getColNumbers</code> when creating a <code>cols</code> object for a <code>fileConfig</code>.</p>
 
 					<p><code>colName</code> is a string representing the letter-based name of a column. It is <b>not</b> case sensitive.</p>
@@ -706,7 +708,8 @@ Analyser.loadFile(
 	NAME: Analyser.getColNumber('A'),
 	COUNTRY: Analyser.getColNumber('B'),
 	POPULATION: Analyser.getColNumber('C'),
-	OTHER_COL: Analyser.getColNumber('HV')
+	OTHER_COL: Analyser.getColNumber('HV'),
+	BROKEN_COL: Analyser.getColNumber('This is broken because it contains spaces')
 };
 
 console.log(cols);</code>
@@ -727,6 +730,8 @@ console.log(cols);</code>
 					<p>Takes in a flat object where the value of each property is a string that could be parsed by <code>getColNumber</code>, and returns a new object in which each property has been transformed into the appropriate integer index.</p>
 
 					<p>This function is typically only used to create the <code>cols</code> object for a <code>fileConfig</code>.</p>
+
+					<p>Non-negative integers will not be converted, and will maintain their value. Anything else will not be included in the object returned by <code>getColNumbers</code>.</p>
 				</div>
 
 				<div class="docs-example js-doc-example">
@@ -736,6 +741,8 @@ console.log(cols);</code>
 	COUNTRY: 'B',
 	POPULATION: 'C',
 	OTHER_COL: 'HV',
+	BROKEN_COL: 'This is broken because it contains spaces',
+	NON_NEGATIVE_INTEGERS_WORK: 3
 });
 
 console.log(cols);</code>
