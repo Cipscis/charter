@@ -108,10 +108,10 @@ define(
 				// Example data:
 				// headerRows = 2;
 
-				// cols = {
-				// 	ETHNICITY: Analyser.getColNumber('K'),
-				// 	TACTICS: Analyser.getColNumber('M')
-				// };
+				// cols = Analyser.getColNumbers({
+				// 	ETHNICITY: 'K',
+				// 	TACTICS: 'M'
+				// });
 
 				// arrayCols = {};
 				// arrayCols[cols.TACTICS] = ' ';
@@ -598,18 +598,28 @@ define(
 
 				var alphabet,
 					i, char,
+					charIndex,
 					rowNumber;
 
+				if (!(typeof colName === 'string' || colName instanceof String)) {
+					// Not a string
+					return null;
+				}
+
 				alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-				rowNumber = 0;
+				rowNumber = -1; // Adjust for 0-based counting
 
 				for (i = 0; i < colName.length; i++) {
 					char = colName.toUpperCase()[i];
+					charIndex = alphabet.indexOf(char);
 
-					rowNumber += (alphabet.indexOf(char) + 1) * Math.pow(alphabet.length, colName.length - (i+1));
+					if (charIndex === -1) {
+						// String contains invalid character
+						return null;
+					}
+
+					rowNumber += (charIndex + 1) * Math.pow(alphabet.length, colName.length - (i+1));
 				}
-
-				rowNumber -= 1; // Adjust for 0-based counting
 
 				return rowNumber;
 			},
@@ -617,10 +627,19 @@ define(
 			getColNumbers: function (cols) {
 				// Takes in a flat object and runs each property through getColNumber
 				var key;
+				var val;
 				var newCols = {};
 
 				for (key in cols) {
-					newCols[key] = Analyser.getColNumber(cols[key]);
+					val = cols[key];
+
+					if (typeof val === 'string' || val instanceof String) {
+						val = Analyser.getColNumber(cols[key]);
+					}
+
+					if (Number.isInteger(val) && val >= 0) {
+						newCols[key] = val;
+					}
 				}
 
 				return newCols;
@@ -988,6 +1007,7 @@ define(
 			combineData: Analyser.combineData,
 
 			getColNumber: Analyser.getColNumber,
+			getColNumbers: Analyser.getColNumbers,
 			getCol: Analyser.getCol,
 
 			addCol: Analyser.addCol,
