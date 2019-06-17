@@ -18,18 +18,18 @@ require(
 
 		var config = {
 			headerRows: 1,
-			cols: {
-				URL: Analyser.getColNumber('A'),
-				AGENCY: Analyser.getColNumber('B'),
-				TITLE: Analyser.getColNumber('C'),
+			cols: Analyser.getColNumbers({
+				URL: 'A',
+				AGENCY: 'B',
+				TITLE: 'C',
 
-				DATE_SENT: Analyser.getColNumber('D'),
-				DATE_EXTENSION: Analyser.getColNumber('E'),
-				DATE_DUE: Analyser.getColNumber('F'),
-				DATE_RESPONSE: Analyser.getColNumber('G'),
+				DATE_SENT: 'D',
+				DATE_EXTENSION: 'E',
+				DATE_DUE: 'F',
+				DATE_RESPONSE: 'G',
 
-				EXTENSION: Analyser.getColNumber('H')
-			}
+				EXTENSION: 'H'
+			})
 		};
 
 		var fileProcessed = function (config) {
