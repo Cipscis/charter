@@ -154,7 +154,15 @@ define(
 					row = dataConfig.rows[i];
 
 					for (j in fileConfig.arrayCols) {
-						row[j] = row[j].trim().split(fileConfig.arrayCols[j] || ' ');
+						row[j] = (row[j] + '').trim().split(fileConfig.arrayCols[j] || ' ');
+					}
+					for (j in fileConfig.defaultCols) {
+						if (j in fileConfig.arrayCols) {
+							continue;
+						}
+						if ((row[j] + '').trim() === '') {
+							row[j] = fileConfig.defaultCols[j];
+						}
 					}
 				}
 
