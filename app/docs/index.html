@@ -45,6 +45,7 @@
 							<li><a class="a" href="#analyser-fileconfig-headerrows">headerRows</a></li>
 							<li><a class="a" href="#analyser-fileconfig-cols">cols</a></li>
 							<li><a class="a" href="#analyser-fileconfig-arraycols">arrayCols</a></li>
+							<li><a class="a" href="#analyser-fileconfig-defaultcols">defaultCols</a></li>
 							<li><a class="a" href="#analyser-fileconfig-aliases">aliases</a></li>
 							<li><a class="a" href="#analyser-fileconfig-enumsmap">enumsMap</a></li>
 						</ol>
@@ -137,7 +138,7 @@
 						<td>Auckland</td>
 						<td>New Zealand</td>
 						<td>1614</td>
-						<td>false</td>
+						<td></td>
 						<td>Bus,Train</td>
 						<td>Len Brown</td>
 						<td>Phil Goff</td>
@@ -146,7 +147,7 @@
 						<td>Tāupo</td>
 						<td>Aotearoa</td>
 						<td>32.907</td>
-						<td>false</td>
+						<td></td>
 						<td>Bus,Train</td>
 						<td>Rick Cooper</td>
 						<td>David Trewavas</td>
@@ -155,7 +156,7 @@
 						<td>Hamburg</td>
 						<td>Germany</td>
 						<td>1810</td>
-						<td>false</td>
+						<td></td>
 						<td>Bus,Train,Ferry</td>
 						<td>Olaf Scholz</td>
 						<td>Katharina Fegebank,Peter Tschentscher</td>
@@ -164,7 +165,7 @@
 						<td>Sydney</td>
 						<td>Australia</td>
 						<td>4841</td>
-						<td>false</td>
+						<td></td>
 						<td>Bus,Train,Ferry</td>
 						<td>Clover Moore</td>
 						<td>Clover Moore</td>
@@ -173,7 +174,7 @@
 						<td>Hamilton</td>
 						<td>New Zealand</td>
 						<td>161.2</td>
-						<td>false</td>
+						<td></td>
 						<td>Bus</td>
 						<td>Julia Hardaker</td>
 						<td>Andrew King</td>
@@ -191,7 +192,7 @@
 						<td>Christchurch</td>
 						<td>New Zealand</td>
 						<td>363.926</td>
-						<td>false</td>
+						<td></td>
 						<td>Bus</td>
 						<td>Bob Parker</td>
 						<td>Lianne Dalziel</td>
@@ -200,7 +201,7 @@
 						<td>Dunedin</td>
 						<td>New Zealand</td>
 						<td>114.347</td>
-						<td>false</td>
+						<td></td>
 						<td>Bus</td>
 						<td>Dave Cull</td>
 						<td>Dave Cull</td>
@@ -209,7 +210,7 @@
 						<td>Tauranga</td>
 						<td>New Zealand</td>
 						<td>110.338</td>
-						<td>false</td>
+						<td></td>
 						<td>Bus</td>
 						<td>Stuart Crosby</td>
 						<td>Greg Brownless</td>
@@ -423,6 +424,7 @@
 		MAYOR_2018: 'G'
 	}),
 	arrayCols: {},
+	defaultCols: {},
 	aliases: {
 		COUNTRY: [
 			['New Zealand', 'Aotearoa']
@@ -430,8 +432,11 @@
 	},
 	enumsMap: {}
 };
+
 fileConfig.arrayCols[fileConfig.cols.PUBLIC_TRANSPORT] = ',';
 fileConfig.arrayCols[fileConfig.cols.MAYOR_2018] = ',';
+
+fileConfig.defaultCols[fileConfig.cols.CAPITAL] = false;
 
 fileConfig.enumsMap.MAYOR = [fileConfig.cols.MAYOR_2012, fileConfig.cols.MAYOR_2018];
 
@@ -766,7 +771,7 @@ console.log(cols);</code>
 
 					<p><code>colNum</code> is the index of a column, typically represented by an element of the <code>cols</code> object from a <code>dataConfig</code> object.</p>
 
-					<p>(city examples.csv)</p>
+					<p>(city example.csv)</p>
 				</div>
 
 				<div class="docs-example js-doc-example">
@@ -1162,6 +1167,29 @@ var arrayCols = {};
 
 			<section class="docs-method">
 				<div class="content">
+					<h4 class="docs-method__heading" id="analyser-fileconfig-defaultcols">defaultCols</h4>
+
+					<p><code>defaultCols</code> is an object where each element's key is the index of a column, and its value is any value.</p>
+
+					<p>It represents the columns in a CSV whose cells should have a default value in the case that the cell in the CSV is empty. For example, where numeric data is represented in a CSV, an empty cell may signify a value of 0.</p>
+
+					<p>If a default value is not specified, the value of an empty cell will be represented as an empty string.</p>
+
+					<p>If a column is set as an array column, any specified default value will be ignored and an empty array will be used instead.</p>
+				</div>
+
+				<div class="docs-example docs-example--code-only">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code docs-example--code-only">
+var defaultCols = {};
+	defaultCols[fileConfig.cols.CAPITAL] = false;</code>
+
+					</div>
+				</div>
+			</section>
+
+			<section class="docs-method">
+				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-fileconfig-aliases">aliases</h4>
 
 					<p><code>aliases</code> (optional) is an object where each property, which must share its name with a column as defined in the <code>cols</code> object, is an array of arrays. Each array represents a set of values that should be considered to belong to the same set.</p>
@@ -1188,7 +1216,7 @@ var arrayCols = {};
 
 					<p><code>enumsMap</code> (optional) is an object where each property, which must share its name with a column as defined in the <code>cols</code> object, is an array of column indices. This map is used when creating the <code>enums</code> object available when analysing data, and tells the processor that enums from the columns in each array should be combined into the same set.</p>
 
-					<p>In this example, with data from ```city examples.csv```, instead of collecting a separate set of enums for both the <code>MAYOR_2012</code> and <code>MAYOR_2018</code> columns, Analyser collects a single set of enums labelled <code>MAYOR</code>. This way there is a single list, and values that exist in both <code>MAYOR_2012</code> and <code>MAYOR_2018</code> columns, such as "Dave Cull", exist only once in the combined set of enums.</p>
+					<p>In this example, with data from ```city example.csv```, instead of collecting a separate set of enums for both the <code>MAYOR_2012</code> and <code>MAYOR_2018</code> columns, Analyser collects a single set of enums labelled <code>MAYOR</code>. This way there is a single list, and values that exist in both <code>MAYOR_2012</code> and <code>MAYOR_2018</code> columns, such as "Dave Cull", exist only once in the combined set of enums.</p>
 
 					<p>The enums that are collected in data processing this way can be useful in generating labels for graphs, for example.</p>
 
@@ -1209,6 +1237,7 @@ var arrayCols = {};
 		MAYOR_2018: 'G'
 	}),
 	arrayCols: {},
+	defaultCols: {},
 	aliases: {
 		COUNTRY: [
 			['New Zealand', 'Aotearoa']
@@ -1216,8 +1245,11 @@ var arrayCols = {};
 	},
 	enumsMap: {}
 };
+
 fileConfig.arrayCols[fileConfig.cols.PUBLIC_TRANSPORT] = ',';
 fileConfig.arrayCols[fileConfig.cols.MAYOR_2018] = ',';
+
+fileConfig.defaultCols[fileConfig.cols.CAPITAL] = false;
 
 fileConfig.enumsMap.MAYOR = [fileConfig.cols.MAYOR_2012, fileConfig.cols.MAYOR_2018];
 

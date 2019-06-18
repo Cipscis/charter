@@ -97,6 +97,7 @@ define(
 				// A fileConfig object for column names
 				// An optional set of aliases
 				// An optional set of columns whose values should be treated as arrays
+				// An optional set of columns with default values
 				// An optional map of columns that should be combined when collecting enums
 
 				// The output contains the following properties:
@@ -115,6 +116,9 @@ define(
 
 				// arrayCols = {};
 				// arrayCols[cols.TACTICS] = ' ';
+
+				// defaultCols = {};
+				// defaultCols[cols.VALUE] = 0;
 
 				// aliases = {
 				// 	ETHNICITY: [
@@ -154,7 +158,15 @@ define(
 					row = dataConfig.rows[i];
 
 					for (j in fileConfig.arrayCols) {
-						row[j] = row[j].trim().split(fileConfig.arrayCols[j] || ' ');
+						row[j] = (row[j] + '').trim().split(fileConfig.arrayCols[j] || ' ');
+					}
+					for (j in fileConfig.defaultCols) {
+						if (j in fileConfig.arrayCols) {
+							continue;
+						}
+						if ((row[j] + '').trim() === '') {
+							row[j] = fileConfig.defaultCols[j];
+						}
 					}
 				}
 
