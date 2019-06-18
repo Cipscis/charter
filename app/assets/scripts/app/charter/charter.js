@@ -191,7 +191,7 @@ define(
 
 			_getRange: function (dataSeries, axisConfig) {
 				// Get the minimum and maximum value in a chart's data
-				// then round them according to the axisConfig
+				// across all dataSeries, rounded according to the axisConfig
 
 				var i,
 					ranges = [],
@@ -209,10 +209,61 @@ define(
 					finalRange[1] = Math.max(finalRange[1], ranges[i][1]);
 				}
 
-				return finalRange;
+				return Charter._roundRange(finalRange, axisConfig);
+			},
+
+			_roundRange: function (range, axisConfig) {
+				// Ensure all values in the axis are
+				// divisible by axisConfig.roundTo
+
+				// This requires that both min and max are
+				// divisible by axisConfig.roundTo, and the
+				// difference between them must be divisible
+				// by axisConfig.roundTo * axisConfig.values
+
+				// Assume min and max are both already
+				// divisible by axisConfig.roundTo
+
+				var min = range[0];
+				var max = range[1];
+
+				var range = max - min;
+				var factor = axisConfig.roundTo * axisConfig.values;
+				var remainder = range % factor;
+				var increment;
+
+				if (remainder !== 0) {
+					// Increment max until the difference between
+					// it and min is the smallest number above range
+					// that is divisible by factor
+					increment = factor - remainder;
+					max += increment;
+
+					if (axisConfig.min === null) {
+						// If min is determined (i.e. null was passed), then
+						// also push min out instead of only incrementing max
+
+						// Decrease max and min by half (or slightly less)
+						// of the amount max was incremented was
+
+						increment = increment / 2;
+						remainder = increment % axisConfig.roundTo;
+						if (remainder !== 0) {
+							increment -= remainder;
+						}
+
+						max -= increment;
+						min -= increment;
+					}
+				}
+
+				return [min, max];
 			},
 
 			_getRangeSingle: function (dataSeries, axisConfig) {
+				// Get the minimum and maximum value of a dataSeries
+				// then round them according to the axisConfig
+
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
 				var i,
