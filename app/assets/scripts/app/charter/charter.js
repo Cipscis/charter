@@ -212,7 +212,7 @@ define(
 				return Charter._roundRange(finalRange, axisConfig);
 			},
 
-			_roundRange: function (range, axisConfig) {
+			_roundRange: function (dataRange, axisConfig) {
 				// Ensure all values in the axis are
 				// divisible by axisConfig.roundTo
 
@@ -224,11 +224,12 @@ define(
 				// Assume min and max are both already
 				// divisible by axisConfig.roundTo
 
-				var min = range[0];
-				var max = range[1];
+				var min = dataRange[0];
+				var max = dataRange[1];
 
 				var range = max - min;
-				var factor = axisConfig.roundTo * axisConfig.values;
+				var roundTo = axisConfig.roundTo || 1;
+				var factor = roundTo * axisConfig.values;
 				var remainder = range % factor;
 				var increment;
 
@@ -247,7 +248,7 @@ define(
 						// of the amount max was incremented was
 
 						increment = increment / 2;
-						remainder = increment % axisConfig.roundTo;
+						remainder = increment % roundTo;
 						if (remainder !== 0) {
 							increment -= remainder;
 						}
