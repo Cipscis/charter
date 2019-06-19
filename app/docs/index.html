@@ -43,6 +43,7 @@
 					<li><a class="a" href="#analyser-fileconfig">fileConfig</a>
 						<ol class="docs-nav__list">
 							<li><a class="a" href="#analyser-fileconfig-headerrows">headerRows</a></li>
+							<li><a class="a" href="#analyser-fileconfig-footerrows">footerRows</a></li>
 							<li><a class="a" href="#analyser-fileconfig-cols">cols</a></li>
 							<li><a class="a" href="#analyser-fileconfig-arraycols">arrayCols</a></li>
 							<li><a class="a" href="#analyser-fileconfig-defaultcols">defaultCols</a></li>
@@ -1113,9 +1114,11 @@ console.log(capitalTableString);</code>
 				</div>
 			</section>
 
-				<h3 id="analyser-fileconfig">fileconfig</h3>
+			<div class="content">
+				<h3 id="analyser-fileconfig">fileConfig</h3>
 
 				<p>A <code>fileConfig</code> object is required by the <code>loadFile</code> function, and is used to determine how the data in a file is processed. It contains the following properties:</p>
+			</div>
 
 			<section class="docs-method">
 				<div class="content">
@@ -1124,7 +1127,21 @@ console.log(capitalTableString);</code>
 					<p><code>headerRows</code> (optional) is the number of rows at the top of the CSV file that are not part of the data. These rows will be ignored when Analyser processes the file.</p>
 
 					<p>If not included, defaults to 0.</p>
+				</div>
+			</section>
 
+			<section class="docs-method">
+				<div class="content">
+					<h4 class="docs-method__heading" id="analyser-fileconfig-footerrows">footerRows</h4>
+
+					<p><code>footerRows</code> (optional) is the number of rows at the bottom of the CSV file that are not part of the data. These rows will be ignored when Analyser processes the file.</p>
+
+					<p>If not included, defaults to 0.</p>
+				</div>
+			</section>
+
+			<section class="docs-method">
+				<div class="content">
 					<h4 id="analyser-fileconfig-cols">cols</h4>
 
 					<p><code>cols</code> is an object where each key is the label to use for a column, and the value is the index of the column. <code>Analyser.getColNumbers</code> can be used to convert letter-based spreadsheet column labels to numbers.</p>
