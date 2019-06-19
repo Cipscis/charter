@@ -163,8 +163,8 @@ $z-legend: 4;
 
 	.chart__gridlines-item {
 		position: absolute;
-		left: 1px;
-		right: 1px;
+		left: 0;
+		right: 0;
 		border-top: 1px solid $gridline-color;
 	}
 }
@@ -173,8 +173,8 @@ $z-legend: 4;
 
 	.chart__gridlines-item {
 		position: absolute;
-		top: 1px;
-		bottom: 1px;
+		top: -1px;
+		bottom: 0;
 		border-right: 1px solid $gridline-color;
 	}
 }
@@ -200,6 +200,7 @@ $z-legend: 4;
 	width: calc(100% - #{$axis-text-size});
 	padding-left: $axis-text-size / 2;
 	margin-bottom: $axis-text-size / 2;
+	line-height: 1;
 }
 
 .chart__legend-indicator {
@@ -411,7 +412,7 @@ $z-legend: 4;
 	// polyline
 	fill: none;
 	vector-effect: non-scaling-stroke;
-	stroke-width: 1.5;
+	stroke-width: 3;
 	stroke-linecap: round;
 	stroke: $data-color;
 
