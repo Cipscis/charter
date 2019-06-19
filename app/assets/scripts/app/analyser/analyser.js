@@ -97,6 +97,7 @@ define(
 				// A fileConfig object for column names
 				// An optional set of aliases
 				// An optional set of columns whose values should be treated as arrays
+				// An optional set of columns with default values
 				// An optional map of columns that should be combined when collecting enums
 
 				// The output contains the following properties:
@@ -107,6 +108,7 @@ define(
 
 				// Example data:
 				// headerRows = 2;
+				// footerRows = 1;
 
 				// cols = Analyser.getColNumbers({
 				// 	ETHNICITY: 'K',
@@ -115,6 +117,9 @@ define(
 
 				// arrayCols = {};
 				// arrayCols[cols.TACTICS] = ' ';
+
+				// defaultCols = {};
+				// defaultCols[cols.VALUE] = 0;
 
 				// aliases = {
 				// 	ETHNICITY: [
@@ -135,6 +140,7 @@ define(
 					j;
 
 				fileConfig.headerRows = fileConfig.headerRows || 0;
+				fileConfig.footerRows = fileConfig.footerRows || 0;
 				fileConfig.cols = fileConfig.cols || {};
 				fileConfig.aliases = fileConfig.aliases || {};
 				fileConfig.arrayCols = fileConfig.arrayCols || {};
@@ -145,8 +151,15 @@ define(
 				dataConfig.filters = Analyser._getAliasFilters(fileConfig.aliases);
 				dataConfig.enumsMap = fileConfig.enumsMap; // Keep this for combining data
 
-				// Remove header rows
-				rows.splice(0, fileConfig.headerRows);
+				if (fileConfig.headerRows !== 0) {
+					// Remove header rows
+					rows.splice(0, fileConfig.headerRows);
+				}
+
+				if (fileConfig.footerRows !== 0) {
+					// Remove footer rows
+					rows.splice(-fileConfig.footerRows);
+				}
 
 				// Convert cells that are lists into arrays
 				dataConfig.rows = rows.concat();
