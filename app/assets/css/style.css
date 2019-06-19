@@ -1055,34 +1055,30 @@ body {
   z-index: 4;
   top: 0;
   left: 0;
-  max-height: 100%;
-  overflow: auto;
-  padding: 10px;
   background: var(--primary-background);
   box-shadow: 0 0 5px var(--shadow); }
-  .docs-nav[aria-expanded="true"] .docs-nav__list {
-    display: block; }
+  .docs-nav[aria-expanded="true"] {
+    bottom: 0; }
+    .docs-nav[aria-expanded="true"] .docs-nav__toggle {
+      position: absolute; }
+    .docs-nav[aria-expanded="true"] .docs-nav__content {
+      height: 100%;
+      display: flex;
+      flex-direction: column; }
 
 .docs-nav__toggle {
   border: none;
+  background: var(--primary-background);
   border-radius: 0;
-  padding: 0;
+  padding: 10px;
   cursor: pointer;
-  display: block;
+  display: block; }
+
+.docs-nav__toggle-box {
   height: 24px;
   width: 28.8px;
-  background: var(--primary-background);
   position: relative; }
-  .docs-nav__toggle::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    bottom: -10px;
-    left: -10px; }
-  .docs-nav__toggle + .docs-nav__list {
-    margin-top: 20px; }
-  .docs-nav__toggle:hover .docs-nav__toggle-line, .docs-nav__toggle:focus .docs-nav__toggle-line {
+  .docs-nav__toggle-box:hover .docs-nav__toggle-line, .docs-nav__toggle-box:focus .docs-nav__toggle-line {
     opacity: 1; }
 
 .docs-nav__toggle-line {
@@ -1110,14 +1106,36 @@ body {
 .docs-nav[aria-expanded="true"] .docs-nav__toggle-line:nth-child(3) {
   transform: translateY(-10px) rotate(-45deg); }
 
-.docs-nav__list {
+.docs-nav__content {
   display: none;
+  padding-top: 20px; }
+
+.docs-nav__head {
+  padding: 44px 10px 10px; }
+
+.docs-nav__body {
+  padding: 0 10px 50px;
+  flex-grow: 1;
+  overflow: auto; }
+
+.docs-nav__search {
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 18px; }
+
+.docs-nav__list {
   margin: 0;
   padding: 0;
   background: var(--primary-background);
   list-style: none; }
   .docs-nav__list .docs-nav__list {
     padding-left: 20px; }
+
+.docs-nav__item--disabled {
+  display: none; }
+
+.docs-nav__item--match {
+  font-weight: bold; }
 
 .docs-section {
   padding-top: 40px; }
