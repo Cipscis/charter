@@ -108,6 +108,7 @@ define(
 
 				// Example data:
 				// headerRows = 2;
+				// footerRows = 1;
 
 				// cols = Analyser.getColNumbers({
 				// 	ETHNICITY: 'K',
@@ -139,6 +140,7 @@ define(
 					j;
 
 				fileConfig.headerRows = fileConfig.headerRows || 0;
+				fileConfig.footerRows = fileConfig.footerRows || 0;
 				fileConfig.cols = fileConfig.cols || {};
 				fileConfig.aliases = fileConfig.aliases || {};
 				fileConfig.arrayCols = fileConfig.arrayCols || {};
@@ -149,8 +151,15 @@ define(
 				dataConfig.filters = Analyser._getAliasFilters(fileConfig.aliases);
 				dataConfig.enumsMap = fileConfig.enumsMap; // Keep this for combining data
 
-				// Remove header rows
-				rows.splice(0, fileConfig.headerRows);
+				if (fileConfig.headerRows !== 0) {
+					// Remove header rows
+					rows.splice(0, fileConfig.headerRows);
+				}
+
+				if (fileConfig.footerRows !== 0) {
+					// Remove footer rows
+					rows.splice(-fileConfig.footerRows);
+				}
 
 				// Convert cells that are lists into arrays
 				dataConfig.rows = rows.concat();
