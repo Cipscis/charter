@@ -57,7 +57,6 @@
 	background: linear-gradient(to top, var(--highlight-bar) 0%, var(--highlight-bar) $link-bg-height, transparent ($link-bg-height + 0.1%), transparent 100%);
 	&:hover,
 	&:focus {
-		outline: none;
 		background: linear-gradient(to top, var(--highlight-bar-active) 0%, var(--highlight-bar-active) $link-bg-height, transparent ($link-bg-height + 0.1%), transparent 100%);
 	}
 }

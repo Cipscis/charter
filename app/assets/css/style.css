@@ -383,7 +383,6 @@ h1, h2, h3, h4, h5, h6 {
   .content a:hover, .content a:focus,
   .a:hover,
   .a:focus {
-    outline: none;
     background: linear-gradient(to top, var(--highlight-bar-active) 0%, var(--highlight-bar-active) 20%, transparent 20.1%, transparent 100%); }
 
 .content blockquote,
