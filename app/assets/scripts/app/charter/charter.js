@@ -224,37 +224,42 @@ define(
 				// Assume min and max are both already
 				// divisible by axisConfig.roundTo
 
+				axisConfig = Charter._getNumericAxisOptions(axisConfig);
+
 				var min = dataRange[0];
 				var max = dataRange[1];
 
-				var range = max - min;
-				var roundTo = axisConfig.roundTo || 1;
-				var factor = roundTo * axisConfig.values;
-				var remainder = range % factor;
-				var increment;
+				if (axisConfig.roundTo !== null) {
+					var range = max - min;
+					var roundTo = axisConfig.roundTo;
+					var values = axisConfig.values;
+					var factor = roundTo * values;
+					var remainder = range % factor;
+					var increment;
 
-				if (remainder !== 0) {
-					// Increment max until the difference between
-					// it and min is the smallest number above range
-					// that is divisible by factor
-					increment = factor - remainder;
-					max += increment;
+					if (remainder !== 0) {
+						// Increment max until the difference between
+						// it and min is the smallest number above range
+						// that is divisible by factor
+						increment = factor - remainder;
+						max += increment;
 
-					if (axisConfig.min === null) {
-						// If min is determined (i.e. null was passed), then
-						// also push min out instead of only incrementing max
+						if (axisConfig.min === null) {
+							// If min is determined (i.e. null was passed), then
+							// also push min out instead of only incrementing max
 
-						// Decrease max and min by half (or slightly less)
-						// of the amount max was incremented was
+							// Decrease max and min by half (or slightly less)
+							// of the amount max was incremented was
 
-						increment = increment / 2;
-						remainder = increment % roundTo;
-						if (remainder !== 0) {
-							increment -= remainder;
+							increment = increment / 2;
+							remainder = increment % roundTo;
+							if (remainder !== 0) {
+								increment -= remainder;
+							}
+
+							max -= increment;
+							min -= increment;
 						}
-
-						max -= increment;
-						min -= increment;
 					}
 				}
 
