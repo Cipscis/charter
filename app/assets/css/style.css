@@ -727,14 +727,14 @@ body {
   flex-direction: column-reverse; }
   .chart__gridlines--h .chart__gridlines-item {
     position: absolute;
-    left: 1px;
-    right: 1px;
+    left: 0;
+    right: 0;
     border-top: 1px solid #666; }
 
 .chart__gridlines--v .chart__gridlines-item {
   position: absolute;
-  top: 1px;
-  bottom: 1px;
+  top: -1px;
+  bottom: 0;
   border-right: 1px solid #666; }
 
 .chart__legend {
@@ -749,7 +749,8 @@ body {
   float: left;
   width: calc(100% - 16px);
   padding-left: 8px;
-  margin-bottom: 8px; }
+  margin-bottom: 8px;
+  line-height: 1; }
 
 .chart__legend-indicator {
   clear: left;
@@ -904,7 +905,7 @@ body {
 .chart__line {
   fill: none;
   vector-effect: non-scaling-stroke;
-  stroke-width: 1.5;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke: #999;
   position: absolute;
