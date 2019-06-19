@@ -17,91 +17,101 @@
 
 	<nav class="docs-nav js-menu" aria-live="polite">
 		<button class="docs-nav__toggle js-menu-toggle" title="Menu (Ctrl + M)">
-			<span class="docs-nav__toggle-line"></span>
-			<span class="docs-nav__toggle-line"></span>
-			<span class="docs-nav__toggle-line"></span>
+			<div class="docs-nav__toggle-box js-menu-toggle">
+				<span class="docs-nav__toggle-line"></span>
+				<span class="docs-nav__toggle-line"></span>
+				<span class="docs-nav__toggle-line"></span>
+			</div>
 		</button>
 
-		<ol class="docs-nav__list">
-			<li>
-				<a class="a" href="#analyser">Analyser</a>
+		<div class="docs-nav__content">
+			<div class="docs-nav__head">
+				<input type="text" class="docs-nav__search js-menu-search" placeholder="Search (Ctrl + /)" />
+			</div>
+
+			<div class="docs-nav__body js-menu-search-body">
 				<ol class="docs-nav__list">
-					<li><a class="a" href="#analyser-loadfile">loadFile</a></li>
-					<li><a class="a" href="#analyser-combinedata">combineData</a></li>
-					<li><a class="a" href="#analyser-getcolnumber">getColNumber</a></li>
-					<li><a class="a" href="#analyser-getcolnumbers">getColNumbers</a></li>
-					<li><a class="a" href="#analyser-getcol">getCol</a></li>
-					<li><a class="a" href="#analyser-addcol">addCol</a></li>
-					<li><a class="a" href="#analyser-getderivedcol">getDerivedCol</a></li>
-					<li><a class="a" href="#analyser-addderivedcol">addDerivedCol</a></li>
-					<li><a class="a" href="#analyser-createsubtable">createSubTable</a></li>
-					<li><a class="a" href="#analyser-createsubtablestring">createSubTableString</a></li>
-					<li><a class="a" href="#analyser-getcolsummary">getColSummary</a></li>
-					<li><a class="a" href="#analyser-getcolasdataseries">getColAsDataSeries</a></li>
-					<li><a class="a" href="#analyser-getcomparisonsummary">getComparisonSummary</a></li>
-					<li><a class="a" href="#analyser-getcomparisonsummarystring">getComparisonSummaryString</a></li>
-					<li><a class="a" href="#analyser-fileconfig">fileConfig</a>
+					<li>
+						<a class="a docs-nav__item js-menu-link" href="#analyser">Analyser</a>
 						<ol class="docs-nav__list">
-							<li><a class="a" href="#analyser-fileconfig-headerrows">headerRows</a></li>
-							<li><a class="a" href="#analyser-fileconfig-footerrows">footerRows</a></li>
-							<li><a class="a" href="#analyser-fileconfig-cols">cols</a></li>
-							<li><a class="a" href="#analyser-fileconfig-arraycols">arrayCols</a></li>
-							<li><a class="a" href="#analyser-fileconfig-defaultcols">defaultCols</a></li>
-							<li><a class="a" href="#analyser-fileconfig-aliases">aliases</a></li>
-							<li><a class="a" href="#analyser-fileconfig-enumsmap">enumsMap</a></li>
-						</ol>
-					</li>
-					<li><a class="a" href="#analyser-dataconfig">dataConfig</a>
-						<ol class="docs-nav__list">
-							<li><a class="a" href="#analyser-dataconfig-cols">cols</a></li>
-							<li><a class="a" href="#analyser-dataconfig-rows">rows</a></li>
-							<li><a class="a" href="#analyser-dataconfig-aliases">aliases</a></li>
-							<li><a class="a" href="#analyser-dataconfig-enums">enums</a></li>
-							<li><a class="a" href="#analyser-filters">filters</a>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-loadfile">loadFile</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-combinedata">combineData</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcolnumber">getColNumber</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcolnumbers">getColNumbers</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcol">getCol</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-addcol">addCol</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getderivedcol">getDerivedCol</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-addderivedcol">addDerivedCol</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-createsubtable">createSubTable</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-createsubtablestring">createSubTableString</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcolsummary">getColSummary</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcolasdataseries">getColAsDataSeries</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcomparisonsummary">getComparisonSummary</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcomparisonsummarystring">getComparisonSummaryString</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig">fileConfig</a>
 								<ol class="docs-nav__list">
-									<li><a class="a" href="#analyser-filters-filterrows">filterRows</a></li>
-									<li><a class="a" href="#analyser-filters-filterrowsand">filterRowsAnd</a></li>
-									<li><a class="a" href="#analyser-filters-filterrowsor">filterRowsOr</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-headerrows">headerRows</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-footerrows">footerRows</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-cols">cols</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-arraycols">arrayCols</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-defaultcols">defaultCols</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-aliases">aliases</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-enumsmap">enumsMap</a></li>
+								</ol>
+							</li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-dataconfig">dataConfig</a>
+								<ol class="docs-nav__list">
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-dataconfig-cols">cols</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-dataconfig-rows">rows</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-dataconfig-aliases">aliases</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-dataconfig-enums">enums</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters">filters</a>
+										<ol class="docs-nav__list">
+											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filterrows">filterRows</a></li>
+											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filterrowsand">filterRowsAnd</a></li>
+											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filterrowsor">filterRowsOr</a></li>
+										</ol>
+									</li>
 								</ol>
 							</li>
 						</ol>
 					</li>
-				</ol>
-			</li>
-			<li><a class="a" href="#charter">Charter</a>
-				<ol class="docs-nav__list">
-					<li><a class="a" href="#charter-chartdata">chartData</a>
+					<li><a class="a docs-nav__item js-menu-link" href="#charter">Charter</a>
 						<ol class="docs-nav__list">
-							<li><a class="a" href="#charter-chartdata-dataseries">dataSeries</a></li>
-							<li><a class="a" href="#charter-chartdata-numericaxisconfig">numericAxisConfig</a></li>
-							<li><a class="a" href="#charter-chartdata-qualitativeaxisconfig">qualitativeAxisConfig</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#charter-chartdata">chartData</a>
+								<ol class="docs-nav__list">
+									<li><a class="a docs-nav__item js-menu-link" href="#charter-chartdata-dataseries">dataSeries</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#charter-chartdata-numericaxisconfig">numericAxisConfig</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#charter-chartdata-qualitativeaxisconfig">qualitativeAxisConfig</a></li>
+								</ol>
+							</li>
+							<li><a class="a docs-nav__item js-menu-link" href="#charter-createtable">createTable</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#charter-createbarchart">createBarChart</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#charter-createlinegraph">createLineGraph</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#charter-createscatterplot">createScatterPlot</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#charter-updatebarchart">updateBarChart</a></li>
 						</ol>
 					</li>
-					<li><a class="a" href="#charter-createtable">createTable</a></li>
-					<li><a class="a" href="#charter-createbarchart">createBarChart</a></li>
-					<li><a class="a" href="#charter-createlinegraph">createLineGraph</a></li>
-					<li><a class="a" href="#charter-createscatterplot">createScatterPlot</a></li>
-					<li><a class="a" href="#charter-updatebarchart">updateBarChart</a></li>
+					<li><a class="a docs-nav__item js-menu-link" href="#stats">Stats</a>
+						<ol class="docs-nav__list">
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-sum">sum</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-mean">mean</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-median">median</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-variance">variance</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-sd">sd</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-max">max</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-min">min</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-intrange">intRange</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-linearleastsquares">linearLeastSquares</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-r">r</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-r2">r2</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-smooth">smooth</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#stats-chunk">chunk</a></li>
+						</ol>
+					</li>
 				</ol>
-			</li>
-			<li><a class="a" href="#stats">Stats</a>
-				<ol class="docs-nav__list">
-					<li><a class="a" href="#stats-sum">sum</a></li>
-					<li><a class="a" href="#stats-mean">mean</a></li>
-					<li><a class="a" href="#stats-median">median</a></li>
-					<li><a class="a" href="#stats-variance">variance</a></li>
-					<li><a class="a" href="#stats-sd">sd</a></li>
-					<li><a class="a" href="#stats-max">max</a></li>
-					<li><a class="a" href="#stats-min">min</a></li>
-					<li><a class="a" href="#stats-intrange">intRange</a></li>
-					<li><a class="a" href="#stats-linearleastsquares">linearLeastSquares</a></li>
-					<li><a class="a" href="#stats-r">r</a></li>
-					<li><a class="a" href="#stats-r2">r2</a></li>
-					<li><a class="a" href="#stats-smooth">smooth</a></li>
-					<li><a class="a" href="#stats-chunk">chunk</a></li>
-				</ol>
-			</li>
-		</ol>
+			</div>
+		</div>
 	</nav>
 
 	<div class="layout--wide">
