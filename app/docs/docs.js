@@ -103,6 +103,7 @@ define(
 					$codeEls.forEach($code => {
 						$code.addEventListener('input', module._handleCodeInput);
 						$code.addEventListener('keydown', module._handleTabKey);
+						$code.addEventListener('keydown', module._handleEscapeKey);
 
 
 						$code.addEventListener('input', () => editingCode = true);
@@ -312,6 +313,24 @@ define(
 							if (document.execCommand('insertHtml', false, '\t')) {
 								e.preventDefault();
 							}
+						}
+					}
+				},
+
+				_handleEscapeKey: function (e) {
+					if (editingCode === true) {
+						let $target = e.target;
+						let $code = $target;
+						while ($code.matches(selectors.code) === false) {
+							$code = $code.parentElement;
+							if ($code === null) {
+								return null;
+							}
+						}
+						let key = e.key;
+
+						if (key.toLowerCase() === 'escape') {
+							$code.blur();
 						}
 					}
 				}
