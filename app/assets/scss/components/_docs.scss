@@ -38,19 +38,19 @@ $docs-nav-toggle-bar-size: 4px;
 	cursor: pointer;
 
 	display: block;
-}
-.docs-nav__toggle-box {
-	height: $docs-nav-toggle-height;
-	width: $docs-nav-toggle-width;
-
-	position: relative;
-
 	&:hover,
 	&:focus {
 		.docs-nav__toggle-line {
 			opacity: 1;
 		}
 	}
+}
+.docs-nav__toggle-box {
+	height: $docs-nav-toggle-height;
+	width: $docs-nav-toggle-width;
+
+	position: relative;
+	pointer-events: none;
 }
 .docs-nav__toggle-line {
 	position: absolute;
