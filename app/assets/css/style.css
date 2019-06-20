@@ -1073,13 +1073,14 @@ body {
   padding: 10px;
   cursor: pointer;
   display: block; }
+  .docs-nav__toggle:hover .docs-nav__toggle-line, .docs-nav__toggle:focus .docs-nav__toggle-line {
+    opacity: 1; }
 
 .docs-nav__toggle-box {
   height: 24px;
   width: 28.8px;
-  position: relative; }
-  .docs-nav__toggle-box:hover .docs-nav__toggle-line, .docs-nav__toggle-box:focus .docs-nav__toggle-line {
-    opacity: 1; }
+  position: relative;
+  pointer-events: none; }
 
 .docs-nav__toggle-line {
   position: absolute;
