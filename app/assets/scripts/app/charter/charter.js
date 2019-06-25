@@ -622,6 +622,28 @@ define(
 				return newDataSeriesArray;
 			},
 
+			_getDataSeriesByLabel: function (labels, dataSeries) {
+				var dataSeriesByLabel = [];
+				var i;
+				var dataPointsForLabel;
+				var j;
+
+				for (i in labels) {
+					dataPointsForLabel = [];
+
+					for (j in dataSeries) {
+						dataPointsForLabel.push(dataSeries[j].dataPoints[i]);
+					}
+
+					dataSeriesByLabel.push({
+						label: labels[i],
+						dataPoints: dataPointsForLabel
+					});
+				}
+
+				return dataSeriesByLabel;
+			},
+
 			///////////////////////
 			// CREATING DISPLAYS //
 			///////////////////////
@@ -675,9 +697,6 @@ define(
 				// labels array, and the dataSeries will be displayed one after another
 
 				chartData.dataSeries = Charter._processDataSeries(chartData.dataSeries);
-				if (chartData.stacked) {
-					chartData.dataSeries = Charter._combineStackedDataSeries(chartData.dataSeries);
-				}
 
 				dependentAxisConfig = Charter._getNumericAxisOptions(dependentAxisConfig);
 
@@ -686,6 +705,8 @@ define(
 				chartData.dependentAxis = Charter._createNumericAxis(chartData, dependentAxisConfig);
 				chartData = Charter._getValuePercentages(chartData, dependentAxisConfig);
 				chartData = Charter._getDisplayValues(chartData, dependentAxisConfig);
+
+				chartData.dataSeriesByLabel = Charter._getDataSeriesByLabel(chartData.labels, chartData.dataSeries);
 
 				$chart = $(templayed(dependentAxisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
 				$chart.data('chartData', chartData);
