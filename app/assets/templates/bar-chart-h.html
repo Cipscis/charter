@@ -27,17 +27,39 @@
 		<ul class="chart__axis--v">
 		</ul>
 
-		<ul class="chart__bars--h{{#histogram}} chart__bars--histogram{{/histogram}}">
-			{{#dataSeries}}
-				{{#dataPoints}}
-					<li class="chart__bar">
-						<div class="chart__bar-area js-chart-bar" style="width: {{percentage}}%; background: {{color}};" title="{{displayValue}}" data-label="{{label}}" tabindex="0">
-							<span class="chart__bar-tooltip js-chart-tooltip">{{displayValue}}</span>
-						</div>
+		<ul class="chart__bar-groups--h{{#histogram}} chart__bar-groups--histogram{{/histogram}}">
+			{{#stacked}}
+				{{#dataSeriesByLabel}}
+					<li class="chart__bar-group">
+						<ul class="chart__bar-group-bars chart__bar-group-bars--stacked">
+							{{#dataPoints}}
+								<li class="chart__bar" style="flex-basis: {{percentage}}%;">
+									<div class="chart__bar-area js-chart-bar" style="background: {{color}};" title="{{displayValue}}" data-label="{{label}}" tabindex="0">
+										<span class="chart__bar-tooltip js-chart-tooltip">{{displayValue}}</span>
+									</div>
+								</li>
+							{{/dataPoints}}
+						</ul>
 						<span class="chart__bar-label">{{label}}</span>
 					</li>
-				{{/dataPoints}}
-			{{/dataSeries}}
+				{{/dataSeriesByLabel}}
+			{{/stacked}}
+			{{^stacked}}
+				{{#dataSeriesByLabel}}
+					<li class="chart__bar-group">
+						<ul class="chart__bar-group-bars">
+							{{#dataPoints}}
+								<li class="chart__bar">
+									<div class="chart__bar-area js-chart-bar" style="width: {{percentage}}%; background: {{color}};" title="{{displayValue}}" data-label="{{label}}" tabindex="0">
+										<span class="chart__bar-tooltip js-chart-tooltip">{{displayValue}}</span>
+									</div>
+								</li>
+							{{/dataPoints}}
+						</ul>
+						<span class="chart__bar-label">{{label}}</span>
+					</li>
+				{{/dataSeriesByLabel}}
+			{{/stacked}}
 		</ul>
 	</div>
 </div>
