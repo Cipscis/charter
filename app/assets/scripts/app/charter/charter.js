@@ -229,10 +229,12 @@ define(
 				var min = dataRange[0];
 				var max = dataRange[1];
 
-				if (axisConfig.roundTo !== null) {
+				if (axisConfig.roundTo !== null || axisConfig.values > 1) {
 					var range = max - min;
-					var roundTo = axisConfig.roundTo;
-					var values = axisConfig.values;
+					// Round to 1% or 1 by default.
+					// If it needs to be lower, specify it in the config
+					var roundTo = axisConfig.roundTo || (axisConfig.percentage ? 0.01 : 1);
+					var values = axisConfig.values || 1;
 					var factor = roundTo * values;
 					var remainder = range % factor;
 					var increment;
@@ -305,6 +307,28 @@ define(
 				return [min, max];
 			},
 
+			_getGroupMax: function (dataSeries, axisConfig) {
+				var groupSums = [],
+					groupSumMax,
+					roundedMax,
+					i;
+
+				for (i = 0; i < dataSeries.length; i++) {
+					for (j = 0; j < dataSeries[i].dataPoints.length; j++) {
+						if (groupSums.length <= j) {
+							groupSums.push(0);
+						}
+
+						groupSums[j] += dataSeries[i].dataPoints[j].value;
+					}
+				}
+
+				groupSumMax = Math.max.apply(null, groupSums);
+				roundedMax = Charter._roundRange([0, groupSumMax], axisConfig)[1];
+
+				return roundedMax;
+			},
+
 			_createNumericAxis: function (chartData, axisConfig) {
 				// Calculates axis range
 				// then creates gridlines
@@ -319,11 +343,33 @@ define(
 					i,
 					value, displayValue,
 					range,
-					max, min;
+					max = axisConfig.max,
+					min = axisConfig.min;
 
-				range = Charter._getRange(chartData.dataSeries, axisConfig);
-				min = range[0];
-				max = range[1];
+				if (min === null || max === null) {
+					range = Charter._getRange(chartData.dataSeries, axisConfig);
+					if (min === null) {
+						min = range[0];
+					}
+
+					if (max === null) {
+						if (chartData.stacked === true) {
+							// For stacked bar charts, the real max is the
+							// greatest sum of all dataPoints for the same label
+							max = Charter._getGroupMax(chartData.dataSeries, axisConfig);
+						} else {
+							max = range[1];
+						}
+					}
+				}
+
+				if (axisConfig.min !== null || axisConfig.max !== null) {
+					// If either min or max were specified, ensure the values
+					// used on the axis will be rounded appropriately
+					range = Charter._roundRange([min, max], axisConfig);
+					min = range[0];
+					max = range[1];
+				}
 
 				for (i = 0; i <= axisConfig.gridlines; i++) {
 					value = ((max-min) * i / axisConfig.gridlines) + min;
@@ -468,13 +514,11 @@ define(
 				// Calculates the percentage to use for displaying each value
 
 				var i, j,
-					range,
 					min, max,
 					dataSeries, dataPoint;
 
-				range = Charter._getRange(chartData.dataSeries, axisConfig);
-				min = range[0];
-				max = range[1];
+				min = Math.min.apply(null, chartData.dependentAxis.values.map(function (a) { return a.value; }));
+				max = Math.max.apply(null, chartData.dependentAxis.values.map(function (a) { return a.value; }));
 
 				for (i = 0; i < chartData.dataSeries.length; i++) {
 					dataSeries = chartData.dataSeries[i];
