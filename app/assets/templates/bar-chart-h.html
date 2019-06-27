@@ -35,8 +35,8 @@
 							{{#dataPoints}}
 								<li class="chart__bar" style="flex-basis: {{percentage}}%;">
 									<div class="chart__bar-area js-chart-bar" style="background: {{color}};" title="{{displayValue}}" tabindex="0">
-										<span class="chart__bar-tooltip js-chart-tooltip" style="border-color: {{color}};">
-											<span class="chart-bar__tooltip-series">{{dataSeries}}</span>
+										<span class="chart__bar-tooltip js-chart-tooltip"{{#hasColor}} style="border-color: {{color}};"{{/hasColor}}>
+											{{#hasDataSeries}}<span class="chart-bar__tooltip-series">{{dataSeries}}</span>{{/hasDataSeries}}
 											<span class="chart-bar__tooltip-label">{{label}}:</span>
 											<span class="chart-bar__tooltip-value">{{displayValue}}</span>
 										</span>
@@ -55,8 +55,8 @@
 							{{#dataPoints}}
 								<li class="chart__bar">
 									<div class="chart__bar-area js-chart-bar" style="width: {{percentage}}%; background: {{color}};" title="{{displayValue}}" tabindex="0">
-										<span class="chart__bar-tooltip js-chart-tooltip" style="border-color: {{color}};">
-											<span class="chart-bar__tooltip-series">{{dataSeries}}</span>
+										<span class="chart__bar-tooltip js-chart-tooltip"{{#hasColor}} style="border-color: {{color}};"{{/hasColor}}>
+											{{#hasDataSeries}}<span class="chart-bar__tooltip-series">{{dataSeries}}</span>{{/hasDataSeries}}
 											<span class="chart-bar__tooltip-label">{{label}}:</span>
 											<span class="chart-bar__tooltip-value">{{displayValue}}</span>
 										</span>

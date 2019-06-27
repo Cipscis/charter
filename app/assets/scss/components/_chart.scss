@@ -296,9 +296,6 @@ $z-legend: 4;
 		cursor: text;
 
 		position: absolute;
-		top: -5px;
-		left: 50%;
-		transform: translateX(-50%) translateY(-100%);
 		z-index: 1;
 
 		padding: 0 6px;
@@ -359,6 +356,12 @@ $z-legend: 4;
 		min-width: 100%;
 		text-align: center;
 	}
+
+	.chart__bar-tooltip {
+		top: -5px;
+		left: 50%;
+		transform: translateX(-50%) translateY(-100%);
+	}
 }
 
 .chart__bar-groups--h {
@@ -402,6 +405,12 @@ $z-legend: 4;
 
 		transform: translateY(-50%);
 		padding-right: 10px;
+	}
+
+	.chart__bar-tooltip {
+		top: 50%;
+		left: 100%;
+		transform: translateX(5px) translateY(-50%);
 	}
 }
 
