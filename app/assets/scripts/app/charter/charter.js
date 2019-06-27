@@ -231,10 +231,21 @@ define(
 
 				if (axisConfig.roundTo !== null || axisConfig.values > 1) {
 					var range = max - min;
-					// Round to 1% or 1 by default.
-					// If it needs to be lower, specify it in the config
-					var roundTo = axisConfig.roundTo || (axisConfig.percentage ? 0.01 : 1);
 					var values = axisConfig.values || 1;
+
+					// If roundTo is unspecified, figure out what should be
+					// used by looking at the greatest power of 10 that fits
+					// into the starting maximum value at least values times.
+					// If it's above 1 or 1%, use 1 or 1% instead by default.
+					var roundTo = axisConfig.roundTo;
+					if (!roundTo) {
+						var maxOrder = Math.pow(10, Math.floor(Math.log10(max/values)));
+						if (axisConfig.percentage) {
+							roundTo = Math.min(maxOrder, 0.01);
+						} else {
+							roundTo = Math.min(maxOrder, 1);
+						}
+					}
 					var factor = roundTo * values;
 					var remainder = range % factor;
 					var increment;
