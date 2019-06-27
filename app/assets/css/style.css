@@ -414,7 +414,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 3px 7px;
   border-radius: 5px;
   font-family: monospace;
-  white-space: pre;
+  white-space: pre-wrap;
   tab-size: 4;
   -moz-tab-size: 4;
   max-width: 100%;
