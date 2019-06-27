@@ -48,10 +48,14 @@
 			</svg>
 
 			{{#dataSeries}}
-			<ul class="chart__point-tooltips" aria-label="{{name}}">
+			<ul class="chart__point-tooltips">
 				{{#dataPoints}}
 					<li class="chart__point-tooltip" style="left: {{index}}%; bottom: {{percentage}}%; background-color: {{color}};" tabindex="0">
-						<span class="chart__point-tooltip-body">{{displayValue}}</span>
+						<span class="chart__point-tooltip-body" style="border-color: {{color}};">
+							<span class="chart-point__tooltip-series">{{dataSeries}}</span>
+							<span class="chart-point__tooltip-label">{{label}}:</span>
+							<span class="chart-point__tooltip-value">{{displayValue}}</span>
+						</span>
 					</li>
 				{{/dataPoints}}
 			</ul>
