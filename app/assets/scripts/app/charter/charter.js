@@ -456,6 +456,7 @@ define(
 						// Add commas for display values
 						dataPoint.displayValue = Charter._getDisplayNumber(dataPoint.value, axisConfig);
 						dataPoint.label = chartData.labels[j];
+						dataPoint.dataSeries = dataSeries.name;
 					}
 				}
 
