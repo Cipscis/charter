@@ -457,6 +457,7 @@ define(
 						dataPoint.displayValue = Charter._getDisplayNumber(dataPoint.value, axisConfig);
 						dataPoint.label = chartData.labels[j];
 						dataPoint.dataSeries = dataSeries.name;
+						dataPoint.hasDataSeries = !!dataPoint.dataSeries;
 					}
 				}
 
@@ -515,6 +516,7 @@ define(
 
 				var i, series,
 					j, dataPoint,
+					obj,
 					objArray;
 
 				for (i = 0; i < dataSeries.length; i++) {
@@ -523,18 +525,23 @@ define(
 
 					for (j = 0; j < series.dataPoints.length; j++) {
 						dataPoint = series.dataPoints[j];
+						obj = {};
 
 						if (dataPoint instanceof Object) {
-							objArray.push({
+							obj = {
 								value: dataPoint.value,
 								color: dataPoint.color || series.color
-							});
+							};
 						} else {
-							objArray.push({
+							obj = {
 								value: dataPoint,
 								color: series.color
-							});
+							};
 						}
+
+						obj.hasColor = !!obj.color;
+
+						objArray.push(obj);
 					}
 
 					dataSeries[i].dataPoints = objArray;
