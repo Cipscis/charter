@@ -34,8 +34,12 @@
 						<ul class="chart__bar-group-bars chart__bar-group-bars--stacked">
 							{{#dataPoints}}
 								<li class="chart__bar" style="flex-basis: {{percentage}}%;">
-									<div class="chart__bar-area js-chart-bar" style="background: {{color}};" title="{{displayValue}}" data-label="{{label}}" tabindex="0">
-										<span class="chart__bar-tooltip js-chart-tooltip">{{displayValue}}</span>
+									<div class="chart__bar-area js-chart-bar" style="background: {{color}};" title="{{displayValue}}" tabindex="0">
+										<span class="chart__bar-tooltip js-chart-tooltip" style="border-color: {{color}};">
+											<span class="chart-bar__tooltip-series">{{dataSeries}}</span>
+											<span class="chart-bar__tooltip-label">{{label}}:</span>
+											<span class="chart-bar__tooltip-value">{{displayValue}}</span>
+										</span>
 									</div>
 								</li>
 							{{/dataPoints}}
@@ -50,8 +54,12 @@
 						<ul class="chart__bar-group-bars">
 							{{#dataPoints}}
 								<li class="chart__bar">
-									<div class="chart__bar-area js-chart-bar" style="width: {{percentage}}%; background: {{color}};" title="{{displayValue}}" data-label="{{label}}" tabindex="0">
-										<span class="chart__bar-tooltip js-chart-tooltip">{{displayValue}}</span>
+									<div class="chart__bar-area js-chart-bar" style="width: {{percentage}}%; background: {{color}};" title="{{displayValue}}" tabindex="0">
+										<span class="chart__bar-tooltip js-chart-tooltip" style="border-color: {{color}};">
+											<span class="chart-bar__tooltip-series">{{dataSeries}}</span>
+											<span class="chart-bar__tooltip-label">{{label}}:</span>
+											<span class="chart-bar__tooltip-value">{{displayValue}}</span>
+										</span>
 									</div>
 								</li>
 							{{/dataPoints}}
