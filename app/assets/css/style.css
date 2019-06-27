@@ -834,9 +834,6 @@ body {
     pointer-events: none;
     cursor: text;
     position: absolute;
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100%);
     z-index: 1;
     padding: 0 6px;
     background: #000;
@@ -883,6 +880,11 @@ body {
   min-width: 100%;
   text-align: center; }
 
+.chart__bar-groups--v .chart__bar-tooltip {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%); }
+
 .chart__bar-groups--h {
   flex-direction: column; }
   .chart__bar-groups--h .chart__bar-group-bars {
@@ -909,6 +911,10 @@ body {
     max-width: 50px;
     transform: translateY(-50%);
     padding-right: 10px; }
+  .chart__bar-groups--h .chart__bar-tooltip {
+    top: 50%;
+    left: 100%;
+    transform: translateX(5px) translateY(-50%); }
 
 .chart__points {
   position: absolute;
