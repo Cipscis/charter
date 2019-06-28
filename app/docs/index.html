@@ -1675,7 +1675,13 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 
 					<p><code>color</code> is the colour used to denote the data in this <code>dataSeries</code> on the chart. If unset, it will default to the colour set in the CSS (#999 in this project).</p>
 
-					<p><code>dataPoints</code> is an array of numbers - the data you want to draw on the chart.</p>
+					<p><code>dataPoints</code> is an array where each element is a number or an object, representing the data you want to draw on the chart.</p>
+
+					<p>If a dataPoint is a number, it will inherit its colour from its dataSeries.</p>
+
+					<p>If a dataPoint is an object, it expects to have its number specified as the <code>value</code> property. It will inherit its colour from its dataSeries by default, but this can be overridden via a <code>color</code> property.</p>
+
+					<p>In a line graph, specifying the colour of an individual dataPoint will affect the colour of the hover/focus bubble and tooltip border for that point, but not the line itself.</p>
 				</div>
 			</section>
 
