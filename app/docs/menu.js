@@ -210,6 +210,10 @@ define(
 						}
 						$item.setAttribute('aria-disabled', true);
 						$item.setAttribute('tabindex', -1);
+
+						// Hide parent list item
+						let $parent = $item.parentElement;
+						$parent.style.display = 'none';
 					},
 					_enableItem: function ($item, match) {
 						$item.classList.remove(classes.disabled);
@@ -220,6 +224,13 @@ define(
 						}
 						$item.removeAttribute('aria-disabled');
 						$item.removeAttribute('tabindex');
+
+						// Show parent list item
+						let $parent = $item.parentElement;
+						$parent.style.display = '';
+						if ($parent.getAttribute('style') === '') {
+							$parent.removeAttribute('style');
+						}
 					},
 					_isDisabled: function ($item ) {
 						return $item.classList.contains(classes.disabled);
