@@ -23,12 +23,13 @@ define(
 				xhr.send();
 			},
 
-			loadFile: function (fileInfo1, fileConfig1, fileInfo2, fileConfig2, fileInfoN, fileConfigN, callback) {
+			loadFile: function (fileInfo1, fileConfig1, fileInfo2, fileConfig2, fileInfoN, fileConfigN, callbackArg) {
 				// options should be an array containing objects which each have
 				// a fileInfo, and fileConfig. These will be passed into loadFile
 				// for each item in the array
 				var fileInfo;
 				var fileConfig;
+				var callback;
 				var i;
 
 				var dataConfigArray = [];
