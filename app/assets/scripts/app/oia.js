@@ -208,17 +208,17 @@ require(
 				labels: workingDayNums,
 				dataSeries: [
 					{
-						name: 'After 5pm on due date',
+						name: 'After 5pm on due date',
 						color: colours.LATE,
 						dataPoints: lateResponseData
 					},
 					{
-						name: '4pm - 5pm on due date',
+						name: '4pm ‑ 5pm on due date',
 						color: colours.DUE,
 						dataPoints: dueResponseData
 					},
 					{
-						name: 'Before 4pm on due date',
+						name: 'Before 4pm on due date',
 						color: colours.EARLY,
 						dataPoints: earlyResponseData
 					}
