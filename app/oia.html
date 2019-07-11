@@ -52,44 +52,6 @@
 						</div>
 
 						<div class="grid__item">
-							<script id="oia-cards" type="template">
-								<p>{{title}}</p>
-
-								<ul class="card__list">
-									{{#requests}}
-										<li class="card">
-											<div class="card__body" style="background: {{colour}};">
-												<a href="{{URL}}" target="_blank" class="card__title">{{TITLE}}</a>
-												<p>{{AGENCY}}</p>
-												<p><b>Sent:</b> {{{requestDate}}}</p>
-												<p><b>Due:</b> {{{dueDate}}}{{#wasExtended}}<br />(extended {{days}} working days){{/wasExtended}}</p>
-												{{#hasResponse}}
-													<p><b>Response:</b> {{{responseDate}}}&nbsp;{{{responseTime}}}</p>
-												{{/hasResponse}}
-												{{#isOverdue}}
-													<p><b>Overdue:</b> {{{overdueDays}} working days</p>
-												{{/isOverdue}}
-												{{#hasTimeLeft}}
-													<p><b>Remaining:</b> {{{remainingDays}} working days</p>
-												{{/hasTimeLeft}}
-											</div>
-										</li>
-									{{/requests}}
-								</ul>
-							</script>
-
-							<div class="js-click-instructions">
-								<p>Click on one of the bars in the chart to see the requests received with that many working days remaining.</p>
-							</div>
-							<div class="js-cards">
-							</div>
-						</div>
-
-						<div class="grid__item">
-							<button class="button js-show-outstanding">Show outstanding</button>
-						</div>
-
-						<div class="grid__item">
 							<p>A request received on
 
 								<select class="js-sent-day">
@@ -154,6 +116,55 @@
 
 							<p>Due on <span class="js-due-date"></span></p>
 						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="grid__item width-1">
+				<div class="grid grid-v">
+					<div class="grid__item">
+						<div class="grid">
+							<div class="grid__item width-a">
+								<button class="button js-show-outstanding">Show outstanding</button>
+							</div>
+							<div class="grid__item width-a">
+								<button class="button js-show-all">Show all</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="grid__item">
+						<script id="oia-cards" type="template">
+							<p>{{title}}</p>
+
+							<ul class="card__list">
+								{{#requests}}
+									<li class="card">
+										<div class="card__body" style="background: {{colour}};">
+											<a href="{{URL}}" target="_blank" class="card__title">{{TITLE}}</a>
+											<p>{{AGENCY}}</p>
+											<p><b>Sent:</b> {{{requestDate}}}</p>
+											<p><b>Due:</b> {{{dueDate}}}{{#wasExtended}}<br />(extended {{days}} working days){{/wasExtended}}</p>
+											{{#hasResponse}}
+												<p><b>Response:</b> {{{responseDate}}}&nbsp;{{{responseTime}}}</p>
+											{{/hasResponse}}
+											{{#isOverdue}}
+												<p><b>Overdue:</b> {{{overdueDays}} working days</p>
+											{{/isOverdue}}
+											{{#hasTimeLeft}}
+												<p><b>Remaining:</b> {{{remainingDays}} working days</p>
+											{{/hasTimeLeft}}
+										</div>
+									</li>
+								{{/requests}}
+							</ul>
+						</script>
+
+						<div class="js-click-instructions">
+							<p>Click on one of the bars in the chart to see the requests received with that many working days remaining.</p>
+						</div>
+
+						<div class="js-cards"></div>
 					</div>
 				</div>
 			</div>

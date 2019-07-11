@@ -248,7 +248,11 @@ require(
 				var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 				var cardRows;
-				if (typeof daysRemaining !== 'undefined') {
+
+				if (daysRemaining === null) {
+					// Show all requests
+					cardRows = rows;
+				} else if (typeof daysRemaining !== 'undefined') {
 					// A number of days has been specified
 					cardRows = filterRows(rows, cols.DAYS_REMAINING, parseInt(daysRemaining, 10));
 				} else {
@@ -258,15 +262,15 @@ require(
 
 				var cardData = Analyser.createSubTable(cardRows, cols);
 
-				// Sort by time of day (ascending)
+				// Sort by date (ascending)
 				cardData.sort(function (a, b) {
 					var dateA = new Date(a.DATE_RESPONSE),
-						timeA = dateA.getHours() + (dateA.getMinutes() / 60),
+						dateB = new Date(b.DATE_RESPONSE);
 
-						dateB = new Date(b.DATE_RESPONSE),
-						timeB = dateB.getHours() + (dateB.getMinutes() / 60);
+					dateA = new Date(dateA.getFullYear(), dateA.getMonth(), dateA.getDate());
+					dateB = new Date(dateB.getFullYear(), dateB.getMonth(), dateB.getDate());
 
-					return timeA - timeB;
+					return dateA - dateB;
 				});
 
 
@@ -299,12 +303,17 @@ require(
 
 					var dueDateString = dueDate.getDate() + '&nbsp;' + monthNames[dueDate.getMonth()] + '&nbsp;' + dueDate.getFullYear();
 
+					var daysRemainingColour = daysRemaining;
+					if (daysRemainingColour === null) {
+						daysRemainingColour = row.DAYS_REMAINING;
+					}
+
 					// Calculate colour based on due date
-					if (daysRemaining > 0) {
+					if (daysRemainingColour > 0) {
 						colour = colours.EARLY;
-						row.hasTimeLeft = [{remainingDays: daysRemaining}];
-					} else if (daysRemaining === 0) {
-						row.hasTimeLeft = [{remainingDays: daysRemaining}];
+						row.hasTimeLeft = [{remainingDays: daysRemainingColour}];
+					} else if (daysRemainingColour === 0) {
+						row.hasTimeLeft = [{remainingDays: daysRemainingColour}];
 						if (responseHours >= 17) {
 							colour = colours.LATE;
 						} else if (responseHours >= 16) {
@@ -312,11 +321,11 @@ require(
 						} else {
 							colour = colours.EARLY;
 						}
-					} else if (daysRemaining < 0) {
+					} else if (daysRemainingColour < 0) {
 						colour = colours.LATE;
-						row.isOverdue = [{overdueDays: -daysRemaining}];
+						row.isOverdue = [{overdueDays: -daysRemainingColour}];
 					} else {
-						// daysRemaining is undefined, meaning no response has been received
+						// daysRemainingColour is undefined, meaning no response has been received
 						if (dueDate < (new Date())) {
 							colour = colours.LATE;
 							row.isOverdue = [{overdueDays: workingDays.getWorkingDaysBetween(dueDate, (new Date()))}];
@@ -372,18 +381,10 @@ require(
 					row.requestDate = requestDateString;
 
 					if (row.DATE_RESPONSE) {
-						if (daysRemaining >= 0) {
-							title = 'Responses received from ' + agencyFilter + ' with ' + daysRemaining + ' working day' + (daysRemaining !== 1 ? 's' : '') + ' remaining:';
-						} else {
-							title = 'Responses received from ' + agencyFilter + ' ' + (-daysRemaining) + ' working day' + (daysRemaining !== -1 ? 's' : '') + ' overdue:';
-						}
-
 						row.hasResponse = [{
 							responseTime: responseTime,
 							responseDate: responseDateString
 						}];
-					} else {
-						title = 'Requests to ' + agencyFilter + ' that have not yet received a response:';
 					}
 
 					row.dueDate = dueDateString;
@@ -394,6 +395,19 @@ require(
 					}
 
 					row.colour = colour;
+				}
+
+
+				if (daysRemaining === null) {
+					title = 'All requests to ' + agencyFilter + ':';
+				} else if (cardData.length > 0 && cardData[0].DATE_RESPONSE) {
+					if (daysRemaining >= 0) {
+						title = 'Responses received from ' + agencyFilter + ' with ' + daysRemaining + ' working day' + (daysRemaining !== 1 ? 's' : '') + ' remaining:';
+					} else {
+						title = 'Responses received from ' + agencyFilter + ' ' + (-daysRemaining) + ' working day' + (daysRemaining !== -1 ? 's' : '') + ' overdue:';
+					}
+				} else {
+					title = 'Requests to ' + agencyFilter + ' that have not yet received a response:';
 				}
 
 				if (!title) {
@@ -423,6 +437,12 @@ require(
 				$('.js-chart-bar').removeClass('is-selected');
 
 				createCards();
+			});
+
+			$('.js-show-all').on('click', function () {
+				$('.js-chart-bar').removeClass('is-selected');
+
+				createCards(null);
 			});
 
 			$('.js-click-instructions').show();

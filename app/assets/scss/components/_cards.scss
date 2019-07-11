@@ -10,13 +10,14 @@
 .card {
 	flex: 0 1 100%;
 	@include bp("md") {
-		flex: 0 1 50%;
+		flex-basis: auto;
+		width: 50%;
 	}
 	@include bp("l") {
-		flex: 0 1 25%;
+		width: percentage(1/3);
 	}
 	@include bp("xl") {
-		flex: 0 1 50%;
+		width: 25%;
 	}
 	padding: 0 10px 20px;
 	display: flex;

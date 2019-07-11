@@ -1067,13 +1067,14 @@ body {
   display: flex; }
   @media (min-width: 768px) {
     .card {
-      flex: 0 1 50%; } }
+      flex-basis: auto;
+      width: 50%; } }
   @media (min-width: 1024px) {
     .card {
-      flex: 0 1 25%; } }
+      width: 33.33333%; } }
   @media (min-width: 1440px) {
     .card {
-      flex: 0 1 50%; } }
+      width: 25%; } }
 
 .card__body {
   width: 100%;
