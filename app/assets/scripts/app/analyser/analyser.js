@@ -269,6 +269,11 @@ define(
 				var aliasSet;
 				var combinedAliasSet;
 
+				var originalEnumsMap;
+				var originalCol;
+				var originalColName;
+				var originalColIndex;
+
 				var i;
 				var j;
 				var k;
@@ -318,6 +323,7 @@ define(
 
 
 					// Combine aliases //
+
 					// Loop through each row's aliases to combine
 					for (j in dataConfig.aliases) {
 
@@ -360,20 +366,47 @@ define(
 				combinedDataConfig.filters = Analyser._getAliasFilters(dataConfig.aliases);
 
 				// Combine the enumsMaps, then build combined enums
+
 				combinedDataConfig.enumsMap = {};
 				for (i = 0; i < dataConfigs.length; i++) {
 					dataConfig = dataConfigs[i];
 
 					for (j in dataConfig.enumsMap) {
-						if (j in combinedDataConfig.enumsMap) {
-							combinedDataConfig.enumsMap[j] = combinedDataConfig.enumsMap[j].concat(dataConfig.enumsMap[j]);
+						originalEnumsMap = dataConfig.enumsMap[j];
 
-							// Remove duplicates
-							combinedDataConfig.enumsMap[j] = combinedDataConfig.enumsMap[j].filter(function (alias, index, array) {
-								return array.indexOf(alias) === index;
-							});
+						if (!originalEnumsMap) {
+							// Mark this enumsMap as null to denote that it doesn't
+							// exist across all dataConfigs we are combining
+							combinedDataConfig.enumsMap[j] = null;
 						} else {
-							combinedDataConfig.enumsMap[j] = dataConfig.enumsMap[j].concat();
+							if (combinedDataConfig.enumsMap[j] !== null) {
+								combinedDataConfig.enumsMap[j] = combinedDataConfig.enumsMap[j] || [];
+
+								for (k = 0; k < originalEnumsMap.length; k++) {
+									originalCol = originalEnumsMap[k];
+									originalColName = undefined;
+									for (l in dataConfig.cols) {
+										if (dataConfig.cols[l] === originalCol) {
+											originalColName = l;
+											break;
+										}
+									}
+
+									if (originalColName) {
+										originalColIndex = combinedDataConfig.cols[originalColName];
+
+										if (combinedDataConfig.enumsMap[j].indexOf(originalColIndex) === -1) {
+											combinedDataConfig.enumsMap[j].push(combinedDataConfig.cols[originalColName]);
+										}
+									}
+								}
+							}
+						}
+					}
+
+					for (j in combinedDataConfig.enumsMap) {
+						if (combinedDataConfig.enumsMap[j] === null) {
+							delete combinedDataConfig[enumsMap[j]];
 						}
 					}
 				}
