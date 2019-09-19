@@ -208,7 +208,7 @@ require(
 			var valuesToShow = maxValue > 5 ? maxValue/2 : maxValue; // All numbers if 5 or under, otherwise only even numbers
 
 			var barChartData = {
-				title: 'Working days remaining when OIA responses sent by <select class="js-agency-filter"></select>',
+				title: 'Working days remaining when OIA responses sent by <select class="input js-agency-filter"></select>',
 				labels: workingDayNums,
 				dataSeries: [
 					{
