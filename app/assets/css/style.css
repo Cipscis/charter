@@ -339,9 +339,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .content {
   font-size: 18px; }
-  .content input, .content select, .content textarea {
-    line-height: 1.5;
-    padding: 3px 8px; }
   .content h1 {
     font-size: 40px; }
   .content h2 {
@@ -354,6 +351,13 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 22px; }
   .content h6 {
     font-size: 20px; }
+
+.content input,
+.content select,
+.content textarea,
+.input {
+  line-height: 1.5;
+  padding: 3px 8px; }
 
 .content p,
 .p {
