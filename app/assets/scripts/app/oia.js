@@ -70,6 +70,8 @@ require(
 
 				buildVisualisation(config, agencyFilter);
 				$('.js-agency-filter').focus();
+
+				// TODO: Implement history to add querystring and support popstate
 			};
 		};
 
@@ -106,8 +108,10 @@ require(
 
 			var colours = {
 				EARLY: '#275eb8',
-				DUE: '#cb4f1e',
-				LATE: '#a61f1f'
+				DUE: '#de8336',
+				LATE: '#a61f1f',
+
+				UNDEFINED: '#000000'
 			};
 
 			if (agencyFilter) {
@@ -330,7 +334,7 @@ require(
 							colour = colours.LATE;
 							row.isOverdue = [{overdueDays: workingDays.getWorkingDaysBetween(dueDate, (new Date()))}];
 						} else {
-							colour = undefined;
+							colour = colours.UNDEFINED;
 							row.hasTimeLeft = [{remainingDays: workingDays.getWorkingDaysBetween((new Date()), dueDate)}];
 						}
 					}
@@ -447,97 +451,29 @@ require(
 
 			$('.js-click-instructions').show();
 			$('.js-cards').hide();
-		};
 
-		var dateCalc = {
-			init: function () {
-				dateCalc._selectCurrentDay();
-				dateCalc._getMonthDays();
-				dateCalc._calculateDueDate();
 
-				dateCalc._initEvents();
-			},
+			var selectAgencyFromQueryString = function () {
+				var query = document.location.search;
+				var agency;
+				var $agency = $('.js-agency-filter');
 
-			_initEvents: function () {
-				$(document)
-					.on('change', '.js-sent-month', dateCalc._getMonthDays)
-					.on('change', '.js-sent-day, .js-sent-month, .js-sent-year, .js-extension-length', dateCalc._calculateDueDate);
-			},
+				query = query.match(/(\?|&)agency=(.*?)(&|$)/);
 
-			_selectCurrentDay: function () {
-				var today = new Date(),
-					day = today.getDate(),
-					month = today.getMonth() + 1,
-					year = today.getFullYear();
+				if (query) {
+					agency = decodeURIComponent(query[2]);
 
-				$('.js-sent-day').val(day);
-				$('.js-sent-month').val(month);
-				$('.js-sent-year').val(year);
-			},
-
-			_getMonthDays: function () {
-				var month = $('.js-sent-month').val(),
-					year = $('.js-sent-year').val(),
-
-					days = [],
-					date, i,
-
-					$days = $('.js-sent-day option');
-
-				for (i = 1; i < 32; i++) {
-					date = new Date(year + ' ' + month + ' ' + i);
-					if (date.getDate() !== i) {
-						break;
+					if (agency) {
+						$agency.val(agency)
+						$agency.trigger('change');
+						$('.js-show-all').trigger('click');
 					}
-					days.push(i);
 				}
-
-				$days.show().removeAttr('disabled');
-				$days.filter(function () {
-					var inDays = days.indexOf(+$(this).val()) === -1;
-					return inDays;
-				}).hide().attr('disabled', 'disabled');
-
-				// if ($days.filter(':selected').is('[disabled]')) {
-				// 	$('.js-sent-day').val(1);
-				// }
-			},
-
-			_calculateDueDate: function () {
-				var $sentDay = $('.js-sent-day'),
-					$sentMonth = $('.js-sent-month'),
-					$sentYear = $('.js-sent-year'),
-					$extension = $('.js-extension-length'),
-					$dueDate = $('.js-due-date'),
-
-					sent = new Date($sentYear.val() + '/' + $sentMonth.val() + '/' + $sentDay.val()),
-					extension = parseInt($extension.val(), 10) || 0,
-
-					dueDay,
-					dueMonth,
-					dueYear,
-					dueDate;
-
-				dueDate = workingDays.addWorkingDays(sent, 20 + extension);
-
-				dueDay = dueDate.getDate();
-				dueMonth = dueDate.getMonth() + 1;
-				dueYear = dueDate.getFullYear();
-
-				if (dueDay < 10) {
-					dueDay = '0' + dueDay;
-				}
-				if (dueMonth < 10) {
-					dueMonth = '0' + dueMonth;
-				}
-
-				dueDate = dueYear + '/' + dueMonth + '/' + dueDay;
-
-				$dueDate.text(dueDate);
+			};
+			if (!agencyFilter) {
+				selectAgencyFromQueryString();
 			}
 		};
-
-		dateCalc.init();
 
 		Analyser.loadFile('assets/data/fyi-mark-hanna.csv', config, fileProcessed);
 	}
