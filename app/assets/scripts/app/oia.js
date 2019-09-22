@@ -1,7 +1,6 @@
 require(
 	[
 		'jquery',
-		'd3',
 		'templayed',
 
 		'charter/charter',
@@ -12,7 +11,7 @@ require(
 
 		'text!templates/options.html'
 	],
-	function ($, d3, templayed, Charter, Analyser, Stats, workingDays, optionsTemplate) {
+	function ($, templayed, Charter, Analyser, Stats, workingDays, optionsTemplate) {
 
 		var allAgenciesString = 'All agencies';
 
@@ -65,7 +64,7 @@ require(
 			return function (e) {
 				var agencyFilter = $(e.target).val();
 				if (agencyFilter === allAgenciesString) {
-					agencyFilter = undefined;
+					agencyFilter = '';
 				}
 
 				buildVisualisation(config, agencyFilter);
@@ -114,7 +113,7 @@ require(
 				UNDEFINED: '#000000'
 			};
 
-			if (agencyFilter) {
+			if (typeof agencyFilter !== 'undefined' && agencyFilter !== '') {
 				rows = filterRows(rows,
 					cols.AGENCY, agencyFilter
 				);
@@ -470,7 +469,7 @@ require(
 					}
 				}
 			};
-			if (!agencyFilter) {
+			if (typeof agencyFilter === 'undefined') {
 				selectAgencyFromQueryString();
 			}
 		};
