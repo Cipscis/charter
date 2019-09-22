@@ -13,40 +13,43 @@ require(
 	],
 	function ($, templayed, Charter, Analyser, Stats, workingDays, optionsTemplate) {
 
-		var allAgenciesString = 'All agencies';
+		const selectors = {
+			agencyFilter: '.js-agency-filter',
+			chartArea: '.js-chart-area',
+			chartBar: '.js-chart-bar',
 
-		var config = {
-			headerRows: 1,
-			cols: Analyser.getColNumbers({
-				URL: 'A',
-				AGENCY: 'B',
-				TITLE: 'C',
+			showOutstanding: '.js-show-outstanding',
+			showAll: '.js-show-all',
 
-				DATE_SENT: 'D',
-				DATE_EXTENSION: 'E',
-				DATE_DUE: 'F',
-				DATE_RESPONSE: 'G',
+			clickInstructions: '.js-click-instructions',
+			cards: '.js-cards',
 
-				EXTENSION: 'H'
-			})
+			cardsTemplate: '#oia-cards'
 		};
 
-		var fileProcessed = function (config) {
+		const classes = {
+			loading: 'is-loading',
+			selected: 'is-selected'
+		};
+
+		const allAgenciesString = 'All agencies';
+
+		const fileProcessed = function (config) {
 			buildAgencyList(config);
 
-			$(document).on('change', '.js-agency-filter', buildFilteredVisualisation(config));
+			$(document).on('change', selectors.agencyFilter, buildFilteredVisualisation(config));
 
 			exploratoryAnalysis(config);
 			buildVisualisation(config);
 		};
 
-		var buildAgencyList = function (config, selectedAgency) {
-			var rows = config.rows,
-				cols = config.cols,
-				filterRows = config.filters.filterRows;
+		const buildAgencyList = function (config, selectedAgency) {
+			let rows = config.rows;
+			let cols = config.cols;
+			let filterRows = config.filters.filterRows;
 
-			var agencies = [];
-			var agencySummary = Analyser.getColSummary(rows, cols.AGENCY);
+			let agencies = [];
+			let agencySummary = Analyser.getColSummary(rows, cols.AGENCY);
 
 			for (let i in agencySummary) {
 				agencies.push(i);
@@ -54,58 +57,37 @@ require(
 			agencies.sort();
 			agencies.splice(0, 0, allAgenciesString);
 
-			$('.js-agency-filter').html(templayed(optionsTemplate)({options: agencies}));
-			if (selectedAgency) {
-				$('.js-agency-filter').val(selectedAgency);
+			let optionsHtml = templayed(optionsTemplate)({options: agencies});
+			let $agencyFilter = $(selectors.agencyFilter);
+
+			$agencyFilter.html(optionsHtml);
+			if (typeof selectedAgency !== 'undefined' && selectedAgency !== '') {
+				$agencyFilter.val(selectedAgency);
 			}
 		};
 
-		var buildFilteredVisualisation = function (config) {
+		const buildFilteredVisualisation = function (config) {
 			return function (e) {
-				var agencyFilter = $(e.target).val();
+				let agencyFilter = $(e.target).val();
 				if (agencyFilter === allAgenciesString) {
 					agencyFilter = '';
 				}
 
 				buildVisualisation(config, agencyFilter);
-				$('.js-agency-filter').focus();
+				$(selectors.agencyFilter).focus();
 
 				// TODO: Implement history to add querystring and support popstate
 			};
 		};
 
-		var exploratoryAnalysis = function (config) {
-			var rows = config.rows,
-				cols = config.cols;
+		const exploratoryAnalysis = function (config) {};
 
-			var table = Analyser.createSubTable(rows, cols);
+		const buildVisualisation = function (config, agencyFilter) {
+			let rows = config.rows;
+			let cols = config.cols;
+			let filterRows = config.filters.filterRows;
 
-			// for (var i = 0; i < rows.length; i++) {
-			// 	var row = rows[i];
-
-			// 	var dateSent = new Date(row[cols.DATE_SENT]);
-			// 	var dateResponse = new Date(row[cols.DATE_RESPONSE]);
-
-			// 	if (dateResponse) {
-			// 		var daysTaken = workingDays.getWorkingDaysBetween(dateSent, dateResponse);
-			// 		var daysAllowed = 20 + row[cols.EXTENSION];
-			// 		console.log(daysTaken - daysAllowed);
-			// 	}
-			// }
-
-			// console.table(table);
-
-			// console.log(Analyser.getColSummary(rows, cols.WORKING_DAYS_REMAINING));
-		};
-
-		var buildVisualisation = function (config, agencyFilter) {
-			var rows = config.rows,
-				cols = config.cols,
-				filterRows = config.filters.filterRows;
-
-			var row, i, j;
-
-			var colours = {
+			const colours = {
 				EARLY: '#275eb8',
 				DUE: '#de8336',
 				LATE: '#a61f1f',
@@ -113,100 +95,105 @@ require(
 				UNDEFINED: '#000000'
 			};
 
+			// If building a filtered visualisation, only consider rows for the specified agency
 			if (typeof agencyFilter !== 'undefined' && agencyFilter !== '') {
 				rows = filterRows(rows,
 					cols.AGENCY, agencyFilter
 				);
 			}
 
-			var getDaysAllowed = function (row) {
-				var dateSent = new Date(row[cols.DATE_SENT]);
+			// Allowed working days for a request: 20 + length of extension
+			cols.DAYS_ALLOWED = Analyser.addDerivedCol(rows, row => 20 + row[cols.EXTENSION]);
 
-				return 20 + row[cols.EXTENSION];
-			};
-			cols.DAYS_ALLOWED = Analyser.addDerivedCol(rows, getDaysAllowed);
-
-			var getDaysTaken = function (row) {
-				var dateSent = new Date(row[cols.DATE_SENT]);
-				var dateResponse = new Date(row[cols.DATE_RESPONSE]);
+			let getDaysTaken = row => {
+				let dateSent = new Date(row[cols.DATE_SENT]);
+				let dateResponse = new Date(row[cols.DATE_RESPONSE]);
 
 				if (row[cols.DATE_RESPONSE]) {
 					return workingDays.getWorkingDaysBetween(dateSent, dateResponse);
 				} else {
+					// Represent unanswered requests as having taken "undefined" days
 					return undefined;
 				}
 			};
 			cols.DAYS_TAKEN = Analyser.addDerivedCol(rows, getDaysTaken);
 
-			var getDaysRemaining = function (row) {
-				var dateSent = new Date(row[cols.DATE_SENT]);
-				var dateResponse = new Date(row[cols.DATE_RESPONSE]);
+			let getDaysRemaining = row => {
+				let dateSent = new Date(row[cols.DATE_SENT]);
+				let dateResponse = new Date(row[cols.DATE_RESPONSE]);
 
 				if (row[cols.DATE_RESPONSE]) {
 					return row[cols.DAYS_ALLOWED] - row[cols.DAYS_TAKEN];
 				} else {
+					// Represent unanswered requests as having had "undefined" days remaining whe completed
 					return undefined;
 				}
 			};
 			cols.DAYS_REMAINING = Analyser.addDerivedCol(rows, getDaysRemaining);
 
-			var maxLateness = 0;
-			for (i = 0; i < rows.length; i++) {
+			// Determine how late the latest request was, to determine axis labels
+			let maxLateness = 0;
+			for (let i = 0; i < rows.length; i++) {
 				if (typeof rows[i][cols.DAYS_REMAINING] !== 'undefined') {
 					maxLateness = Math.min(maxLateness, rows[i][cols.DAYS_REMAINING]);
 				}
 			}
 			// Round up to multiple of five, to use as last axis label
 			if (maxLateness % 5 !== 0) {
-				maxLateness -= (5 - Math.abs(maxLateness % 5));
+				maxLateness += Math.abs(maxLateness % 5) - 5;
 			}
 
-			// To use as labels for the graph
-			var workingDayNums = [];
-			for (i = 20; i >= maxLateness; i--) {
+			// Create labels for the graph
+			let workingDayNums = [];
+			for (let i = 20; i >= maxLateness; i--) {
 				workingDayNums.push(i);
 			}
 
 			// Gather number of responses for each day
-			var responses = Analyser.getColAsDataSeries(rows, cols.DAYS_REMAINING, workingDayNums);
+			let responses = Analyser.getColAsDataSeries(rows, cols.DAYS_REMAINING, workingDayNums);
 
 			// Split responses into early, due, and late series
-			var dueIndex = workingDayNums.indexOf(0);
+			let dueIndex = workingDayNums.indexOf(0);
 
-			var earlyResponseData = responses.concat().fill(0, dueIndex);
-			var dueResponseData = responses.concat().fill(0, 0);
-			var lateResponseData = responses.concat().fill(0, 0, dueIndex+1);
+			let earlyResponseData = responses.concat().fill(0, dueIndex);
+			let dueResponseData = responses.concat().fill(0, 0);
+			let lateResponseData = responses.concat().fill(0, 0, dueIndex+1);
 
 			// Split further on the due date, as status depends on time of day
-			var dueResponses = filterRows(rows,
+			let dueResponses = filterRows(rows,
 				cols.DAYS_REMAINING, 0
 			);
 
-			for (i = 0; i < dueResponses.length; i++) {
-				row = dueResponses[i];
+			for (let i = 0; i < dueResponses.length; i++) {
+				let row = dueResponses[i];
 
-				var responseDate = new Date(row[cols.DATE_RESPONSE]);
-				var hours = responseDate.getHours();
+				let responseDate = new Date(row[cols.DATE_RESPONSE]);
+				let hours = responseDate.getHours();
 
 				if (hours < 16) {
+					// Before 4pm
 					earlyResponseData[dueIndex]++;
 				} else if (hours < 17) {
+					// Before 5pm
 					dueResponseData[dueIndex]++;
 				} else {
 					lateResponseData[dueIndex]++;
 				}
 			}
 
-			// Find maximum value for axis
-			var maxValue = 1;
-			for (i = 0; i < responses.length; i++) {
-				row = responses[i];
+			// Find maximum value for vertical axis
+			let maxValue = 1;
+			for (let i = 0; i < responses.length; i++) {
+				let row = responses[i];
 				maxValue = Math.max(maxValue, row);
 			}
-			maxValue = Math.ceil(maxValue/2)*2; // Round up to nearest even number
-			var valuesToShow = maxValue > 5 ? maxValue/2 : maxValue; // All numbers if 5 or under, otherwise only even numbers
+			// Round up to nearest even number
+			maxValue = Math.ceil(maxValue/2)*2;
 
-			var barChartData = {
+			// Show all numbers if 5 or under, otherwise show only even numbers
+			let valuesToShow = maxValue > 5 ? maxValue/2 : maxValue;
+
+			const barChartData = {
 				title: 'Working days remaining when OIA responses sent by <select class="input js-agency-filter"></select>',
 				labels: workingDayNums,
 				dataSeries: [
@@ -230,32 +217,29 @@ require(
 				showLegend: true
 			};
 
-			var barAxisConfig = {
+			const barAxisConfig = {
 				min: 0,
 				max: maxValue,
 				values: valuesToShow
 			};
 
-			var labelAxisConfig = {
+			const labelAxisConfig = {
 				valuesEvery: 5
 			};
 
-			var $barChart = Charter.createBarChart(barChartData, barAxisConfig, labelAxisConfig);
-			$('.js-chart-area').html('')
+			let $barChart = Charter.createBarChart(barChartData, barAxisConfig, labelAxisConfig);
+			$(selectors.chartArea).html('')
 				.append($barChart)
-				.removeClass('is-loading');
+				.removeClass(classes.loading);
 
 			buildAgencyList(config, agencyFilter);
 
 
 			// Create cards for due date
-			var createCards = function (daysRemaining) {
-				var title;
+			let createCards = function (daysRemaining) {
+				let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-				var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-				var cardRows;
-
+				let cardRows;
 				if (daysRemaining === null) {
 					// Show all requests
 					cardRows = rows;
@@ -267,12 +251,12 @@ require(
 					cardRows = filterRows(rows, cols.DATE_RESPONSE, '');
 				}
 
-				var cardData = Analyser.createSubTable(cardRows, cols);
+				let cardData = Analyser.createSubTable(cardRows, cols);
 
 				// Sort by date (ascending)
-				cardData.sort(function (a, b) {
-					var dateA = new Date(a.DATE_RESPONSE),
-						dateB = new Date(b.DATE_RESPONSE);
+				cardData.sort((a, b) => {
+					let dateA = new Date(a.DATE_RESPONSE);
+					let dateB = new Date(b.DATE_RESPONSE);
 
 					dateA = new Date(dateA.getFullYear(), dateA.getMonth(), dateA.getDate());
 					dateB = new Date(dateB.getFullYear(), dateB.getMonth(), dateB.getDate());
@@ -281,41 +265,40 @@ require(
 				});
 
 
-				var agencyFilter = $('.js-agency-filter').val();
+				let agencyFilter = $(selectors.agencyFilter).val();
 				if (agencyFilter === allAgenciesString) {
 					agencyFilter = agencyFilter.toLowerCase();
 				}
 
 				// Create calculated card data
-				for (var i = 0; i < cardData.length; i++) {
-					var row = cardData[i];
+				for (let i = 0; i < cardData.length; i++) {
+					let row = cardData[i];
 
-					var requestDate = new Date(row.DATE_SENT);
-					var requestHours = requestDate.getHours();
-					var requestMinutes = requestDate.getMinutes();
-					var requestAmPm = 'am';
+					let requestDate = new Date(row.DATE_SENT);
+					let requestHours = requestDate.getHours();
+					let requestMinutes = requestDate.getMinutes();
+					let requestAmPm = 'am';
 
-					var responseDate = new Date(row.DATE_RESPONSE);
-					var responseHours = responseDate.getHours();
-					var responseMinutes = responseDate.getMinutes();
-					var responseAmPm = 'am';
-
-					var colour;
+					let responseDate = new Date(row.DATE_RESPONSE);
+					let responseHours = responseDate.getHours();
+					let responseMinutes = responseDate.getMinutes();
+					let responseAmPm = 'am';
 
 					// Create due date data
-					var dueDate = workingDays.addWorkingDays(requestDate, 20);
+					let dueDate = workingDays.addWorkingDays(requestDate, 20);
 					if (row.EXTENSION) {
 						dueDate = workingDays.addWorkingDays(dueDate, row.EXTENSION);
 					}
 
-					var dueDateString = dueDate.getDate() + '&nbsp;' + monthNames[dueDate.getMonth()] + '&nbsp;' + dueDate.getFullYear();
+					let dueDateString = dueDate.getDate() + '&nbsp;' + monthNames[dueDate.getMonth()] + '&nbsp;' + dueDate.getFullYear();
 
-					var daysRemainingColour = daysRemaining;
+					let daysRemainingColour = daysRemaining;
 					if (daysRemainingColour === null) {
 						daysRemainingColour = row.DAYS_REMAINING;
 					}
 
 					// Calculate colour based on due date
+					let colour;
 					if (daysRemainingColour > 0) {
 						colour = colours.EARLY;
 						row.hasTimeLeft = [{remainingDays: daysRemainingColour}];
@@ -377,11 +360,11 @@ require(
 					}
 
 					// Create display strings
-					var requestTime = requestHours + ':' + requestMinutes + '&nbsp;' + requestAmPm;
-					var requestDateString = requestDate.getDate() + '&nbsp;' + monthNames[requestDate.getMonth()] + '&nbsp;' + requestDate.getFullYear();
+					let requestTime = requestHours + ':' + requestMinutes + '&nbsp;' + requestAmPm;
+					let requestDateString = requestDate.getDate() + '&nbsp;' + monthNames[requestDate.getMonth()] + '&nbsp;' + requestDate.getFullYear();
 
-					var responseTime = responseHours + ':' + responseMinutes + '&nbsp;' + responseAmPm;
-					var responseDateString = responseDate.getDate() + '&nbsp;' + monthNames[responseDate.getMonth()] + '&nbsp;' + responseDate.getFullYear();
+					let responseTime = responseHours + ':' + responseMinutes + '&nbsp;' + responseAmPm;
+					let responseDateString = responseDate.getDate() + '&nbsp;' + monthNames[responseDate.getMonth()] + '&nbsp;' + responseDate.getFullYear();
 
 					// Store data
 					row.requestTime = requestTime;
@@ -405,6 +388,7 @@ require(
 				}
 
 
+				let title;
 				if (daysRemaining === null) {
 					title = 'All requests to ' + agencyFilter + ':';
 				} else if (cardData.length > 0 && cardData[0].DATE_RESPONSE) {
@@ -421,55 +405,59 @@ require(
 					title = 'No matching requests to ' + agencyFilter + '.';
 				}
 
-				var $cards = templayed($('#oia-cards').html())({
+				let templateData = {
 					title: title,
 					requests: cardData
-				});
-				$('.js-click-instructions').hide();
-				$('.js-cards').show().html($cards);
+				};
+				let cardsHtml = templayed($(selectors.cardsTemplate).html())(templateData);
+
+				$(selectors.clickInstructions).hide();
+				$(selectors.cards).show().html(cardsHtml);
 			};
 
-			$('.js-chart-area').on('click', '.js-chart-bar', function (e) {
-				var $chart = $('.js-chart-area');
-				var $bars = $chart.find('.js-chart-bar');
-				var $this = $(this);
+			let bindChartEvents = function () {
+				$(selectors.chartArea).on('click', selectors.chartBar, function (e) {
+					let $chart = $(selectors.chartArea);
+					let $bars = $chart.find(selectors.chartBar);
+					let $this = $(this);
 
-				$bars.removeClass('is-selected');
-				$this.addClass('is-selected');
+					$bars.removeClass(classes.selected);
+					$this.addClass(classes.selected);
 
-				createCards($this.data('label'));
-			});
+					createCards($this.data('label'));
+				});
 
-			$('.js-show-outstanding').on('click', function () {
-				$('.js-chart-bar').removeClass('is-selected');
+				$(selectors.showOutstanding).on('click', function () {
+					$(selectors.chartBar).removeClass(classes.selected);
 
-				createCards();
-			});
+					createCards();
+				});
 
-			$('.js-show-all').on('click', function () {
-				$('.js-chart-bar').removeClass('is-selected');
+				$(selectors.showAll).on('click', function () {
+					$(selectors.chartBar).removeClass(classes.selected);
 
-				createCards(null);
-			});
+					createCards(null);
+				});
+			};
+			bindChartEvents();
 
-			$('.js-click-instructions').show();
-			$('.js-cards').hide();
+			$(selectors.clickInstructions).show();
+			$(selectors.cards).hide();
 
 
-			var selectAgencyFromQueryString = function () {
-				var query = document.location.search;
-				var agency;
-				var $agency = $('.js-agency-filter');
+			let selectAgencyFromQueryString = function () {
+				let query = document.location.search;
+				let $agency = $(selectors.agencyFilter);
 
 				query = query.match(/(\?|&)agency=(.*?)(&|$)/);
 
 				if (query) {
-					agency = decodeURIComponent(query[2]);
+					let agency = decodeURIComponent(query[2]);
 
 					if (agency) {
 						$agency.val(agency)
 						$agency.trigger('change');
-						$('.js-show-all').trigger('click');
+						$(selectors.showAll).trigger('click');
 					}
 				}
 			};
@@ -478,6 +466,22 @@ require(
 			}
 		};
 
+
+		const config = {
+			headerRows: 1,
+			cols: Analyser.getColNumbers({
+				URL: 'A',
+				AGENCY: 'B',
+				TITLE: 'C',
+
+				DATE_SENT: 'D',
+				DATE_EXTENSION: 'E',
+				DATE_DUE: 'F',
+				DATE_RESPONSE: 'G',
+
+				EXTENSION: 'H'
+			})
+		};
 		Analyser.loadFile('assets/data/fyi-mark-hanna.csv', config, fileProcessed);
 	}
 );
