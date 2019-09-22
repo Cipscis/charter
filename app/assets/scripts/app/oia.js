@@ -21,7 +21,6 @@ require(
 			showOutstanding: '.js-show-outstanding',
 			showAll: '.js-show-all',
 
-			clickInstructions: '.js-click-instructions',
 			cards: '.js-cards',
 
 			cardsTemplate: '#oia-cards'
@@ -440,7 +439,7 @@ require(
 				let cardsHtml = templayed($(selectors.cardsTemplate).html())(templateData);
 
 				$(selectors.clickInstructions).hide();
-				$(selectors.cards).show().html(cardsHtml);
+				$(selectors.cards).html(cardsHtml);
 			};
 
 			let bindChartEvents = function () {
@@ -469,9 +468,7 @@ require(
 			};
 			bindChartEvents();
 
-			$(selectors.clickInstructions).show();
-			$(selectors.cards).hide();
-
+			$(selectors.showAll).trigger('click');
 
 			let selectAgencyFromQueryString = function () {
 				let query = document.location.search;
@@ -485,7 +482,6 @@ require(
 					if (agency) {
 						$agency.val(agency)
 						$agency.trigger('change');
-						$(selectors.showAll).trigger('click');
 					}
 				}
 			};
