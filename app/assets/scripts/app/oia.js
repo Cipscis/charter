@@ -69,16 +69,44 @@ require(
 		const buildFilteredVisualisation = function (config) {
 			return function (e) {
 				let agencyFilter = $(e.target).val();
+
+				let doPushState = true;
+				let historyData = {agencyFilter};
+				let historyUrl = '?agency=' + encodeURIComponent(agencyFilter);
+
 				if (agencyFilter === allAgenciesString) {
 					agencyFilter = '';
+					historyUrl = document.location.pathname;
+					if (document.location.search === '') {
+						doPushState = false;
+					}
+				}
+
+				if (historyUrl === document.location.search) {
+					doPushState = false;
+				}
+
+
+				if (doPushState) {
+					history.pushState(historyData, document.title, historyUrl);
 				}
 
 				buildVisualisation(config, agencyFilter);
 				$(selectors.agencyFilter).focus();
-
-				// TODO: Implement history to add querystring and support popstate
 			};
 		};
+		window.addEventListener('popstate', e => {
+			let state = e.state;
+			let $agencyFilter = $(selectors.agencyFilter);
+
+			if (state && state.agencyFilter) {
+				$agencyFilter.val(state.agencyFilter);
+			} else {
+				$agencyFilter.val(allAgenciesString);
+			}
+
+			$agencyFilter.trigger('change');
+		});
 
 		const exploratoryAnalysis = function (config) {};
 
