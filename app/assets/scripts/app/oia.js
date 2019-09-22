@@ -236,7 +236,11 @@ require(
 				values: valuesToShow
 			};
 
-			var $barChart = Charter.createBarChart(barChartData, barAxisConfig);
+			var labelAxisConfig = {
+				valuesEvery: 5
+			};
+
+			var $barChart = Charter.createBarChart(barChartData, barAxisConfig, labelAxisConfig);
 			$('.js-chart-area').html('')
 				.append($barChart)
 				.removeClass('is-loading');
