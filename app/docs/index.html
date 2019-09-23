@@ -423,7 +423,7 @@
 
 				<div class="docs-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var fileConfig = {
+						<code class="code code--block docs-example__code">let fileConfig = {
 	headerRows: 1,
 	cols: Analyser.getColNumbers({
 		NAME: 'A',
@@ -451,13 +451,13 @@ fileConfig.defaultCols[fileConfig.cols.CAPITAL] = false;
 
 fileConfig.enumsMap.MAYOR = [fileConfig.cols.MAYOR_2012, fileConfig.cols.MAYOR_2018];
 
-var exploreData = function (dataConfig) {
-	var rows = dataConfig.rows;
-	var cols = dataConfig.cols;
+let exploreData = function (dataConfig) {
+	let rows = dataConfig.rows;
+	let cols = dataConfig.cols;
 
 	// Do stuff with the data here
 
-	var table = Analyser.createSubTableString(rows, cols);
+	let table = Analyser.createSubTableString(rows, cols);
 	console.log(table);
 };
 
@@ -577,7 +577,7 @@ Analyser.loadFile('/charter/app/docs/data/city example.csv', fileConfig, explore
 
 				<div class="docs-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var fileConfigA = {
+						<code class="code code--block docs-example__code">let fileConfigA = {
 	headerRows: 1,
 	cols: Analyser.getColNumbers({
 		NAME: 'A',
@@ -591,9 +591,9 @@ Analyser.loadFile('/charter/app/docs/data/city example.csv', fileConfig, explore
 		]
 	}
 };
-var filePathA = '/charter/app/docs/data/city example.csv';
+let filePathA = '/charter/app/docs/data/city example.csv';
 
-var fileConfigB = {
+let fileConfigB = {
 	headerRows: 1,
 	cols: Analyser.getColNumbers({
 		NAME: 'A',
@@ -601,20 +601,20 @@ var fileConfigB = {
 		POPULATION: 'C'
 	})
 };
-var filePathB = '/charter/app/docs/data/city example 2.csv';
+let filePathB = '/charter/app/docs/data/city example 2.csv';
 
-var filesLoaded = function (dataConfigA, dataConfigB) {
-	var combinedDataConfig = Analyser.combineData(dataConfigA, dataConfigB);
+let filesLoaded = function (dataConfigA, dataConfigB) {
+	let combinedDataConfig = Analyser.combineData(dataConfigA, dataConfigB);
 	analyseCombinedData(combinedDataConfig);
 };
 
-var analyseCombinedData = function (dataConfig) {
-	var rows = dataConfig.rows;
-	var cols = dataConfig.cols;
+let analyseCombinedData = function (dataConfig) {
+	let rows = dataConfig.rows;
+	let cols = dataConfig.cols;
 
 	// Do stuff with the combined data from both files here
 
-	var table = Analyser.createSubTableString(rows, cols);
+	let table = Analyser.createSubTableString(rows, cols);
 	console.log(table);
 };
 
@@ -720,7 +720,7 @@ Analyser.loadFile(
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var cols = {
+						<code class="code code--block docs-example__code js-doc-example-code">let cols = {
 	NAME: Analyser.getColNumber('A'),
 	COUNTRY: Analyser.getColNumber('B'),
 	POPULATION: Analyser.getColNumber('C'),
@@ -752,7 +752,7 @@ console.log(cols);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var cols = Analyser.getColNumbers({
+						<code class="code code--block docs-example__code js-doc-example-code">let cols = Analyser.getColNumbers({
 	NAME: 'A',
 	COUNTRY: 'B',
 	POPULATION: 'C',
@@ -787,10 +787,10 @@ console.log(cols);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var cityNames = Analyser.getCol(rows, cols.NAME);
+let cityNames = Analyser.getCol(rows, cols.NAME);
 
 console.log(cityNames);</code>
 					</div>
@@ -818,23 +818,23 @@ console.log(cityNames);</code>
 
 				<div class="docs-example js-doc-example" data-method-input="city example 3.csv">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var previousYearPopulation = Analyser.getCol(rows, cols.POPULATION);
+let previousYearPopulation = Analyser.getCol(rows, cols.POPULATION);
 
 previousYearPopulation.pop();
 rows.shift();
 
 cols.POPULATION_PREVIOUS = Analyser.addCol(rows, previousYearPopulation);
 
-var subCols = {
+let subCols = {
 	NAME: cols.NAME,
 	POP: cols.POPULATION,
 	POP_PREV: cols.POPULATION_PREVIOUS
 };
 
-var table = Analyser.createSubTable(rows, subCols);
+let table = Analyser.createSubTable(rows, subCols);
 console.table(table);</code>
 					</div>
 
@@ -865,15 +865,15 @@ console.table(table);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var getRawPopulation = function (rows) {
+let getRawPopulation = function (rows) {
 	// The population column in the spreadsheet is in thousands
 	return rows[cols.POPULATION] * 1000;
 };
 
-var rawPopulation = Analyser.getDerivedCol(rows, getRawPopulation);
+let rawPopulation = Analyser.getDerivedCol(rows, getRawPopulation);
 
 console.log(rawPopulation);</code>
 					</div>
@@ -897,22 +897,22 @@ console.log(rawPopulation);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var getRawPopulation = function (rows) {
+let getRawPopulation = function (rows) {
 	// Population stored in thousands
 	return rows[cols.POPULATION] * 1000;
 };
 
 cols.POP_RAW = Analyser.addDerivedCol(rows, getRawPopulation);
 
-var summaryCols = {
+let summaryCols = {
 	NAME: cols.NAME,
 	POP_RAW: cols.POP_RAW
 };
 
-var table = Analyser.createSubTable(rows, summaryCols);
+let table = Analyser.createSubTable(rows, summaryCols);
 console.table(table);</code>
 					</div>
 
@@ -939,15 +939,15 @@ console.table(table);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var summaryCols = {
+let summaryCols = {
 	NAME: cols.NAME,
 	POPULATION: cols.POPULATION
 };
 
-var summaryTable = Analyser.createSubTable(rows, summaryCols);
+let summaryTable = Analyser.createSubTable(rows, summaryCols);
 console.table(summaryTable);</code>
 					</div>
 
@@ -970,15 +970,15 @@ console.table(summaryTable);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var summaryCols = {
+let summaryCols = {
 	NAME: cols.NAME,
 	POPULATION: cols.POPULATION
 };
 
-var summaryTableString = Analyser.createSubTableString(rows, summaryCols);
+let summaryTableString = Analyser.createSubTableString(rows, summaryCols);
 console.log(summaryTableString);</code>
 					</div>
 
@@ -1007,14 +1007,14 @@ console.log(summaryTableString);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var aliases = dataConfig.aliases;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let aliases = dataConfig.aliases;
 
-var countrySummary = Analyser.getColSummary(rows, cols.COUNTRY);
+let countrySummary = Analyser.getColSummary(rows, cols.COUNTRY);
 console.log(countrySummary);
 
-var countrySummaryWithAliases = Analyser.getColSummary(rows, cols.COUNTRY, aliases.COUNTRY);
+let countrySummaryWithAliases = Analyser.getColSummary(rows, cols.COUNTRY, aliases.COUNTRY);
 console.log(countrySummaryWithAliases);</code>
 					</div>
 
@@ -1043,12 +1043,12 @@ console.log(countrySummaryWithAliases);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var labels = Analyser.getCol(rows, cols.COUNTRY);
+let labels = Analyser.getCol(rows, cols.COUNTRY);
 
-var dataSeries = Analyser.getColAsDataSeries(rows, cols.COUNTRY, labels);
+let dataSeries = Analyser.getColAsDataSeries(rows, cols.COUNTRY, labels);
 console.log(dataSeries);</code>
 					</div>
 
@@ -1081,11 +1081,11 @@ console.log(dataSeries);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var aliases = dataConfig.aliases;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let aliases = dataConfig.aliases;
 
-var capitalTable = Analyser.getComparisonSummary(rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
+let capitalTable = Analyser.getComparisonSummary(rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
 
 console.table(capitalTable);</code>
 					</div>
@@ -1109,11 +1109,11 @@ console.table(capitalTable);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var aliases = dataConfig.aliases;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let aliases = dataConfig.aliases;
 
-var capitalTableString = Analyser.getComparisonSummaryString(rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
+let capitalTableString = Analyser.getComparisonSummaryString(rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
 
 console.log(capitalTableString);</code>
 					</div>
@@ -1161,7 +1161,7 @@ console.log(capitalTableString);</code>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code docs-example--code-only">var cols = Analyser.getColNumbers({
+						<code class="code code--block docs-example__code docs-example--code-only">let cols = Analyser.getColNumbers({
 	NAME: 'A',
 	COUNTRY: 'B',
 	POPULATION: 'C',
@@ -1185,7 +1185,7 @@ console.log(capitalTableString);</code>
 						<code class="code code--block docs-example__code docs-example--code-only">// Assuming cells in the PUBLIC_TRANSPORT column
 // can have values such as 'Bus,Train'
 
-var arrayCols = {};
+let arrayCols = {};
 	arrayCols[fileConfig.cols.PUBLIC_TRANSPORT] = ',';</code>
 
 					</div>
@@ -1208,7 +1208,7 @@ var arrayCols = {};
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
 						<code class="code code--block docs-example__code docs-example--code-only">
-var defaultCols = {};
+let defaultCols = {};
 	defaultCols[fileConfig.cols.CAPITAL] = false;</code>
 
 					</div>
@@ -1228,7 +1228,7 @@ var defaultCols = {};
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var aliases = {
+						<code class="code code--block docs-example__code">let aliases = {
 	COUNTRY: [
 		['New Zealand', 'Aotearoa']
 	]
@@ -1252,7 +1252,7 @@ var defaultCols = {};
 
 				<div class="docs-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var fileConfig = {
+						<code class="code code--block docs-example__code">let fileConfig = {
 	headerRows: 1,
 	cols: Analyser.getColNumbers({
 		NAME: 'A',
@@ -1280,7 +1280,7 @@ fileConfig.defaultCols[fileConfig.cols.CAPITAL] = false;
 
 fileConfig.enumsMap.MAYOR = [fileConfig.cols.MAYOR_2012, fileConfig.cols.MAYOR_2018];
 
-var exploreData = function (dataConfig) {
+let exploreData = function (dataConfig) {
 	console.log(dataConfig.enums);
 };
 
@@ -1338,10 +1338,10 @@ Analyser.loadFile(baseUrl + 'docs/data/city example.csv', fileConfig, exploreDat
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var firstRowName = rows[0][cols.NAME];
+let firstRowName = rows[0][cols.NAME];
 
 console.log(firstRowName);</code>
 					</div>
@@ -1428,12 +1428,12 @@ console.log(firstRowName);</code>
 
 					<div class="docs-example js-doc-example">
 						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var filterRows = dataConfig.filters.filterRows;
+							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let filterRows = dataConfig.filters.filterRows;
 
 // Filtering a single column by a single value, using aliases
-var newZealandCities = filterRows(rows,
+let newZealandCities = filterRows(rows,
 	cols.COUNTRY, 'New Zealand'
 );
 console.log(Analyser.getCol(newZealandCities, cols.NAME));</code>
@@ -1446,12 +1446,12 @@ console.log(Analyser.getCol(newZealandCities, cols.NAME));</code>
 
 					<div class="docs-example js-doc-example">
 						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var filterRows = dataConfig.filters.filterRows;
+							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let filterRows = dataConfig.filters.filterRows;
 
 // Filtering an array column
-var citiesWithTrains = filterRows(rows,
+let citiesWithTrains = filterRows(rows,
 	cols.PUBLIC_TRANSPORT, 'Train'
 );
 console.log(Analyser.getCol(citiesWithTrains, cols.NAME));</code>
@@ -1464,12 +1464,12 @@ console.log(Analyser.getCol(citiesWithTrains, cols.NAME));</code>
 
 					<div class="docs-example js-doc-example">
 						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var filterRows = dataConfig.filters.filterRows;
+							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let filterRows = dataConfig.filters.filterRows;
 
 // Filtering a single column by multiple values
-var australasiaCities = filterRows(rows,
+let australasiaCities = filterRows(rows,
 	cols.COUNTRY, ['New Zealand', 'Australia']
 );
 console.log(Analyser.getCol(australasiaCities, cols.NAME));</code>
@@ -1482,12 +1482,12 @@ console.log(Analyser.getCol(australasiaCities, cols.NAME));</code>
 
 					<div class="docs-example js-doc-example">
 						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var filterRows = dataConfig.filters.filterRows;
+							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let filterRows = dataConfig.filters.filterRows;
 
 // Filtering with a function
-var largerCities = filterRows(rows,
+let largerCities = filterRows(rows,
 	cols.POPULATION, a => a >= 300
 );
 console.log(Analyser.getCol(largerCities, cols.NAME));</code>
@@ -1500,12 +1500,12 @@ console.log(Analyser.getCol(largerCities, cols.NAME));</code>
 
 					<div class="docs-example js-doc-example">
 						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var filterRows = dataConfig.filters.filterRows;
+							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let filterRows = dataConfig.filters.filterRows;
 
 // Applying multiple filters (AND)
-var largeCapitalCities = filterRows(rows,
+let largeCapitalCities = filterRows(rows,
 	cols.POPULATION, a => a >= 300,
 	cols.CAPITAL, a => a === 'true'
 );
@@ -1519,12 +1519,12 @@ console.log(Analyser.getCol(largeCapitalCities, cols.NAME));</code>
 
 					<div class="docs-example js-doc-example">
 						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var filterRows = dataConfig.filters.filterRows;
+							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let filterRows = dataConfig.filters.filterRows;
 
 // Applying multiple filters (OR)
-var veryLargeOrCapitalCities = filterRows(rows, true,
+let veryLargeOrCapitalCities = filterRows(rows, true,
 	cols.POPULATION, a => a >= 1000,
 	cols.CAPITAL, a => a === 'true'
 );
@@ -1550,11 +1550,11 @@ console.log(Analyser.getCol(veryLargeOrCapitalCities, cols.NAME));</code>
 
 					<div class="docs-example js-doc-example">
 						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var filterRowsAnd = dataConfig.filters.filterRowsAnd;
+							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let filterRowsAnd = dataConfig.filters.filterRowsAnd;
 
-var newZealandCapital = filterRowsAnd(rows,
+let newZealandCapital = filterRowsAnd(rows,
 	cols.COUNTRY, 'New Zealand',
 	cols.CAPITAL, a => a === 'true'
 );
@@ -1580,11 +1580,11 @@ console.log(Analyser.getCol(newZealandCapital, cols.NAME));</code>
 
 					<div class="docs-example js-doc-example">
 						<div class="docs-example__code-container">
-							<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
-var filterRowsOr = dataConfig.filters.filterRowsOr;
+							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let filterRowsOr = dataConfig.filters.filterRowsOr;
 
-var largeOrCapitalCities = filterRowsOr(rows,
+let largeOrCapitalCities = filterRowsOr(rows,
 	cols.POPULATION, a => a >= 1000,
 	cols.CAPITAL, a => a === 'true'
 );
@@ -1747,10 +1747,10 @@ console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
 
 				<div class="docs-example docs-example--chart-output js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code-chart">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code-chart">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var table = Charter.createTable(rows, cols);
+let table = Charter.createTable(rows, cols);
 
 return table;</code>
 					</div>
@@ -1780,18 +1780,12 @@ return table;</code>
 
 				<div class="docs-example docs-example--chart-output js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code-chart">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code-chart">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var chartData;
+let cityNames = Analyser.getCol(rows, cols.NAME);
 
-var dependentAxisConfig;
-
-var chart;
-
-var cityNames = Analyser.getCol(rows, cols.NAME);
-
-chartData = {
+let chartData = {
 	title: 'City Populations',
 	showTooltips: true,
 	labels: cityNames,
@@ -1802,14 +1796,14 @@ chartData = {
 	]
 };
 
-dependentAxisConfig = {
+let dependentAxisConfig = {
 	horizontal: true,
 	roundTo: 100,
 	max: 6000,
 	values: 2
 };
 
-chart = Charter.createBarChart(chartData, dependentAxisConfig);
+let chart = Charter.createBarChart(chartData, dependentAxisConfig);
 
 return chart;</code>
 					</div>
@@ -1839,20 +1833,13 @@ return chart;</code>
 
 				<div class="docs-example docs-example--chart-output js-doc-example" data-doc-example-input="city example 3.csv">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code-chart">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code-chart">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var chartData;
+let years = Analyser.getCol(rows, cols.YEAR);
+let population = Analyser.getCol(rows, cols.POPULATION);
 
-var dependentAxisConfig;
-var independentAxisConfig;
-
-var chart;
-
-var years = Analyser.getCol(rows, cols.YEAR);
-var population = Analyser.getCol(rows, cols.POPULATION);
-
-chartData = {
+let chartData = {
 	title: 'Auckland city population over time',
 	showLegend: true,
 	labels: years,
@@ -1870,17 +1857,17 @@ chartData = {
 	]
 };
 
-dependentAxisConfig = {
+let dependentAxisConfig = {
 	values: 5,
 	roundTo: 1000000,
 	min: null
 };
 
-independentAxisConfig = {
+let independentAxisConfig = {
 	valuesEvery: 2
 };
 
-chart = Charter.createLineGraph(
+let chart = Charter.createLineGraph(
 	chartData,
 	dependentAxisConfig,
 	independentAxisConfig
@@ -1914,20 +1901,13 @@ return chart;</code>
 
 				<div class="docs-example docs-example--chart-output js-doc-example" data-doc-example-input="city example 3.csv">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code-chart">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code-chart">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var chartData;
+let years = Analyser.getCol(rows, cols.YEAR);
+let population = Analyser.getCol(rows, cols.POPULATION);
 
-var dependentAxisConfig;
-var independentAxisConfig;
-
-var chart;
-
-var years = Analyser.getCol(rows, cols.YEAR);
-var population = Analyser.getCol(rows, cols.POPULATION);
-
-chartData = {
+let chartData = {
 	title: 'Auckland city population over time',
 	showLegend: true,
 	labels: years,
@@ -1945,17 +1925,17 @@ chartData = {
 	]
 };
 
-dependentAxisConfig = {
+let dependentAxisConfig = {
 	values: 5,
 	roundTo: 10000,
 	min: null
 };
 
-independentAxisConfig = {
+let independentAxisConfig = {
 	valuesEvery: 2
 };
 
-chart = Charter.createScatterPlot(
+let chart = Charter.createScatterPlot(
 	chartData,
 	dependentAxisConfig,
 	independentAxisConfig
@@ -1989,19 +1969,12 @@ return chart;</code>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var chartData;
+let cityNames = Analyser.getCol(rows, cols.NAME);
 
-var dependentAxisConfig;
-var independentAxisConfig;
-
-var chart;
-
-var cityNames = Analyser.getCol(rows, cols.NAME);
-
-chartData = {
+let chartData = {
 	title: 'City Populations',
 	showTooltips: true,
 	labels: cityNames,
@@ -2012,18 +1985,16 @@ chartData = {
 	]
 };
 
-dependentAxisConfig = {
+let dependentAxisConfig = {
 	roundTo: 100,
 	values: 2
 };
 
-chart = Charter.createBarChart(chartData, dependentAxisConfig);
+let chart = Charter.createBarChart(chartData, dependentAxisConfig);
 
 $('#chart-area').append(chart);
 
-window.setTimeout(function () {
-	Charter.updateBarChart(chart[0], [1, 2, 3, 4, 5, 6, 7, 8, 9], 'New title');
-}, 1000);</code>
+window.setTimeout(() => Charter.updateBarChart(chart[0], [1, 2, 3, 4, 5, 6, 7, 8, 9], 'New title'), 1000);</code>
 					</div>
 				</div>
 			</section>
@@ -2053,11 +2024,11 @@ window.setTimeout(function () {
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var populations = Analyser.getCol(rows, cols.POPULATION);
-var totalPopulation = Stats.sum(populations);
+let populations = Analyser.getCol(rows, cols.POPULATION);
+let totalPopulation = Stats.sum(populations);
 
 console.log(populations);
 console.log(totalPopulation);</code>
@@ -2084,11 +2055,11 @@ console.log(totalPopulation);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var populations = Analyser.getCol(rows, cols.POPULATION);
-var meanPopulation = Stats.mean(populations);
+let populations = Analyser.getCol(rows, cols.POPULATION);
+let meanPopulation = Stats.mean(populations);
 
 console.log(populations);
 console.log(meanPopulation);</code>
@@ -2115,11 +2086,11 @@ console.log(meanPopulation);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var populations = Analyser.getCol(rows, cols.POPULATION);
-var medianPopulation = Stats.median(populations);
+let populations = Analyser.getCol(rows, cols.POPULATION);
+let medianPopulation = Stats.median(populations);
 
 console.log(populations);
 console.log(medianPopulation);</code>
@@ -2146,11 +2117,11 @@ console.log(medianPopulation);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var populations = Analyser.getCol(rows, cols.POPULATION);
-var populationVariance = Stats.variance(populations);
+let populations = Analyser.getCol(rows, cols.POPULATION);
+let populationVariance = Stats.variance(populations);
 
 console.log(populations);
 console.log(populationVariance);</code>
@@ -2177,11 +2148,11 @@ console.log(populationVariance);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var populations = Analyser.getCol(rows, cols.POPULATION);
-var populationSD = Stats.sd(populations);
+let populations = Analyser.getCol(rows, cols.POPULATION);
+let populationSD = Stats.sd(populations);
 
 console.log(populations);
 console.log(populationSD);</code>
@@ -2208,11 +2179,11 @@ console.log(populationSD);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var populations = Analyser.getCol(rows, cols.POPULATION);
-var populationMax = Stats.max(populations);
+let populations = Analyser.getCol(rows, cols.POPULATION);
+let populationMax = Stats.max(populations);
 
 console.log(populations);
 console.log(populationMax);</code>
@@ -2239,11 +2210,11 @@ console.log(populationMax);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var populations = Analyser.getCol(rows, cols.POPULATION);
-var min = Stats.min(populations);
+let populations = Analyser.getCol(rows, cols.POPULATION);
+let min = Stats.min(populations);
 
 console.log(populations);
 console.log(min);</code>
@@ -2270,7 +2241,7 @@ console.log(min);</code>
 
 				<div class="docs-example js-doc-example">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var intRange = Stats.intRange(3, 5);
+						<code class="code code--block docs-example__code js-doc-example-code">let intRange = Stats.intRange(3, 5);
 
 console.log(intRange);</code>
 					</div>
@@ -2298,22 +2269,15 @@ console.log(intRange);</code>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var chartData;
+let years = Analyser.getCol(rows, cols.YEAR);
+let population = Analyser.getCol(rows, cols.POPULATION);
 
-var dependentAxisConfig;
-var independentAxisConfig;
+let linearFit = Stats.linearLeastSquares(population);
 
-var chart;
-
-var years = Analyser.getCol(rows, cols.YEAR);
-var population = Analyser.getCol(rows, cols.POPULATION);
-
-var linearFit = Stats.linearLeastSquares(population);
-
-chartData = {
+let chartData = {
 	title: 'Auckland city population over time',
 	showLegend: true,
 	labels: years,
@@ -2331,17 +2295,17 @@ chartData = {
 	]
 };
 
-dependentAxisConfig = {
+let dependentAxisConfig = {
 	values: 5,
 	roundTo: 1000000,
 	min: null
 };
 
-independentAxisConfig = {
+let independentAxisConfig = {
 	valuesEvery: 2
 };
 
-chart = Charter.createLineGraph(
+let chart = Charter.createLineGraph(
 	chartData,
 	dependentAxisConfig,
 	independentAxisConfig
@@ -2369,15 +2333,15 @@ $('#chart-area').append(chart);</code>
 
 				<div class="docs-example js-doc-example" data-doc-example-input="city example 3.csv">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var years = Analyser.getCol(rows, cols.YEAR);
-var population = Analyser.getCol(rows, cols.POPULATION);
+let years = Analyser.getCol(rows, cols.YEAR);
+let population = Analyser.getCol(rows, cols.POPULATION);
 
-var linearFit = Stats.linearLeastSquares(population);
+let linearFit = Stats.linearLeastSquares(population);
 
-var r = Stats.r(linearFit, population);
+let r = Stats.r(linearFit, population);
 
 console.log(r);</code>
 					</div>
@@ -2405,15 +2369,15 @@ console.log(r);</code>
 
 				<div class="docs-example js-doc-example" data-doc-example-input="city example 3.csv">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code js-doc-example-code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var years = Analyser.getCol(rows, cols.YEAR);
-var population = Analyser.getCol(rows, cols.POPULATION);
+let years = Analyser.getCol(rows, cols.YEAR);
+let population = Analyser.getCol(rows, cols.POPULATION);
 
-var linearFit = Stats.linearLeastSquares(population);
+let linearFit = Stats.linearLeastSquares(population);
 
-var r2 = Stats.r2(linearFit, population);
+let r2 = Stats.r2(linearFit, population);
 
 console.log(r2);</code>
 					</div>
@@ -2441,23 +2405,16 @@ console.log(r2);</code>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var chartData;
+let years = Analyser.getCol(rows, cols.YEAR);
+let population = Analyser.getCol(rows, cols.POPULATION);
 
-var dependentAxisConfig;
-var independentAxisConfig;
+let smoothness = 5;
+let smoothed = Stats.smooth(population, smoothness);
 
-var chart;
-
-var years = Analyser.getCol(rows, cols.YEAR);
-var population = Analyser.getCol(rows, cols.POPULATION);
-
-var smoothness = 5;
-var smoothed = Stats.smooth(population, smoothness);
-
-chartData = {
+let chartData = {
 	title: 'Auckland city population over time',
 	showLegend: true,
 	labels: years.slice((smoothness-1)),
@@ -2470,17 +2427,17 @@ chartData = {
 	]
 };
 
-dependentAxisConfig = {
+let dependentAxisConfig = {
 	values: 5,
 	roundTo: 1000000,
 	min: null
 };
 
-independentAxisConfig = {
+let independentAxisConfig = {
 	valuesEvery: 2
 };
 
-chart = Charter.createLineGraph(
+let chart = Charter.createLineGraph(
 	chartData,
 	dependentAxisConfig,
 	independentAxisConfig
@@ -2512,43 +2469,36 @@ $('#chart-area').append(chart);</code>
 
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
-						<code class="code code--block docs-example__code">var rows = dataConfig.rows;
-var cols = dataConfig.cols;
+						<code class="code code--block docs-example__code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
 
-var chartData;
-
-var dependentAxisConfig;
-var independentAxisConfig;
-
-var chart;
-
-var chunkSize = 5;
+let chunkSize = 5;
 // Make sure rows.length will be divisible by chunkSize after removing one
 while (((rows.length-1) % chunkSize) !== 0) {
 	rows.shift();
 }
 
-var lastYearPopulation = Analyser.getCol(rows, cols.POPULATION);
+let lastYearPopulation = Analyser.getCol(rows, cols.POPULATION);
 
 // Remove last "last year population" and first year's row, so the
 // arrays line up as expected
 lastYearPopulation.pop();
 rows.shift();
 
-var years = Analyser.getCol(rows, cols.YEAR);
+let years = Analyser.getCol(rows, cols.YEAR);
 
 cols.POPULATION_PREVIOUS = Analyser.addCol(rows, lastYearPopulation);
 cols.POPULATION_INCREASE = Analyser.addDerivedCol(rows, (row) => (row[cols.POPULATION] - row[cols.POPULATION_PREVIOUS]));
 
-var populationIncrease = Analyser.getCol(rows, cols.POPULATION_INCREASE);
-var chunkedPopulationIncrease = Stats.chunk(populationIncrease, chunkSize);
+let populationIncrease = Analyser.getCol(rows, cols.POPULATION_INCREASE);
+let chunkedPopulationIncrease = Stats.chunk(populationIncrease, chunkSize);
 
-var yearSets = [];
-for (var i = 0; i &lt; years.length; i += chunkSize) {
+let yearSets = [];
+for (let i = 0; i &lt; years.length; i += chunkSize) {
 	yearSets.push(years[i] + '-' + years[i+(chunkSize-1)]);
 }
 
-chartData = {
+let chartData = {
 	title: 'Auckland city population increase',
 	showLegend: true,
 	labels: yearSets,
@@ -2560,14 +2510,14 @@ chartData = {
 	]
 };
 
-dependentAxisConfig = {
+let dependentAxisConfig = {
 	values: 5,
 	min: 0
 };
 
-independentAxisConfig = {};
+let independentAxisConfig = {};
 
-chart = Charter.createBarChart(
+let chart = Charter.createBarChart(
 	chartData,
 	dependentAxisConfig,
 	independentAxisConfig
