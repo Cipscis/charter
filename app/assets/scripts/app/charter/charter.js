@@ -28,7 +28,7 @@ define(
 		lineGraphTemplate,
 		scatterPlotTemplate
 	) {
-		var numericAxisDefaults = {
+		const numericAxisDefaults = {
 			values: 5, // Will always fit when max is a multiple of 10
 			valuesAt: [],
 			// When gridlines is set to null, it interhits its value from values
@@ -48,7 +48,7 @@ define(
 			max: null
 		};
 
-		var qualitativeAxisDefaults = {
+		const qualitativeAxisDefaults = {
 			// Show every N values on the axis
 			valuesEvery: 1,
 			// Skip N values at the start before showing them
@@ -79,14 +79,13 @@ define(
 		// 	smoothing: 2
 		// }
 
-		var Charter = {
+		const Charter = {
 			_extractNumber: function (string) {
 				// Convert strings to numbers where possible
 				// TODO: find a better solution than duplicating this code from analyser
 				// it doesn't seem like enough to set up a new dependency though
 
-				var val = string.replace(/,|%$/g, ''),
-					length;
+				let val = string.replace(/,|%$/g, '');
 
 				if (parseFloat(val) === +val) {
 					if (string.match(/%$/)) {
@@ -94,7 +93,7 @@ define(
 
 						// Convert to string to see how many places after the point, to round after dividing
 						// Otherwise you'll get numbers like 0.10800000000000001
-						length = (val + '');
+						let length = (val + '');
 						length.replace(/^[^.]+/, '');
 						length = length.length;
 
@@ -138,14 +137,13 @@ define(
 			_getNumericAxisOptions: function (axisConfig) {
 				axisConfig = axisConfig || {};
 
-				var options = {},
-					prop;
+				let options = {};
 
-				for (prop in numericAxisDefaults) {
+				for (let prop in numericAxisDefaults) {
 					options[prop] = numericAxisDefaults[prop];
 				}
 
-				for (prop in axisConfig) {
+				for (let prop in axisConfig) {
 					options[prop] = axisConfig[prop];
 				}
 
@@ -160,14 +158,13 @@ define(
 
 				axisConfig = axisConfig || {};
 
-				var options = {},
-					prop;
+				let options = {};
 
-				for (prop in qualitativeAxisDefaults) {
+				for (let prop in qualitativeAxisDefaults) {
 					options[prop] = qualitativeAxisDefaults[prop];
 				}
 
-				for (prop in axisConfig) {
+				for (let prop in axisConfig) {
 					options[prop] = axisConfig[prop];
 				}
 
@@ -182,28 +179,23 @@ define(
 				return options;
 			},
 
-			_mapToRange: function (value, min, max) {
-				// Takes in a value and maps it to a percentage
-				// between the passed min and max values
-
-				return (value-min) / (max-min) * 100;
-			},
+			// Takes in a value and maps it to a percentage
+			// between the passed min and max values
+			_mapToRange: (value, min, max) => (value-min) / (max-min) * 100,
 
 			_getRange: function (dataSeries, axisConfig) {
 				// Get the minimum and maximum value in a chart's data
 				// across all dataSeries, rounded according to the axisConfig
 
-				var i,
-					ranges = [],
-					finalRange = [];
+				let ranges = [];
 
-				for (i = 0; i < dataSeries.length; i++) {
+				for (let i = 0; i < dataSeries.length; i++) {
 					if (dataSeries[i].dataPoints.length) {
 						ranges.push(Charter._getRangeSingle(dataSeries[i], axisConfig));
 					}
 				}
 
-				finalRange = [ranges[0][0], ranges[0][1]];
+				let finalRange = [ranges[0][0], ranges[0][1]];
 				for (i = 1; i < ranges.length; i++) {
 					finalRange[0] = Math.min(finalRange[0], ranges[i][0]);
 					finalRange[1] = Math.max(finalRange[1], ranges[i][1]);
@@ -226,35 +218,34 @@ define(
 
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
-				var min = dataRange[0];
-				var max = dataRange[1];
+				let min = dataRange[0];
+				let max = dataRange[1];
 
 				if (axisConfig.roundTo !== null || axisConfig.values > 1) {
-					var range = max - min;
-					var values = axisConfig.values || 1;
+					let range = max - min;
+					let values = axisConfig.values || 1;
 
 					// If roundTo is unspecified, figure out what should be
 					// used by looking at the greatest power of 10 that fits
 					// into the starting maximum value at least values times.
 					// If it's above 1 or 1%, use 1 or 1% instead by default.
-					var roundTo = axisConfig.roundTo;
+					let roundTo = axisConfig.roundTo;
 					if (!roundTo) {
-						var maxOrder = Math.pow(10, Math.floor(Math.log10(max/values)));
+						let maxOrder = Math.pow(10, Math.floor(Math.log10(max/values)));
 						if (axisConfig.percentage) {
 							roundTo = Math.min(maxOrder, 0.01);
 						} else {
 							roundTo = Math.min(maxOrder, 1);
 						}
 					}
-					var factor = roundTo * values;
-					var remainder = range % factor;
-					var increment;
+					let factor = roundTo * values;
+					let remainder = range % factor;
 
 					if (remainder !== 0) {
 						// Increment max until the difference between
 						// it and min is the smallest number above range
 						// that is divisible by factor
-						increment = factor - remainder;
+						let increment = factor - remainder;
 						max += increment;
 
 						if (axisConfig.min === null) {
@@ -285,16 +276,15 @@ define(
 
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
-				var i,
-					roundTo,
-					min, max;
+				let min = dataSeries.dataPoints[0].value;
+				let max = min;
 
-				min = max = dataSeries.dataPoints[0].value;
-				for (i = 0; i < dataSeries.dataPoints.length; i++) {
+				for (let i = 0; i < dataSeries.dataPoints.length; i++) {
 					min = Math.min(min, dataSeries.dataPoints[i].value);
 					max = Math.max(max, dataSeries.dataPoints[i].value);
 				}
 
+				let roundTo;
 				if (axisConfig.roundTo !== null) {
 					roundTo = axisConfig.roundTo;
 				} else {
@@ -319,13 +309,10 @@ define(
 			},
 
 			_getGroupMax: function (dataSeries, axisConfig) {
-				var groupSums = [],
-					groupSumMax,
-					roundedMax,
-					i;
+				let groupSums = [];
 
-				for (i = 0; i < dataSeries.length; i++) {
-					for (j = 0; j < dataSeries[i].dataPoints.length; j++) {
+				for (let i = 0; i < dataSeries.length; i++) {
+					for (let j = 0; j < dataSeries[i].dataPoints.length; j++) {
 						if (groupSums.length <= j) {
 							groupSums.push(0);
 						}
@@ -334,8 +321,8 @@ define(
 					}
 				}
 
-				groupSumMax = Math.max.apply(null, groupSums);
-				roundedMax = Charter._roundRange([0, groupSumMax], axisConfig)[1];
+				let groupSumMax = Math.max.apply(null, groupSums);
+				let roundedMax = Charter._roundRange([0, groupSumMax], axisConfig)[1];
 
 				return roundedMax;
 			},
@@ -346,17 +333,15 @@ define(
 
 				axisConfig = Charter._getNumericAxisOptions(axisConfig);
 
-				var axis = {
-						values: [],
-						gridlines: []
-					},
+				let axis = {
+					values: [],
+					gridlines: []
+				};
 
-					i,
-					value, displayValue,
-					range,
-					max = axisConfig.max,
-					min = axisConfig.min;
+				let max = axisConfig.max;
+				let min = axisConfig.min;
 
+				let range;
 				if (min === null || max === null) {
 					range = Charter._getRange(chartData.dataSeries, axisConfig);
 					if (min === null) {
@@ -382,9 +367,9 @@ define(
 					max = range[1];
 				}
 
-				for (i = 0; i <= axisConfig.gridlines; i++) {
-					value = ((max-min) * i / axisConfig.gridlines) + min;
-					displayValue = Charter._getDisplayNumber(value, axisConfig);
+				for (let i = 0; i <= axisConfig.gridlines; i++) {
+					let value = ((max-min) * i / axisConfig.gridlines) + min;
+					let displayValue = Charter._getDisplayNumber(value, axisConfig);
 
 					axis.gridlines.push({
 						value: value,
@@ -393,9 +378,9 @@ define(
 					});
 				}
 
-				for (i = 0; i <= axisConfig.values; i++) {
-					value = ((max-min) * i / axisConfig.values) + min;
-					displayValue = Charter._getDisplayNumber(value, axisConfig);
+				for (let i = 0; i <= axisConfig.values; i++) {
+					let value = ((max-min) * i / axisConfig.values) + min;
+					let displayValue = Charter._getDisplayNumber(value, axisConfig);
 
 					axis.values.push({
 						value: value,
@@ -405,9 +390,9 @@ define(
 				}
 
 				if (axisConfig.valuesAt.length) {
-					for (i = 0; i < axisConfig.valuesAt.length; i++) {
-						value = ((max-min) * (axisConfig.valuesAt[i] / max)) + min;
-						displayValue = Charter._getDisplayNumber(value, axisConfig);
+					for (let i = 0; i < axisConfig.valuesAt.length; i++) {
+						let value = ((max-min) * (axisConfig.valuesAt[i] / max)) + min;
+						let displayValue = Charter._getDisplayNumber(value, axisConfig);
 
 						axis.gridlines.push({
 							value: value,
@@ -439,19 +424,14 @@ define(
 
 				axisConfig = Charter._getQualitativeAxisOptions(axisConfig);
 
-				var axis = {
-						values: [],
-						gridlines: []
-					},
-
-					i,
-					displayValue,
-					range,
-					max, min;
+				let axis = {
+					values: [],
+					gridlines: []
+				};
 
 				if (axisConfig.gridlinesEvery !== 0) {
-					for (i = axisConfig.gridlinesSkip; i < chartData.labels.length; i += axisConfig.gridlinesEvery) {
-						displayValue = chartData.labels[i];
+					for (let i = axisConfig.gridlinesSkip; i < chartData.labels.length; i += axisConfig.gridlinesEvery) {
+						let displayValue = chartData.labels[i];
 
 						axis.gridlines.push({
 							displayValue: displayValue,
@@ -461,8 +441,8 @@ define(
 				}
 
 				if (axisConfig.valuesEvery !== 0) {
-					for (i = axisConfig.valuesSkip; i < chartData.labels.length; i += axisConfig.valuesEvery) {
-						displayValue = chartData.labels[i];
+					for (let i = axisConfig.valuesSkip; i < chartData.labels.length; i += axisConfig.valuesEvery) {
+						let displayValue = chartData.labels[i];
 
 						axis.values.push({
 							displayValue: displayValue,
@@ -480,19 +460,16 @@ define(
 				// depending on whether or not axisConfig has a "valuesEvery"
 				// property that is not 1.
 
-				var incr;
-				var i;
-				var j;
-				var newLabels = [];
-				for (i = 0; i < labels.length; i++) {
+				let newLabels = [];
+				for (let i = 0; i < labels.length; i++) {
 					newLabels.push(labels[i]);
 				}
 
 				if (axisConfig && typeof axisConfig.valuesEvery !== 'undefined' && axisConfig !== 1) {
-					incr = axisConfig.valuesEvery;
+					let incr = axisConfig.valuesEvery;
 
-					for (i = 0; i < newLabels.length+incr; i += incr) {
-						for (j = 1; j < incr && (i+j) < newLabels.length; j++) {
+					for (let i = 0; i < newLabels.length+incr; i += incr) {
+						for (let j = 1; j < incr && (i+j) < newLabels.length; j++) {
 							newLabels[i+j] = '';
 						}
 					}
@@ -502,13 +479,10 @@ define(
 			},
 
 			_getDisplayValues: function (chartData, axisConfig) {
-				var i, j,
-					dataSeries, dataPoint;
-
-				for (i = 0; i < chartData.dataSeries.length; i++) {
-					dataSeries = chartData.dataSeries[i];
-					for (j = 0; j < dataSeries.dataPoints.length; j++) {
-						dataPoint = dataSeries.dataPoints[j];
+				for (let i = 0; i < chartData.dataSeries.length; i++) {
+					let dataSeries = chartData.dataSeries[i];
+					for (let j = 0; j < dataSeries.dataPoints.length; j++) {
+						let dataPoint = dataSeries.dataPoints[j];
 
 						// Add commas for display values
 						dataPoint.displayValue = Charter._getDisplayNumber(dataPoint.value, axisConfig);
@@ -524,17 +498,13 @@ define(
 			_getValuePercentages: function (chartData, axisConfig) {
 				// Calculates the percentage to use for displaying each value
 
-				var i, j,
-					min, max,
-					dataSeries, dataPoint;
+				let min = Math.min.apply(null, chartData.dependentAxis.values.map(function (a) { return a.value; }));
+				let max = Math.max.apply(null, chartData.dependentAxis.values.map(function (a) { return a.value; }));
 
-				min = Math.min.apply(null, chartData.dependentAxis.values.map(function (a) { return a.value; }));
-				max = Math.max.apply(null, chartData.dependentAxis.values.map(function (a) { return a.value; }));
-
-				for (i = 0; i < chartData.dataSeries.length; i++) {
-					dataSeries = chartData.dataSeries[i];
-					for (j = 0; j < dataSeries.dataPoints.length; j++) {
-						dataPoint = dataSeries.dataPoints[j];
+				for (let i = 0; i < chartData.dataSeries.length; i++) {
+					let dataSeries = chartData.dataSeries[i];
+					for (let j = 0; j < dataSeries.dataPoints.length; j++) {
+						let dataPoint = dataSeries.dataPoints[j];
 						dataPoint.percentage = (dataPoint.value-min) / (max-min) * 100 || 0;
 					}
 				}
@@ -546,13 +516,10 @@ define(
 				// Calculates the percentage to position each piece of data on the independent axis
 				// Currently assumes uniform distribution per qualitative axis
 
-				var i, j,
-					dataSeries, dataPoint;
-
-				for (i = 0; i < chartData.dataSeries.length; i++) {
-					dataSeries = chartData.dataSeries[i];
-					for (j = 0; j < dataSeries.dataPoints.length; j++) {
-						dataPoint = dataSeries.dataPoints[j];
+				for (let i = 0; i < chartData.dataSeries.length; i++) {
+					let dataSeries = chartData.dataSeries[i];
+					for (let j = 0; j < dataSeries.dataPoints.length; j++) {
+						let dataPoint = dataSeries.dataPoints[j];
 						dataPoint.index = 100 * j / (dataSeries.dataPoints.length-1);
 					}
 				}
@@ -569,18 +536,13 @@ define(
 				// array of dataPoints from raw values into objects
 				// with a value and an inherited colour from the series
 
-				var i, series,
-					j, dataPoint,
-					obj,
-					objArray;
+				for (let i = 0; i < dataSeries.length; i++) {
+					let series = dataSeries[i];
+					let objArray = [];
 
-				for (i = 0; i < dataSeries.length; i++) {
-					series = dataSeries[i];
-					objArray = [];
-
-					for (j = 0; j < series.dataPoints.length; j++) {
-						dataPoint = series.dataPoints[j];
-						obj = {};
+					for (let j = 0; j < series.dataPoints.length; j++) {
+						let dataPoint = series.dataPoints[j];
+						let obj = {};
 
 						if (dataPoint instanceof Object) {
 							obj = {
@@ -618,10 +580,7 @@ define(
 				// of the stack, so as to keep the same order as the legend
 				// and to be reflected in the order in the code.
 
-				var i, series, seriesLength,
-					j, dataPoint,
-					newDataSeriesArray = [],
-					stackedSeries, value;
+				let newDataSeriesArray = [];
 
 				// Create a copy so its order can be
 				// changed without affecting the original
@@ -629,8 +588,8 @@ define(
 				dataSeries.reverse();
 
 				// Create newDataSeriesArray, including vestigial dataSeries
-				for (i = 0; i < dataSeries.length; i++) {
-					series = dataSeries[i];
+				for (let i = 0; i < dataSeries.length; i++) {
+					let series = dataSeries[i];
 
 					newDataSeriesArray.push({
 						name: series.name,
@@ -638,14 +597,14 @@ define(
 						dataPoints: []
 					});
 				}
-				stackedSeries = newDataSeriesArray[0].dataPoints;
+				let stackedSeries = newDataSeriesArray[0].dataPoints;
 
 				// Create new dataPoints with summed values
-				for (i = 0; i < dataSeries.length; i++) {
-					series = dataSeries[i];
+				for (let i = 0; i < dataSeries.length; i++) {
+					let series = dataSeries[i];
 
-					for (j = 0; j < series.dataPoints.length; j++) {
-						dataPoint = series.dataPoints[j];
+					for (let j = 0; j < series.dataPoints.length; j++) {
+						let dataPoint = series.dataPoints[j];
 
 						if (j >= stackedSeries.length) {
 							stackedSeries.push({
@@ -660,12 +619,12 @@ define(
 				}
 
 				// Create gradients for each dataPoint
-				for (i = 0; i < stackedSeries.length; i++) {
-					dataPoint = stackedSeries[i];
+				for (let i = 0; i < stackedSeries.length; i++) {
+					let dataPoint = stackedSeries[i];
 
 					dataPoint.color = 'linear-gradient(to top, ';
-					value = 0;
-					for (j in dataPoint.valueBreakdown) {
+					let value = 0;
+					for (let j in dataPoint.valueBreakdown) {
 						if (dataPoint.valueBreakdown[j]) {
 							dataPoint.color += j + ' ' + (value / dataPoint.value * 100) + '%, ';
 							value += dataPoint.valueBreakdown[j];
@@ -686,15 +645,12 @@ define(
 			},
 
 			_getDataSeriesByLabel: function (labels, dataSeries) {
-				var dataSeriesByLabel = [];
-				var i;
-				var dataPointsForLabel;
-				var j;
+				let dataSeriesByLabel = [];
 
-				for (i in labels) {
-					dataPointsForLabel = [];
+				for (let i in labels) {
+					let dataPointsForLabel = [];
 
-					for (j in dataSeries) {
+					for (let j in dataSeries) {
 						dataPointsForLabel.push(dataSeries[j].dataPoints[i]);
 					}
 
@@ -713,33 +669,29 @@ define(
 			createTable: function (rows, cols) {
 				// Create the necessary data structure to build a table of the data
 
-				var reverseColMap = {};
-				var headers = [];
 
-				var data;
-				var row;
-				var i, j;
-
-				for (i in cols) {
+				let reverseColMap = {};
+				for (let i in cols) {
 					reverseColMap[cols[i]] = i;
 				}
-				for (i = 0; i < rows.length; i++) {
+
+				let headers = [];
+				for (let i = 0; i < rows.length; i++) {
 					if (typeof reverseColMap[i] !== 'undefined') {
 						headers.push(reverseColMap[i]);
 					}
 				}
 
-				data = {
+				let data = {
 					headers: headers,
 					rows: []
 				};
-
-				for (i = 0; i < rows.length; i++) {
-					row = {
+				for (let i = 0; i < rows.length; i++) {
+					let row = {
 						cells: []
 					};
 
-					for (j in cols) {
+					for (let j in cols) {
 						row.cells.push(rows[i][cols[j]]);
 					}
 
@@ -797,14 +749,12 @@ define(
 				// TODO: Legend
 				// TODO: Allow secondary vertical axis
 
-				var i, dataSeries;
-
 				// Apply any necessary smoothing
 				if (chartData.smoothing > 1) {
 					chartData.labels.splice(0, chartData.smoothing-1);
 
-					for (i = 0; i < chartData.dataSeries.length; i++) {
-						dataSeries = chartData.dataSeries[i];
+					for (let i = 0; i < chartData.dataSeries.length; i++) {
+						let dataSeries = chartData.dataSeries[i];
 
 						dataSeries.dataPoints = Stats.smooth(dataSeries.dataPoints, chartData.smoothing);
 					}
@@ -839,40 +789,32 @@ define(
 
 				// Currently assumes the data will match the current number of bars
 
-				var $chart,
-
-					axisValues, x,
-
-					bars,
-					tooltips,
-					title;
-
-				$chart = $(chart);
-				chartData = $chart.data('chartData');
-				axisConfig = $chart.data('dependentAxisConfig');
+				let $chart = $(chart);
+				let chartData = $chart.data('chartData');
+				let axisConfig = $chart.data('dependentAxisConfig');
 
 				chart = d3.select(chart);
 
-				axisValues = chartData.dependentAxis.values;
-				x = d3.scaleLinear()
+				let axisValues = chartData.dependentAxis.values;
+				let x = d3.scaleLinear()
 					.domain([axisValues[0].value, axisValues[axisValues.length-1].value])
 					.range([0, 100]);
 
-				bars = chart.selectAll('.js-chart-bar')
+				let bars = chart.selectAll('.js-chart-bar')
 					.data(data);
 				bars
 					.style(axisConfig.horizontal ? 'width' : 'height', function (d) { return x(d) + '%'; })
 					.attr('title', function (d) { return Charter._getDisplayNumber(d, axisConfig); });
 
 
-				tooltips = chart.selectAll('.js-chart-tooltip')
+				let tooltips = chart.selectAll('.js-chart-tooltip')
 					.data(data);
 				tooltips
 					.text(function (d) { return Charter._getDisplayNumber(d, axisConfig); });
 
 
 				if (titleText) {
-					title = chart.selectAll('.js-chart-title')
+					let title = chart.selectAll('.js-chart-title')
 						.data([titleText]);
 					title
 						.text(function (d) { return titleText; });
