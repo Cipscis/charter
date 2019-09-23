@@ -566,7 +566,7 @@ Analyser.loadFile('/charter/app/docs/data/city example.csv', fileConfig, explore
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-combinedata">combineData</h4>
 
-					<code class="code code--block">combineData(dataConfig1, dataConfig2, dataConfigN)</code>
+					<code class="code code--block">combineData(...dataConfigs)</code>
 
 					<p><code>combineData</code> takes in any number of <code>dataConfig</code> objects, and outputs a single combined <code>dataConfig</code> object.</p>
 
@@ -848,7 +848,7 @@ console.table(table);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-getderivedcol">getDerivedCol</h4>
 
-					<code class="code code--block">getDerivedCol(rows, processFn, optionalCol1, optionalCol2, optionalColN)</code>
+					<code class="code code--block">getDerivedCol(rows, processFn, ...cols)</code>
 
 					<p>Creates a column of data that is the result of passing an individual row and any number of optional values from specified columns into a processing function. This does not modify the existing <code>rows</code> data.</p>
 
@@ -856,7 +856,7 @@ console.table(table);</code>
 
 					<p><code>processFn</code> is a function of the form <code>fn(row, optionalValue1, optionalValue2, optionalValueN)</code></p>
 
-					<p><code>optionalCol1, optionalCol2, optionalColN</code> are any number of column arrays. These can be created for example by the <code>getCol</code> or <code>getDerivedCol</code> methods. Because columns that already exist as part of the <code>rows</code> object, and can therefore be accessed that way, these parameters are only necessary for previously created derived columns that have not been added to the rows via <code>addDerivedCol</code>.</p>
+					<p><code>...cols</code> is any number of column arrays passed as additional arguments. These can be created for example by the <code>getCol</code> or <code>getDerivedCol</code> methods. Because columns that already exist as part of the <code>rows</code> object, and can therefore be accessed that way, these parameters are only necessary for previously created derived columns that have not been added to the rows via <code>addDerivedCol</code>.</p>
 
 					<p>The values passed through to the <code>optionalValue1, optionalValue2, optionalValueN</code> arguments correspond to the values at the current row for the optional specified columns.</p>
 
@@ -888,7 +888,7 @@ console.log(rawPopulation);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-addderivedcol">addDerivedCol</h4>
 
-					<code class="code code--block">addDerivedCol(rows, processFn, optionalCol1, optionalCol2, optionalColN)</code>
+					<code class="code code--block">addDerivedCol(rows, processFn, ...cols)</code>
 
 					<p>Creates a new column as per <code>getDerivedCol</code>, then passes it in to <code>addCol</code> and returns the index of the new column.</p>
 
