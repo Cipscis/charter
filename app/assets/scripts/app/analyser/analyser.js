@@ -4,7 +4,7 @@ define(
 	],
 
 	function (Papa) {
-		var Analyser = {
+		const Analyser = {
 			/////////////////////
 			// FILE PROCESSING //
 			/////////////////////
@@ -13,7 +13,7 @@ define(
 					Analyser._fileToString(fileInfo, fileConfig, callback);
 				}
 
-				var xhr = new XMLHttpRequest();
+				let xhr = new XMLHttpRequest();
 				xhr.open('GET', fileInfo);
 				xhr.onload = function () {
 					if (xhr.status === 200) {
@@ -27,15 +27,8 @@ define(
 				// options should be an array containing objects which each have
 				// a fileInfo, and fileConfig. These will be passed into loadFile
 				// for each item in the array
-				var fileInfo;
-				var fileConfig;
-				var callback;
-				var i;
-
-				var dataConfigArray = [];
-
-				var filesToLoad;
-				var filesLoaded = 0;
+				const filesToLoad = (arguments.length - 1) / 2;
+				let filesLoaded = 0;
 
 				if (arguments.length < 3) {
 					console.error('Insufficient arguments provided to loadFile:', arguments);
@@ -43,10 +36,10 @@ define(
 					console.error('Incorrect number of arguments provided to loadFile:', arguments);
 				}
 
-				filesToLoad = (arguments.length - 1) / 2;
-				callback = arguments[arguments.length-1];
+				let callback = arguments[arguments.length-1];
 
-				var onFileLoad = function (i) {
+				let dataConfigArray = [];
+				const onFileLoad = function (i) {
 					return function (dataConfig) {
 						dataConfigArray[i] = dataConfig;
 
@@ -57,7 +50,9 @@ define(
 					};
 				};
 
-				for (i = 0; i < filesToLoad; i++) {
+				let fileInfo;
+				let fileConfig;
+				for (let i = 0; i < filesToLoad; i++) {
 					fileInfo = arguments[i*2];
 					fileConfig = arguments[i*2+1];
 
@@ -69,7 +64,7 @@ define(
 				// Takes in a File object and converts it to a string,
 				// then passes it to _fileLoaded
 
-				var reader = new FileReader();
+				let reader = new FileReader();
 				reader.onload = function (evt) {
 					if (reader.readyState === 2) { // DONE
 						Analyser._fileLoaded(reader.result, fileConfig, callback);
@@ -136,10 +131,6 @@ define(
 				// 	TASER_METHOD: [cols.TASER_METHOD_1, cols.TASER_METHOD_2, cols.TASER_METHOD_3]
 				// };
 
-				var dataConfig = {},
-					i, row,
-					j;
-
 				fileConfig.headerRows = fileConfig.headerRows || 0;
 				fileConfig.footerRows = fileConfig.footerRows || 0;
 				fileConfig.cols = fileConfig.cols || {};
@@ -147,6 +138,7 @@ define(
 				fileConfig.arrayCols = fileConfig.arrayCols || {};
 				fileConfig.enumsMap = fileConfig.enumsMap || {};
 
+				let dataConfig = {};
 				dataConfig.cols = fileConfig.cols;
 				dataConfig.aliases = fileConfig.aliases;
 				dataConfig.filters = Analyser._getAliasFilters(fileConfig.aliases);
@@ -164,13 +156,13 @@ define(
 
 				// Convert cells that are lists into arrays
 				dataConfig.rows = rows.concat();
-				for (i = 0; i < dataConfig.rows.length; i++) {
-					row = dataConfig.rows[i];
+				for (let i = 0; i < dataConfig.rows.length; i++) {
+					let row = dataConfig.rows[i];
 
-					for (j in fileConfig.arrayCols) {
+					for (let j in fileConfig.arrayCols) {
 						row[j] = (row[j] + '').trim().split(fileConfig.arrayCols[j] || ' ');
 					}
-					for (j in fileConfig.defaultCols) {
+					for (let j in fileConfig.defaultCols) {
 						if (j in fileConfig.arrayCols) {
 							continue;
 						}
@@ -187,28 +179,27 @@ define(
 			},
 
 			_buildEnums: function (rows, config) {
-				var enums = {},
-					i, j, k;
+				let enums = {};
 
-				for (i in config.cols) {
+				for (let col in config.cols) {
 
 					// Don't collect enums for columns specified in enumsMap
-					k = true;
-					for (j in config.enumsMap) {
-						if (config.enumsMap[j].indexOf(config.cols[i]) !== -1) {
-							k = false;
+					let collect = true;
+					for (let enumCol in config.enumsMap) {
+						if (config.enumsMap[enumCol].indexOf(config.cols[col]) !== -1) {
+							collect = false;
 							break;
 						}
 					}
 
-					if (k) {
-						enums[i] = [];
-						Analyser._collectEnums(rows, enums[i], config.cols[i]);
+					if (collect) {
+						enums[col] = [];
+						Analyser._collectEnums(rows, enums[col], config.cols[col]);
 					}
 				}
-				for (i in config.enumsMap) {
-					enums[i] = [];
-					Analyser._collectEnums.apply(this, [rows, enums[i]].concat(config.enumsMap[i]));
+				for (let enumCol in config.enumsMap) {
+					enums[enumCol] = [];
+					Analyser._collectEnums.apply(this, [rows, enums[enumCol]].concat(config.enumsMap[enumCol]));
 				}
 
 				return enums;
@@ -220,18 +211,15 @@ define(
 
 				enumsArr = enumsArr || [];
 
-				var i, row,
-					j, col,
-					k, value,
-					cols = Array.prototype.slice.call(arguments, 2);
+				let cols = Array.prototype.slice.call(arguments, 2);
 
-				for (i = 0; i < rows.length; i++) {
-					row = rows[i];
-					for (j = 0; j < cols.length; j++) {
-						col = cols[j];
+				for (let i = 0; i < rows.length; i++) {
+					let row = rows[i];
+					for (let j = 0; j < cols.length; j++) {
+						let col = cols[j];
 
 						if (row[col] instanceof Array) {
-							for (k = 0; k < row[col].length; k++) {
+							for (let k = 0; k < row[col].length; k++) {
 								if ((row[col][k] !== '') && (enumsArr.indexOf(row[col][k]) === -1)) {
 									enumsArr.push(row[col][k]);
 								}
@@ -257,27 +245,12 @@ define(
 
 				// The output is in the same format as for _processData
 
-				var dataConfigs = Array.prototype.slice.call(arguments, 0);
-				var combinedDataConfig = {
+				let dataConfigs = Array.prototype.slice.call(arguments, 0);
+				let combinedDataConfig = {
 					cols: {},
 					rows: [],
 					aliases: {}
 				};
-
-				var dataConfig;
-				var row;
-				var aliasSet;
-				var combinedAliasSet;
-
-				var originalEnumsMap;
-				var originalCol;
-				var originalColName;
-				var originalColIndex;
-
-				var i;
-				var j;
-				var k;
-				var l;
 
 				if (!dataConfigs || dataConfigs.length < 2) {
 					console.error('Invalid inputs passed to combineData', arguments);
@@ -286,35 +259,35 @@ define(
 				// Combine cols first //
 
 				// Build base set from first cols object
-				for (j in dataConfigs[0].cols) {
+				for (let j in dataConfigs[0].cols) {
 					combinedDataConfig.cols[j] = true;
 				}
 
 				// Remove any cols not shared by every other cols object
-				for (i = 1; i < dataConfigs.length; i++) {
-					dataConfig = dataConfigs[i];
+				for (let i = 1; i < dataConfigs.length; i++) {
+					let dataConfig = dataConfigs[i];
 
-					for (j in combinedDataConfig.cols) {
+					for (let j in combinedDataConfig.cols) {
 						if (!(j in dataConfig.cols)) {
 							delete combinedDataConfig.cols[j];
 						}
 					}
 				}
 
-				i = 0;
+				let colIndex = 0;
 				for (j in combinedDataConfig.cols) {
-					combinedDataConfig.cols[j] = i;
-					i++;
+					combinedDataConfig.cols[j] = colIndex;
+					colIndex++;
 				}
 
 				// Now that we have the combined cols object, combine rows and aliases
-				for (i = 0; i < dataConfigs.length; i++) {
-					dataConfig = dataConfigs[i];
+				for (let i = 0; i < dataConfigs.length; i++) {
+					let dataConfig = dataConfigs[i];
 					// Combine rows //
 
-					for (j = 0; j < dataConfig.rows.length; j++) {
-						row = [];
-						for (k in combinedDataConfig.cols) {
+					for (let j = 0; j < dataConfig.rows.length; j++) {
+						let row = [];
+						for (let k in combinedDataConfig.cols) {
 							row[combinedDataConfig.cols[k]] = dataConfig.rows[j][dataConfig.cols[k]];
 						}
 
@@ -325,7 +298,7 @@ define(
 					// Combine aliases //
 
 					// Loop through each row's aliases to combine
-					for (j in dataConfig.aliases) {
+					for (let j in dataConfig.aliases) {
 
 						// If we don't have an alias for this column, make an empty placeholder
 						if (!(j in combinedDataConfig.aliases)) {
@@ -333,11 +306,12 @@ define(
 						}
 
 						// Loop through each aliasSet for this column
-						for (k = 0; k < dataConfig.aliases[j].length; k++) {
-							aliasSet = dataConfig.aliases[j][k];
+						for (let k = 0; k < dataConfig.aliases[j].length; k++) {
+							let aliasSet = dataConfig.aliases[j][k];
 
 							// Combine aliasSets based off their first element, which is used as a label
-							combinedAliasSet = [];
+							let combinedAliasSet = [];
+							let l;
 							for (l = 0; l < combinedDataConfig.aliases[j].length; l++) {
 								if (combinedDataConfig.aliases[j][l][0] === aliasSet[0]) {
 									combinedAliasSet = combinedDataConfig.aliases[j][l];
@@ -363,16 +337,16 @@ define(
 				}
 
 				// Create new filters using combined aliases
-				combinedDataConfig.filters = Analyser._getAliasFilters(dataConfig.aliases);
+				combinedDataConfig.filters = Analyser._getAliasFilters(combinedDataConfig.aliases);
 
 				// Combine the enumsMaps, then build combined enums
 
 				combinedDataConfig.enumsMap = {};
-				for (i = 0; i < dataConfigs.length; i++) {
-					dataConfig = dataConfigs[i];
+				for (let i = 0; i < dataConfigs.length; i++) {
+					let dataConfig = dataConfigs[i];
 
-					for (j in dataConfig.enumsMap) {
-						originalEnumsMap = dataConfig.enumsMap[j];
+					for (let j in dataConfig.enumsMap) {
+						let originalEnumsMap = dataConfig.enumsMap[j];
 
 						if (!originalEnumsMap) {
 							// Mark this enumsMap as null to denote that it doesn't
@@ -382,10 +356,10 @@ define(
 							if (combinedDataConfig.enumsMap[j] !== null) {
 								combinedDataConfig.enumsMap[j] = combinedDataConfig.enumsMap[j] || [];
 
-								for (k = 0; k < originalEnumsMap.length; k++) {
-									originalCol = originalEnumsMap[k];
-									originalColName = undefined;
-									for (l in dataConfig.cols) {
+								for (let k = 0; k < originalEnumsMap.length; k++) {
+									let originalCol = originalEnumsMap[k];
+									let originalColName = undefined;
+									for (let l in dataConfig.cols) {
 										if (dataConfig.cols[l] === originalCol) {
 											originalColName = l;
 											break;
@@ -404,7 +378,7 @@ define(
 						}
 					}
 
-					for (j in combinedDataConfig.enumsMap) {
+					for (let j in combinedDataConfig.enumsMap) {
 						if (combinedDataConfig.enumsMap[j] === null) {
 							delete combinedDataConfig[enumsMap[j]];
 						}
@@ -442,10 +416,8 @@ define(
 			_extractCellNumbers: function (csv) {
 				// Use _extractNumber on each cell
 
-				var i, j;
-
-				for (i = 0; i < csv.length; i++) {
-					for (j = 0; j < csv[i].length; j++) {
+				for (let i = 0; i < csv.length; i++) {
+					for (let j = 0; j < csv[i].length; j++) {
 						csv[i][j] = Analyser._extractNumber(csv[i][j]);
 					}
 				}
@@ -454,8 +426,7 @@ define(
 			_extractNumber: function (string) {
 				// Convert strings to numbers where possible
 
-				var val = string.replace(/,|%$/g, ''),
-					length;
+				let val = string.replace(/,|%$/g, '');
 
 				if (parseFloat(val) === +val) {
 					if (string.match(/%$/)) {
@@ -463,7 +434,7 @@ define(
 
 						// Convert to string to see how many places after the point, to round after dividing
 						// Otherwise you'll get numbers like 0.10800000000000001
-						length = (val + '');
+						let length = (val + '');
 						length.replace(/^[^.]+/, '');
 						length = length.length;
 
@@ -480,11 +451,7 @@ define(
 			// FILTERING //
 			///////////////
 			_getAliasFilters: function (aliases) {
-				var filterRows,
-					filterRowsAnd,
-					filterRowsOr;
-
-				filterRows = function (rows, orToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
+				const filterRows = function (rows, orToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
 					// Takes in a rows object (imported from csv),
 					// a boolean specifying whether it's an "and" or an "or" filter,
 					// and any number of pairs (at least one) of
@@ -494,13 +461,10 @@ define(
 					// specified contains a value in the array of values given
 					// for all column and value pairs
 
-					var and = !orToggle,
-						startAt = 2,
+					let and = !orToggle;
+					let startAt = 2;
 
-						filteredRows = [],
-						filter, filters, isMatch,
-						i, row,
-						j, filter;
+					let filteredRows = [];
 
 					if ((arguments.length < 4) || (((arguments.length-2) % 2) !== 0)) {
 						// Assume "andToggle" has not been passed
@@ -512,9 +476,9 @@ define(
 						}
 					}
 
-					filters = [];
-					for (i = startAt; i < arguments.length-1; i += 2) {
-						filter = {
+					let filters = [];
+					for (let i = startAt; i < arguments.length-1; i += 2) {
+						let filter = {
 							colIndex: arguments[i],
 							values: arguments[i+1]
 						};
@@ -526,13 +490,13 @@ define(
 						filters.push(filter);
 					}
 
-					for (i = 0; i < rows.length; i++) {
-						row = rows[i];
+					for (let i = 0; i < rows.length; i++) {
+						let row = rows[i];
 
-						isMatch = !!and;
+						let isMatch = !!and;
 
-						for (j = 0; j < filters.length; j++) {
-							filter = filters[j];
+						for (let j = 0; j < filters.length; j++) {
+							let filter = filters[j];
 
 							if (and) {
 								isMatch = isMatch && Analyser._applyFilter(row, filter.colIndex, filter.values, aliases);
@@ -549,8 +513,8 @@ define(
 					return filteredRows;
 				};
 
-				filterRowsAnd = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
-					var args = Array.prototype.slice.apply(arguments);
+				const filterRowsAnd = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
+					let args = Array.prototype.slice.apply(arguments);
 
 					args = args.slice(1);
 					args.splice(0, 0, false);
@@ -559,8 +523,8 @@ define(
 					return filterRows.apply(this, args);
 				};
 
-				filterRowsOr = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
-					var args = Array.prototype.slice.apply(arguments);
+				const filterRowsOr = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
+					let args = Array.prototype.slice.apply(arguments);
 
 					args = args.slice(1);
 					args.splice(0, 0, true);
@@ -577,10 +541,6 @@ define(
 			},
 
 			_applyFilter: function (row, colIndex, values, aliases) {
-				var cell,
-					i, cellValues, cellValue,
-					k, value;
-
 				// Allow functions to be passed as filter tests
 				if (values instanceof Function) {
 					return values(row[colIndex]);
@@ -591,7 +551,8 @@ define(
 					values = [values];
 				}
 
-				cell = row[colIndex];
+				let cell = row[colIndex];
+				let cellValues;
 
 				if (cell instanceof Array) {
 					cellValues = cell;
@@ -599,10 +560,10 @@ define(
 					cellValues = [cell];
 				}
 
-				for (i = 0; i < cellValues.length; i++) {
-					cellValue = cellValues[i];
+				for (let i = 0; i < cellValues.length; i++) {
+					let cellValue = cellValues[i];
 
-					for (k = 0; k < values.length; k++) {
+					for (let k = 0; k < values.length; k++) {
 						if (Analyser._matchAlias(values[k], cellValue, aliases)) {
 							return true;
 						}
@@ -619,19 +580,15 @@ define(
 				// The aliasSuperset is used because the default set of all
 				// aliases will be used if no aliasSet is specified
 
-				var aliasSet,
-					i,
-					j, aliasList;
-
 				if (cell === value) {
 					return true;
 				}
 
 				// Could be array or object
-				for (i in aliasSuperset) {
-					aliasSet = aliasSuperset[i];
-					for (j = 0; j < aliasSet.length; j++) {
-						aliasList = aliasSet[j];
+				for (let i in aliasSuperset) {
+					let aliasSet = aliasSuperset[i];
+					for (let j = 0; j < aliasSet.length; j++) {
+						let aliasList = aliasSet[j];
 
 						if (
 							(aliasList.indexOf(cell) !== -1) &&
@@ -651,22 +608,17 @@ define(
 			getColNumber: function (colName) {
 				// Takes in a string like "CE" and converts it to a row number like 82
 
-				var alphabet,
-					i, char,
-					charIndex,
-					rowNumber;
-
 				if (!(typeof colName === 'string' || colName instanceof String)) {
 					// Not a string
 					return null;
 				}
 
-				alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-				rowNumber = -1; // Adjust for 0-based counting
+				let alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+				let rowNumber = -1; // Adjust for 0-based counting
 
-				for (i = 0; i < colName.length; i++) {
-					char = colName.toUpperCase()[i];
-					charIndex = alphabet.indexOf(char);
+				for (let i = 0; i < colName.length; i++) {
+					let char = colName.toUpperCase()[i];
+					let charIndex = alphabet.indexOf(char);
 
 					if (charIndex === -1) {
 						// String contains invalid character
@@ -681,12 +633,10 @@ define(
 
 			getColNumbers: function (cols) {
 				// Takes in a flat object and runs each property through getColNumber
-				var key;
-				var val;
-				var newCols = {};
+				let newCols = {};
 
-				for (key in cols) {
-					val = cols[key];
+				for (let key in cols) {
+					let val = cols[key];
 
 					if (typeof val === 'string' || val instanceof String) {
 						val = Analyser.getColNumber(cols[key]);
@@ -701,12 +651,9 @@ define(
 			},
 
 			getCol: function (rows, colNum) {
-				var i, row,
-					col;
-
-				col = [];
-				for (i = 0; i < rows.length; i++) {
-					row = rows[i];
+				let col = [];
+				for (let i = 0; i < rows.length; i++) {
+					let row = rows[i];
 					col.push(row[colNum]);
 				}
 
@@ -722,23 +669,18 @@ define(
 				// result of applying the processFn function to the row
 				// any number of values from optional column arguments
 
-				var i, row,
-					derivedCol = [],
-
-					cols = [],
-					j, col,
-					derivedValues;
-
-				for (i = 2; i < arguments.length; i++) {
+				let cols = [];
+				for (let i = 2; i < arguments.length; i++) {
 					cols.push(arguments[i]);
 				}
 
-				for (i = 0; i < rows.length; i++) {
-					row = rows[i];
-					derivedValues = [row];
+				let derivedCol = [];
+				for (let i = 0; i < rows.length; i++) {
+					let row = rows[i];
+					let derivedValues = [row];
 
-					for (j = 0; j < cols.length; j++) {
-						col = cols[j];
+					for (let j = 0; j < cols.length; j++) {
+						let col = cols[j];
 						derivedValues.push(col[i]);
 					}
 
@@ -756,11 +698,10 @@ define(
 					console.error('Cannot add col to rows unless their length matches');
 				}
 
-				var i, row,
-					colIndex = rows[0].length;
+				let colIndex = rows[0].length;
 
-				for (i = 0; i < rows.length; i++) {
-					row = rows[i];
+				for (let i = 0; i < rows.length; i++) {
+					let row = rows[i];
 					row.push(col[i]);
 				}
 
@@ -772,7 +713,7 @@ define(
 				// the derived column directly it uses addCol to add
 				// it to rows and returns the new column index.
 
-				var derivedCol = Analyser.getDerivedCol.apply(this, arguments);
+				let derivedCol = Analyser.getDerivedCol.apply(this, arguments);
 
 				return Analyser.addCol(rows, derivedCol);
 			},
@@ -791,18 +732,14 @@ define(
 				// each of which has the same indices as cols and represents a row
 				// The output can be used with console.table
 
-				var colName,
-					table,
-					i, row, newRow;
-
 				arraySeparator = arraySeparator || ', ';
 
-				table = [];
-				for (i = 0; i < rows.length; i++) {
-					row = rows[i];
-					newRow = {};
+				let table = [];
+				for (let i = 0; i < rows.length; i++) {
+					let row = rows[i];
+					let newRow = {};
 
-					for (colName in cols) {
+					for (let colName in cols) {
 						// Join arrays so they display in console.table
 						if (row[cols[colName]] instanceof Array) {
 							newRow[colName] = row[cols[colName]].join(arraySeparator);
@@ -817,40 +754,40 @@ define(
 			},
 
 			createSubTableString: function (rows, cols) {
-				var table = Analyser.createSubTable(rows, cols, ',');
-				var tableString = Analyser._convertTableToString(table);
+				let table = Analyser.createSubTable(rows, cols, ',');
+				let tableString = Analyser._convertTableToString(table);
 
 				return tableString;
 			},
 
 			_convertTableToString: function (table, useKeys) {
-				var cellSeparator = '\t',
-					rowSeparator = '\n',
-					i, j, k;
+				const cellSeparator = '\t';
+				const rowSeparator = '\n';
 
-				var tableString = '';
+				let tableString = '';
 
 				// Render headers and create array of labels
 				if (useKeys) {
 					tableString += cellSeparator;
 				}
-				k = false;
-				for (i in table) {
+
+				let k = false;
+				for (let i in table) {
 					if (k === true) {
 						break;
 					}
 					k = true;
 
-					for (j in table[i]) {
+					for (let j in table[i]) {
 						tableString += j + cellSeparator;
 					}
 				}
 				// Trim off last character, replace with newline
 				tableString = tableString.substr(0, tableString.length-1) + rowSeparator;
 
-				for (i in table) {
+				for (let i in table) {
 					k = false;
-					for (j in table[i]) {
+					for (let j in table[i]) {
 						if (useKeys) {
 							if (k === false) {
 								tableString += i + cellSeparator;
@@ -874,32 +811,27 @@ define(
 				// Outputs an object summarising the number of times each value
 				// appeared in the given column of the given rows
 
-				var i, row,
-					j, col,
-					values,
-					k, value,
-					summary;
 
 				// Allow the passing of a single number or an array of column indices
 				if (!(cols instanceof Array)) {
 					cols = [cols];
 				}
 
-				summary = {};
-				for (i = 0; i < rows.length; i++) {
-					row = rows[i];
+				let summary = {};
+				for (let i = 0; i < rows.length; i++) {
+					let row = rows[i];
 
-					for (j = 0; j < cols.length; j++) {
-						col = cols[j];
-						values = row[col];
+					for (let j = 0; j < cols.length; j++) {
+						let col = cols[j];
+						let values = row[col];
 
 						if (typeof values !== 'undefined' && values !== '') {
 							if (!(values instanceof Array)) {
 								values = [values];
 							}
 
-							for (k = 0; k < values.length; k++) {
-								value = values[k];
+							for (let k = 0; k < values.length; k++) {
+								let value = values[k];
 
 								if (value in summary) {
 									summary[value]++;
@@ -924,17 +856,17 @@ define(
 				// each element is the count of the values matching
 				// the element of labels at the same index
 
-				var colSummary = Analyser.getColSummary(rows, col),
-					i, value, index,
-					dataSeries = [];
+				let colSummary = Analyser.getColSummary(rows, col);
 
-				for (i = 0; i < labels.length; i++) {
+				let dataSeries = [];
+
+				for (let i = 0; i < labels.length; i++) {
 					dataSeries[i] = 0;
 				}
 
-				for (i in colSummary) {
-					value = colSummary[i];
-					index = labels.indexOf(i);
+				for (let i in colSummary) {
+					let value = colSummary[i];
+					let index = labels.indexOf(i);
 					if (index === -1) {
 						// Couldn't find index, try forcing it to be a number
 						index = labels.indexOf(parseInt(i, 10));
@@ -954,16 +886,11 @@ define(
 
 				// Outputs a summary object where values within the same set of aliases are grouped
 
-				var newSummary,
-					i,
-					j, aliases,
-					inAlias;
-
-				newSummary = {};
-				for (i in summary) {
-					inAlias = false;
-					for (j = 0; j < aliasList.length; j++) {
-						aliases = aliasList[j];
+				let newSummary = {};
+				for (let i in summary) {
+					let inAlias = false;
+					for (let j = 0; j < aliasList.length; j++) {
+						let aliases = aliasList[j];
 
 						if (aliases.indexOf(i) !== -1) {
 							inAlias = true;
@@ -993,15 +920,6 @@ define(
 
 				// Also optionally takes a set of aliases for one or both columns
 
-				var varSummary,
-					headerSummary,
-					comparisonSummary,
-
-					aliases,
-					filters,
-
-					i, j;
-
 				if (arguments.length === 3) {
 					// No aliases specified
 					varCol = headerAliases;
@@ -1016,22 +934,22 @@ define(
 					}
 				}
 
-				headerSummary = Analyser.getColSummary(rows, headerCol, headerAliases);
-				varSummary = Analyser.getColSummary(rows, varCol, varAliases);
+				let headerSummary = Analyser.getColSummary(rows, headerCol, headerAliases);
+				let varSummary = Analyser.getColSummary(rows, varCol, varAliases);
 
-				aliases = {};
+				let aliases = {};
 				if (headerAliases) {
 					aliases.HEADERS = headerAliases;
 				}
 				if (varAliases) {
 					aliases.VARS = varAliases;
 				}
-				filters = Analyser._getAliasFilters(aliases);
+				let filters = Analyser._getAliasFilters(aliases);
 
-				comparisonSummary = {};
-				for (i in varSummary) {
+				let comparisonSummary = {};
+				for (let i in varSummary) {
 					comparisonSummary[i] = {};
-					for (j in headerSummary) {
+					for (let j in headerSummary) {
 						comparisonSummary[i][j] = filters.filterRows(rows,
 							varCol, Analyser._extractNumber(i),
 							headerCol, Analyser._extractNumber(j)
@@ -1047,11 +965,8 @@ define(
 				// then returns a string of the data that can be copy/pasted
 				// into a spreadsheet
 
-				var comparisonSummary,
-					comparisonSummaryString;
-
-				comparisonSummary = Analyser.getComparisonSummary.apply(this, arguments);
-				comparisonSummaryString = Analyser._convertTableToString(comparisonSummary, true);
+				let comparisonSummary = Analyser.getComparisonSummary.apply(this, arguments);
+				let comparisonSummaryString = Analyser._convertTableToString(comparisonSummary, true);
 
 				return comparisonSummaryString;
 			}
