@@ -57,7 +57,7 @@ $heading-font-family: "Roboto", Arial, sans-serif;
 	--error-color: red;
 	--error-border: red;
 
-	--status-success: green;
+	--status-success: #{$blue--dim};
 	--status-error: red;
 }
 
@@ -91,7 +91,7 @@ $heading-font-family: "Roboto", Arial, sans-serif;
 	--error-color: red;
 	--error-border: red;
 
-	--status-success: green;
+	--status-success: #{$blue--dim};
 	--status-error: red;
 }
 

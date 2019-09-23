@@ -196,6 +196,13 @@ $docs-nav-toggle-bar-size: 4px;
 			top: 0;
 		}
 	}
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 5px var(--status-success);
+		&.is-error {
+			box-shadow: 0 0 5px var(--status-error);
+		}
+	}
 }
 
 .docs-example__output-container {

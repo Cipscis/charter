@@ -22,7 +22,8 @@ define(
 			};
 
 			const classes = {
-				codeEntry: 'code__entry'
+				codeEntry: 'code__entry',
+				error: 'is-error'
 			};
 
 			let data;
@@ -125,9 +126,7 @@ define(
 					let $output = $example.querySelector(selectors.output);
 
 					let code = `'use strict';
-					try {
-						${$code.innerText}
-					} catch (e) {}`;
+					${$code.innerText}`;
 
 					let output = [];
 					consoleSubstitute = {
@@ -154,8 +153,10 @@ define(
 						} else {
 							module._renderOutput(output, $output);
 						}
+						$code.classList.remove(classes.error);
 					} catch (e) {
 						// console.error(e.message);
+						$code.classList.add(classes.error);
 					}
 				},
 

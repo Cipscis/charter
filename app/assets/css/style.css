@@ -285,7 +285,7 @@ p:last-child {
   --error-background: #fee;
   --error-color: red;
   --error-border: red;
-  --status-success: green;
+  --status-success: #006fdd;
   --status-error: red; }
 
 .dark-mode {
@@ -310,7 +310,7 @@ p:last-child {
   --error-background: #755;
   --error-color: red;
   --error-border: red;
-  --status-success: green;
+  --status-success: #006fdd;
   --status-error: red; }
 
 body,
@@ -1241,6 +1241,12 @@ body {
     position: absolute;
     right: 7px;
     top: 0; }
+
+.docs-example__code:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--status-success); }
+  .docs-example__code:focus.is-error {
+    box-shadow: 0 0 5px var(--status-error); }
 
 .docs-example__output-container {
   margin: 0 !important;
