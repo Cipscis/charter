@@ -61,7 +61,9 @@ define(
 				},
 
 				_isButton: function (el) {
-					let isButton = el.matches('button, input[type="button"], input[type="submit"]');
+					// This selector should match all elements that will treat "enter" as a "click" event
+
+					let isButton = el.matches('button, input[type="button"], input[type="submit"], a[href]');
 					return isButton;
 				},
 
