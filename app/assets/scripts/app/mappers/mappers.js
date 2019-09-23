@@ -1,26 +1,22 @@
 define([], function () {
 
-	return {
+	// Used as callbacks for Array.prototype.map
+
+	const mappers = {
 		timesArray: function (array) {
-			return function (val, index) {
-				return val * array[index];
-			};
+			return (val, index) => val * array[index];
 		},
 		overArray: function (array) {
-			return function (val, index) {
-				return val / array[index];
-			};
+			return (val, index) => val / array[index];
 		},
 		times: function (number) {
-			return function (val) {
-				return val * number;
-			};
+			return (val) => val * number;
 		},
 		over: function (number) {
-			return function (val) {
-				return val / number;
-			};
+			return (val) => val / number;
 		}
 	};
+
+	return mappers;
 
 });

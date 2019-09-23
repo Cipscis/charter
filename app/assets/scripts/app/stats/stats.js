@@ -5,33 +5,21 @@ define(
 
 	function (Mappers) {
 		// Callbacks for reduce
-		var sum = function (s, v, i, arr) {
-			return s + v;
-		};
+		const sum = (s, v, i, arr) => s + v;
 
-		var sumDiffSquared = function (diffValue) {
-			return function (s, v, i, arr) {
-				return s + Math.pow(v - diffValue, 2);
-			};
+		const sumDiffSquared = function (diffValue) {
+			return (s, v, i, arr) => s + Math.pow(v - diffValue, 2);
 		};
 
 		// Sorting callbacks
-		var numericalDesc = function (a, b) {
-			return b-a;
-		};
+		const numericalDesc = (a, b) => b-a;
 
-		var numericalAsc = function (a, b) {
-			return a-b;
-		};
+		const numericalAsc = (a, b) => a-b;
 
-		var Stats = {
-			sum: function (values) {
-				return values.reduce(sum, 0);
-			},
+		const Stats = {
+			sum: (values) => values.reduce(sum, 0),
 
-			mean: function (values) {
-				return values.reduce(sum, 0) / values.length;
-			},
+			mean: (values) => values.reduce(sum, 0) / values.length,
 
 			median: function (values) {
 				// Create a copy and sort it in place
@@ -47,28 +35,21 @@ define(
 			},
 
 			variance: function (values) {
-				var mean,
-					variance;
+				let mean = Stats.mean(values);
 
-				mean = Stats.mean(values);
-
-				variance = values.reduce(sumDiffSquared(mean), 0);
+				let variance = values.reduce(sumDiffSquared(mean), 0);
 				variance = variance / (values.length - 1);
 
 				return variance;
 			},
 
-			sd: function (values) {
-				// Standard Variation
-				return Math.sqrt(Stats.variance(values));
-			},
+			sd: (values) => Math.sqrt(Stats.variance(values)),
 
 			max: function (values) {
-				var maxValue = values[0],
-					i, value;
+				let maxValue = values[0];
 
-				for (i = 1; i < values.length; i++) {
-					value = values[i];
+				for (let i = 1; i < values.length; i++) {
+					let value = values[i];
 					if (value > maxValue) {
 						maxValue = value;
 					}
@@ -78,11 +59,10 @@ define(
 			},
 
 			min: function (values) {
-				var minValue = values[0],
-					i, value;
+				let minValue = values[0];
 
-				for (i = 1; i < values.length; i++) {
-					value = values[i];
+				for (let i = 1; i < values.length; i++) {
+					let value = values[i];
 					if (value < minValue) {
 						minValue = value;
 					}
@@ -95,15 +75,14 @@ define(
 				start = Math.round(start);
 				finish = Math.round(finish);
 
-				var range = [],
-					i;
+				let range = [];
 
 				if (finish > start) {
-					for (i = start; i <= finish; i++) {
+					for (let i = start; i <= finish; i++) {
 						range.push(i);
 					}
 				} else {
-					for (i = start; i >= finish; i--) {
+					for (let i = start; i >= finish; i--) {
 						range.push(i);
 					}
 				}
@@ -121,32 +100,25 @@ define(
 				// an array of these values for the corresponding
 				// values given in or calculated for x
 
-				var i, fitY,
-
-					r,
-					sdY, sdX,
-					yMean, xMean,
-					a, b;
-
 				if (typeof x === 'undefined') {
 					// If x is undefined, assume even distribution
 					// from 0 to 100 of same length as y
 					x = [];
-					for (i = 0; i < y.length; i++) {
+					for (let i = 0; i < y.length; i++) {
 						x.push(i / (y.length-1) * 100);
 					}
 				}
 
-				r = Stats.r(y, x);
-				sdY = Stats.sd(y);
-				sdX = Stats.sd(x);
-				yMean = Stats.mean(y);
-				xMean = Stats.mean(x);
+				let r = Stats.r(y, x);
+				let sdY = Stats.sd(y);
+				let sdX = Stats.sd(x);
+				let yMean = Stats.mean(y);
+				let xMean = Stats.mean(x);
 
-				b = r * sdY / sdX;
-				a = yMean - (b * xMean);
+				let b = r * sdY / sdX;
+				let a = yMean - (b * xMean);
 
-				fitY = [];
+				let fitY = [];
 				for (i = 0; i < x.length; i++) {
 					fitY.push(a + b*x[i]);
 				}
@@ -159,38 +131,30 @@ define(
 				// between two equal length arrays of values
 				// The order of inputs doesn't matter
 
-				var xSum, ySum,
-					xy, xySum,
-					xx, xxSum,
-					yy, yySum,
-					r;
+				let xSum = x.reduce(sum, 0);
+				let ySum = y.reduce(sum, 0);
 
-				xSum = x.reduce(sum, 0);
-				ySum = y.reduce(sum, 0);
+				let xy = x.map(Mappers.timesArray(y));
+				let xySum = xy.reduce(sum, 0);
 
-				xy = x.map(Mappers.timesArray(y));
-				xySum = xy.reduce(sum, 0);
+				let xx = x.map(Mappers.timesArray(x));
+				let xxSum = xx.reduce(sum, 0);
 
-				xx = x.map(Mappers.timesArray(x));
-				xxSum = xx.reduce(sum, 0);
+				let yy = y.map(Mappers.timesArray(y));
+				let yySum = yy.reduce(sum, 0);
 
-				yy = y.map(Mappers.timesArray(y));
-				yySum = yy.reduce(sum, 0);
-
-				r = ((x.length * xySum) - (xSum * ySum)) / Math.sqrt(((x.length * xxSum) - Math.pow(xSum, 2)) * ((x.length * yySum) - Math.pow(ySum, 2)));
+				let r = ((x.length * xySum) - (xSum * ySum)) / Math.sqrt(((x.length * xxSum) - Math.pow(xSum, 2)) * ((x.length * yySum) - Math.pow(ySum, 2)));
 
 				return r;
 			},
 
-			r2: function (y, rY) {
-				// Accepts two equal length arrays of values:
-				// y: the data points, and rY: the regression points
-				// (order technically doesn't matter)
 
-				// Calculates the r^2 of a regression model
+			// Accepts two equal length arrays of values:
+			// y: the data points, and rY: the regression points
+			// (order technically doesn't matter)
 
-				return Math.pow(Stats.r(y, rY), 2);
-			},
+			// Calculates the r^2 of a regression model
+			r2: (y, rY) => Math.pow(Stats.r(y, rY), 2),
 
 			smooth: function (y, smoothness) {
 				// Takes in an array of values y, and smooths
@@ -198,10 +162,10 @@ define(
 				// a number of data points based on the smoothness
 				// value. If smoothness is 1, will return y
 
-				var smoothY = [];
-				var average = [];
+				let smoothY = [];
+				let average = [];
 
-				for (var i = 0; i < y.length; i++) {
+				for (let i = 0; i < y.length; i++) {
 					average.push(y[i]);
 
 					while (average.length > smoothness) {
@@ -222,12 +186,11 @@ define(
 				// discard any extra elements of y left over if
 				// chunkSize isn't a factor of the length of y
 
-				var chunkY = [];
-				var chunk;
+				let chunkY = [];
 
-				for (var i = 0; i < y.length; i += chunkSize) {
-					chunk = 0;
-					for (var j = 0; j < chunkSize; j++) {
+				for (let i = 0; i < y.length; i += chunkSize) {
+					let chunk = 0;
+					for (let j = 0; j < chunkSize; j++) {
 						chunk += y[i+j];
 					}
 					chunkY.push(chunk);
