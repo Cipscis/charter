@@ -205,13 +205,11 @@ define(
 				return enums;
 			},
 
-			_collectEnums: function (rows, enumsArr, col1, col2, colN) {
+			_collectEnums: function (rows, enumsArr, ...cols) {
 				// Go through all cells in a given set of columns
 				// and add all unique entries found to enumsArr
 
 				enumsArr = enumsArr || [];
-
-				let cols = Array.prototype.slice.call(arguments, 2);
 
 				for (let i = 0; i < rows.length; i++) {
 					let row = rows[i];
@@ -235,7 +233,7 @@ define(
 				return enumsArr;
 			},
 
-			combineData: function (dataConfig1, dataConfig2, dataConfigN) {
+			combineData: function (...dataConfigs) {
 				// Takes in any number of dataConfig objects from _processData
 				// Combines the rows and relevant dataConfig objects (e.g. aliases, enums)
 				// Keeps only columns shared by all dataConfig objects
@@ -245,7 +243,6 @@ define(
 
 				// The output is in the same format as for _processData
 
-				let dataConfigs = Array.prototype.slice.call(arguments, 0);
 				let combinedDataConfig = {
 					cols: {},
 					rows: [],
@@ -663,16 +660,11 @@ define(
 			//////////////////////////////
 			// TRANSFORMING INFORMATION //
 			//////////////////////////////
-			getDerivedCol: function (rows, processFn, optionalCol1, optionalCol2, optionalColN) {
+			getDerivedCol: function (rows, processFn, ...cols) {
 				// Creates an array analogous to a column as returns
 				// by the getCol function, where its output is the
 				// result of applying the processFn function to the row
 				// any number of values from optional column arguments
-
-				let cols = [];
-				for (let i = 2; i < arguments.length; i++) {
-					cols.push(arguments[i]);
-				}
 
 				let derivedCol = [];
 				for (let i = 0; i < rows.length; i++) {
@@ -708,7 +700,7 @@ define(
 				return colIndex;
 			},
 
-			addDerivedCol: function (rows, callback, optionalCol1, optionalCol2, optionalColN) {
+			addDerivedCol: function (rows, callback, ...cols) {
 				// Works like getDerivedCol, but instead of returning
 				// the derived column directly it uses addCol to add
 				// it to rows and returns the new column index.
