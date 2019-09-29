@@ -1,14 +1,13 @@
 require(
 	[
 		'jquery',
-		'd3',
 		'templayed',
 
 		'charter/charter',
 		'analyser/analyser',
 		'stats/stats'
 	],
-	function ($, d3, templayed, Charter, Analyser, Stats) {
+	function ($, templayed, Charter, Analyser, Stats) {
 
 		var config = {
 			headerRows: 1,
@@ -148,12 +147,6 @@ require(
 				}
 			);
 			$('.js-scatter-plot').html($scatterPlot);
-
-			// d3 time animation stuff
-			chartData = $barChart.data('chartData');
-			var x = d3.scaleLinear()
-				.domain([0, chartData.dependentAxis.values[chartData.dependentAxis.values.length-1].value])
-				.range([0, 100]);
 
 			i = 1;
 			var interval = window.setInterval(function () {
