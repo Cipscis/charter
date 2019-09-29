@@ -94,7 +94,6 @@ define(
 							tokenStart = i+1;
 						} else if (wasQuote) {
 							console.error(`A value must be complete immediately after closing a quote. At index ${i}`);
-							debugger;
 
 							// wasQuote is only used for checking for this error, so no use still checking it
 							wasQuote = false;
