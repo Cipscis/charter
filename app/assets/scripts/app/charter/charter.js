@@ -60,6 +60,21 @@ define(
 			gridlinesSkip: null
 		};
 
+		const ChartTypes = {
+			BAR_VERTICAL: 'bar-vertical',
+			BAR_HORIZONTAL: 'bar-horizontal'
+		};
+
+		const dataAttributes = {
+			chartType: 'data-charter-type',
+
+			axisPercentage: 'data-charter-axis-percentage',
+			axisToFixed: 'data-charter-axis-to-fixed',
+
+			axisMin: 'data-charter-axis-min',
+			axisMax: 'data-charter-axis-max'
+		};
+
 		// Expected format of basic chart data:
 		// {
 		// 	title: 'Title',
@@ -411,6 +426,14 @@ define(
 					});
 				}
 
+				axis.data = {
+					min: axis.values[0].value,
+					max: axis.values[axis.values.length-1].value,
+
+					percentage: axisConfig.percentage,
+					toFixed: axisConfig.toFixed
+				}
+
 				return axis;
 			},
 
@@ -720,8 +743,6 @@ define(
 				chartData.dataSeriesByLabel = Charter._getDataSeriesByLabel(chartData.labels, chartData.dataSeries);
 
 				$chart = $(templayed(dependentAxisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
-				$chart.data('chartData', chartData);
-				$chart.data('dependentAxisConfig', dependentAxisConfig);
 
 				return $chart;
 			},
@@ -771,7 +792,6 @@ define(
 
 				// Render chart with specified template
 				$chart = $(templayed(template)(chartData));
-				$chart.data('chartData', chartData);
 
 				return $chart;
 			},
@@ -785,20 +805,25 @@ define(
 
 				// Currently assumes the data will match the current number of bars
 
-				let $chart = $(chart);
-				let chartData = $chart.data('chartData');
-				let axisConfig = $chart.data('dependentAxisConfig');
+				let axisPercentage = Charter._getAxisPercentage(chart);
+				let axisToFixed = Charter._getAxisToFixed(chart);
+				let axisConfig = {
+					percentage: axisPercentage,
+					toFixed: axisToFixed
+				};
 
-				let axisValues = chartData.dependentAxis.values;
-				let min = axisValues[0].value;
-				let max = axisValues[axisValues.length-1].value;
+				let min = Charter._getAxisMin(chart);
+				let max = Charter._getAxisMax(chart);
 
 				let bars = chart.querySelectorAll('.js-chart-bar');
+
+				let chartType = Charter._getChartType(chart);
+				let barSizeAttribute = chartType === ChartTypes.BAR_VERTICAL ? 'height' : 'width';
 
 				bars.forEach((bar, i) => {
 					let d = data[i];
 
-					bar.style[axisConfig.horizontal ? 'width' : 'height'] = Charter._getValueOnScale(d, min, max) * 100 + '%';
+					bar.style[barSizeAttribute] = Charter._getValueOnScale(d, min, max) * 100 + '%';
 
 					bar.setAttribute('title', Charter._getDisplayNumber(d, axisConfig));
 				});
@@ -839,6 +864,39 @@ define(
 				let progressionPercentage = progression / range;
 
 				return progressionPercentage;
+			},
+
+
+			_getChartType: function (chart) {
+				let chartType = chart.getAttribute(dataAttributes.chartType);
+
+				return chartType;
+			},
+
+			_getAxisPercentage: function (chart) {
+				let axisPercentage = chart.getAttribute(dataAttributes.axisPercentage);
+				axisPercentage = axisPercentage === 'true';
+
+				return axisPercentage;
+			},
+			_getAxisToFixed: function (chart) {
+				let axisToFixed = chart.getAttribute(dataAttributes.axisToFixed);
+				axisToFixed = parseInt(axisToFixed, 10);
+
+				return axisToFixed;
+			},
+
+			_getAxisMin: function (chart) {
+				let axisMin = chart.getAttribute(dataAttributes.axisMin);
+				axisMin = parseFloat(axisMin);
+
+				return axisMin;
+			},
+			_getAxisMax: function (chart) {
+				let axisMax = chart.getAttribute(dataAttributes.axisMax);
+				axisMax = parseFloat(axisMax);
+
+				return axisMax;
 			}
 		};
 

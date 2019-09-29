@@ -14,6 +14,9 @@ define(
 			_tokenise: function (csvString) {
 				let tokens = [];
 
+				// Remove carriage returns
+				csvString = csvString.replace(/\r/g, '');
+
 				let inQuote = false;
 				let wasQuote = false;
 
