@@ -1,9 +1,9 @@
 define(
 	[
-		'papaparse'
+		'parser/parser'
 	],
 
-	function (Papa) {
+	function (Parser) {
 		const Analyser = {
 			/////////////////////
 			// FILE PROCESSING //
@@ -391,23 +391,16 @@ define(
 			/////////////////
 			_parseCsv: function (csv, callback) {
 				// Parse a CSV file then process the data
-
-				Papa.parse(csv, {
-					complete: Analyser._csvParsed(callback)
-				});
-			},
-
-			_csvParsed: function (callback) {
 				// Convert strings to numbers where appropriate,
 				// then pass the data to a callback function
 
-				return function (csv) {
-					Analyser._extractCellNumbers(csv.data);
+				let data = Parser.parse(csv);
 
-					if (callback && typeof callback === 'function') {
-						callback(csv.data);
-					}
-				};
+				Analyser._extractCellNumbers(data);
+
+				if (callback && typeof callback === 'function') {
+					callback(data);
+				}
 			},
 
 			_extractCellNumbers: function (csv) {
