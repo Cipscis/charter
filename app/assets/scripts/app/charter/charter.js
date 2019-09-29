@@ -2,7 +2,6 @@ define(
 	[
 		'jquery',
 		'templayed',
-		'd3',
 
 		'stats/stats',
 
@@ -16,7 +15,6 @@ define(
 	function (
 		$,
 		templayed,
-		d3,
 
 		Stats,
 
@@ -791,32 +789,56 @@ define(
 				let chartData = $chart.data('chartData');
 				let axisConfig = $chart.data('dependentAxisConfig');
 
-				chart = d3.select(chart);
-
 				let axisValues = chartData.dependentAxis.values;
-				let x = d3.scaleLinear()
-					.domain([axisValues[0].value, axisValues[axisValues.length-1].value])
-					.range([0, 100]);
+				let min = axisValues[0].value;
+				let max = axisValues[axisValues.length-1].value;
 
-				let bars = chart.selectAll('.js-chart-bar')
-					.data(data);
-				bars
-					.style(axisConfig.horizontal ? 'width' : 'height', function (d) { return x(d) + '%'; })
-					.attr('title', function (d) { return Charter._getDisplayNumber(d, axisConfig); });
+				let bars = chart.querySelectorAll('.js-chart-bar');
+
+				bars.forEach((bar, i) => {
+					let d = data[i];
+
+					bar.style[axisConfig.horizontal ? 'width' : 'height'] = Charter._getValueOnScale(d, min, max) * 100 + '%';
+
+					bar.setAttribute('title', Charter._getDisplayNumber(d, axisConfig));
+				});
 
 
-				let tooltips = chart.selectAll('.js-chart-tooltip')
-					.data(data);
-				tooltips
-					.text(function (d) { return Charter._getDisplayNumber(d, axisConfig); });
+				let tooltips = chart.querySelectorAll('.js-chart-tooltip');
+
+				tooltips.forEach((tooltip, i) => {
+					let d = data[i];
+
+					tooltip.textContent = Charter._getDisplayNumber(d, axisConfig);
+				});
 
 
 				if (titleText) {
-					let title = chart.selectAll('.js-chart-title')
-						.data([titleText]);
-					title
-						.text(function (d) { return titleText; });
+					let title = chart.querySelectorAll('.js-chart-title');
+
+					title.textContent = titleText;
 				}
+			},
+
+			_getValueOnScale: function (value, min, max) {
+				// Create a linear scale between min and max, and
+				// return the position of value as a proportion of the range
+
+				if (max < min) {
+					let temp = max;
+					max = min;
+					min = temp;
+				} else if (max === min) {
+					console.error(`Cannot create a scale with identical minimum and maximum values.`);
+					return null;
+				}
+
+				let range = max - min;
+				let progression = value - min;
+
+				let progressionPercentage = progression / range;
+
+				return progressionPercentage;
 			}
 		};
 

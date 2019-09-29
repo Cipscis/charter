@@ -803,7 +803,7 @@ require(
 				]
 			};
 
-			sAxisConfig = {
+			var sAxisConfig = {
 				max: 15,
 				values: 3,
 				valuesAt: [1],
