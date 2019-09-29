@@ -2,7 +2,6 @@ define(
 	[
 		'jquery',
 		'templayed',
-		'papaparse',
 		'd3',
 
 		'stats/stats',
@@ -17,7 +16,6 @@ define(
 	function (
 		$,
 		templayed,
-		Papa,
 		d3,
 
 		Stats,
