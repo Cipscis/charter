@@ -1,6 +1,5 @@
 define(
 	[
-		'jquery',
 		'templayed',
 
 		'stats/stats',
@@ -13,7 +12,6 @@ define(
 	],
 
 	function (
-		$,
 		templayed,
 
 		Stats,
@@ -742,7 +740,7 @@ define(
 
 				chartData.dataSeriesByLabel = Charter._getDataSeriesByLabel(chartData.labels, chartData.dataSeries);
 
-				$chart = $(templayed(dependentAxisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData));
+				$chart = templayed(dependentAxisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData);
 
 				return $chart;
 			},
@@ -791,7 +789,7 @@ define(
 				chartData = Charter._getDisplayValues(chartData, independentAxisConfig);
 
 				// Render chart with specified template
-				$chart = $(templayed(template)(chartData));
+				$chart = templayed(template)(chartData);
 
 				return $chart;
 			},
