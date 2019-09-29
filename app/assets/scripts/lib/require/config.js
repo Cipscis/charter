@@ -5,7 +5,6 @@ require.config({
 		'util': '../util',
 		'templates': '../../templates',
 
-		'jquery': '../lib/jquery-3.1.1.min',
 		'templayed': '../lib/templayed',
 		'papaparse': '../lib/papaparse.min',
 		'd3': '../lib/d3.min',
