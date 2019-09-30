@@ -503,7 +503,7 @@ define(
 
 						// Add commas for display values
 						dataPoint.displayValue = Charter._getDisplayNumber(dataPoint.value, axisConfig);
-						dataPoint.label = chartData.labels[j];
+						dataPoint.label = chartData.allLabels[j];
 						dataPoint.dataSeries = dataSeries.name;
 						dataPoint.hasDataSeries = !!dataPoint.dataSeries;
 					}
@@ -732,6 +732,7 @@ define(
 
 				dependentAxisConfig = Charter._getNumericAxisOptions(dependentAxisConfig);
 
+				chartData.allLabels = chartData.labels;
 				chartData.labels = Charter._processQualitativeLabels(chartData.labels, independentAxisConfig);
 
 				chartData.dependentAxis = Charter._createNumericAxis(chartData, dependentAxisConfig);
