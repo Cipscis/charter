@@ -205,7 +205,7 @@ define(
 				}
 
 				let finalRange = [ranges[0][0], ranges[0][1]];
-				for (i = 1; i < ranges.length; i++) {
+				for (let i = 1; i < ranges.length; i++) {
 					finalRange[0] = Math.min(finalRange[0], ranges[i][0]);
 					finalRange[1] = Math.max(finalRange[1], ranges[i][1]);
 				}
@@ -740,7 +740,7 @@ define(
 
 				chartData.dataSeriesByLabel = Charter._getDataSeriesByLabel(chartData.labels, chartData.dataSeries);
 
-				$chart = templayed(dependentAxisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData);
+				let $chart = templayed(dependentAxisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData);
 
 				return $chart;
 			},
@@ -775,7 +775,7 @@ define(
 					}
 				}
 
-				dataSeries = Charter._processDataSeries(chartData.dataSeries);
+				let dataSeries = Charter._processDataSeries(chartData.dataSeries);
 
 				// Construct independent qualitative axis and dependent numeric axis
 				chartData.independentAxis = Charter._createQualitativeAxis(chartData, dependentAxisConfig);
@@ -789,7 +789,7 @@ define(
 				chartData = Charter._getDisplayValues(chartData, independentAxisConfig);
 
 				// Render chart with specified template
-				$chart = templayed(template)(chartData);
+				let $chart = templayed(template)(chartData);
 
 				return $chart;
 			},
