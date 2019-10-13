@@ -776,6 +776,9 @@ define(
 					}
 				}
 
+				chartData.allLabels = chartData.labels;
+				chartData.labels = Charter._processQualitativeLabels(chartData.labels, independentAxisConfig);
+
 				let dataSeries = Charter._processDataSeries(chartData.dataSeries);
 
 				// Construct independent qualitative axis and dependent numeric axis

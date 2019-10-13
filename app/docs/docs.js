@@ -270,7 +270,7 @@ define(
 
 					$output.innerHTML = '';
 
-					if ($chart.jquery) {
+					if ($chart && $chart.jquery) {
 						$chart.appendTo($output);
 					} else {
 						$output.innerHTML = $chart;
