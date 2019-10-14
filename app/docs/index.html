@@ -408,7 +408,7 @@
 
 					<p><code>loadFile</code> takes in one or more pairs of <code>fileInfo</code> and <code>fileConfig</code> arguments, followed by a single <code>callback</code>.</p>
 
-					<p>For each specified file, <code>loadFile</code> either requests a file at the specified path via a GET request, or processes a file that has already been loaded, such as via a file input. It parses the CSV using <a href="https://www.papaparse.com/">papaparse</a>, then processes it internally according to the <code>fileConfig</code> object passed in before passing the processed <code>dataConfig</code> object to a specified <code>callback</code> function.</p>
+					<p>For each specified file, <code>loadFile</code> either requests a file at the specified path via a GET request, or processes a file that has already been loaded, such as via a file input. It parses the CSV, then processes it internally according to the <code>fileConfig</code> object passed in before passing the processed <code>dataConfig</code> object to a specified <code>callback</code> function.</p>
 
 					<p>When processing the data, Analyser will try to intelligently determine which cells contain numbers and which contain strings. Cells that seem to contain percentages will be converted to numbers, e.g. "50%" becomes <code>0.5</code>.</p>
 
