@@ -48,6 +48,7 @@
 							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcolasdataseries">getColAsDataSeries</a></li>
 							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcomparisonsummary">getComparisonSummary</a></li>
 							<li><a class="a docs-nav__item js-menu-link" href="#analyser-getcomparisonsummarystring">getComparisonSummaryString</a></li>
+							<li><a class="a docs-nav__item js-menu-link" href="#analyser-savecomparisonsummarycsv">saveComparisonSummaryCsv</a></li>
 							<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig">fileConfig</a>
 								<ol class="docs-nav__list">
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-headerrows">headerRows</a></li>
@@ -1122,6 +1123,28 @@ console.log(capitalTableString);</code>
 
 					<div class="docs-example__output-container">
 						<samp class="code code--block docs-example__output js-doc-example-output"></samp>
+					</div>
+				</div>
+			</section>
+
+			<section class="docs-method">
+				<div class="content">
+					<h4 class="docs-method__heading" id="analyser-savecomparisonsummarycsv">saveComparisonSummaryCsv</h4>
+
+					<code class="code code--block">saveComparisonSummaryCsv(filename, rows, headerCol, headerAliases, varCol, varAliases)</code>
+
+					<p>Calls <code>getComparisonSummary</code> and converts the result into a CSV, which is then automatically downloaded.</p>
+
+					<p>(city example.csv)</p>
+				</div>
+
+				<div class="docs-example">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code">let rows = dataConfig.rows;
+let cols = dataConfig.cols;
+let aliases = dataConfig.aliases;
+
+let capitalTableString = Analyser.saveComparisonSummaryCsv('Capital cities.csv', rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);</code>
 					</div>
 				</div>
 			</section>
