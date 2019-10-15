@@ -1,9 +1,10 @@
 define(
 	[
-		'parser/parser'
+		'parser/parser',
+		'fileio/fileio'
 	],
 
-	function (Parser) {
+	function (Parser, fileIO) {
 		const Analyser = {
 			/////////////////////
 			// FILE PROCESSING //
@@ -745,45 +746,64 @@ define(
 				return tableString;
 			},
 
-			_convertTableToString: function (table, useKeys) {
-				const cellSeparator = '\t';
-				const rowSeparator = '\n';
+			_convertTableToString: function (table, useKeys, cellSeparatorOption, rowSeparatorOption) {
+				const cellSeparator = cellSeparatorOption || '\t';
+				const rowSeparator = rowSeparatorOption || '\n';
 
 				let tableString = '';
+
+				let addCell = (cellString) => {
+					if (typeof cellString !== 'string') {
+						cellString = '' + cellString;
+					}
+
+					if (cellString.indexOf(cellSeparator) !== -1) {
+						// If the cell string contains the separator sequence,
+						// wrap it in " and escape any existing " as ""
+						cellString = '"' + cellString.replace(/"/g, '""') + '"';
+					}
+
+					tableString += cellString + cellSeparator;
+				};
+				let endLine = () => {
+					// Trim off last cell separator, replace with newline
+					tableString = tableString.substr(0, tableString.length - cellSeparator.length) + rowSeparator;
+				};
 
 				// Render headers and create array of labels
 				if (useKeys) {
 					tableString += cellSeparator;
 				}
 
-				let k = false;
-				for (let i in table) {
-					if (k === true) {
+				let firstRowComplete = false;
+				for (let rowName in table) {
+					if (firstRowComplete === true) {
 						break;
 					}
-					k = true;
+					firstRowComplete = true;
 
-					for (let j in table[i]) {
-						tableString += j + cellSeparator;
+					let row = table[rowName];
+					for (let colName in row) {
+						addCell(colName);
 					}
 				}
-				// Trim off last character, replace with newline
-				tableString = tableString.substr(0, tableString.length-1) + rowSeparator;
+				endLine();
 
-				for (let i in table) {
-					k = false;
-					for (let j in table[i]) {
+				for (let rowName in table) {
+					let isFirstRow = false;
+					let row = table[rowName];
+					for (let colName in row) {
+						let cell = row[colName];
 						if (useKeys) {
-							if (k === false) {
-								tableString += i + cellSeparator;
+							if (isFirstRow === false) {
+								addCell(rowName);
 							}
-							k = true;
+							isFirstRow = true;
 						}
 
-						tableString += table[i][j] + cellSeparator;
+						addCell(cell);
 					}
-					// Trim off last character, replace with newline
-					tableString = tableString.substr(0, tableString.length-1) + rowSeparator;
+					endLine();
 				}
 
 				return tableString;
@@ -954,6 +974,18 @@ define(
 				let comparisonSummaryString = Analyser._convertTableToString(comparisonSummary, true);
 
 				return comparisonSummaryString;
+			},
+
+			saveComparisonSummaryCsv: function (filename, rows, headerCol, headerAliases, varCol, varAliases) {
+				// Calls getComparisonSummary with all arguments passed,
+				// then returns a string of the data that can be copy/pasted
+				// into a spreadsheet
+				let args = Array.prototype.slice.call(arguments, 1);
+
+				let comparisonSummary = Analyser.getComparisonSummary.apply(this, args);
+				let comparisonSummaryCsv = Analyser._convertTableToString(comparisonSummary, true, ',', '\n');
+
+				fileIO.save.data(comparisonSummaryCsv, filename, 'text/csv');
 			}
 		};
 
@@ -974,7 +1006,8 @@ define(
 			getColSummary: Analyser.getColSummary,
 			getColAsDataSeries: Analyser.getColAsDataSeries,
 			getComparisonSummary: Analyser.getComparisonSummary,
-			getComparisonSummaryString: Analyser.getComparisonSummaryString
+			getComparisonSummaryString: Analyser.getComparisonSummaryString,
+			saveComparisonSummaryCsv: Analyser.saveComparisonSummaryCsv
 		};
 	}
 );
