@@ -135,6 +135,7 @@
 	display: block;
 	&.table {
 		margin: 3px 0;
+		border-collapse: collapse;
 		td, th {
 			padding: 0 10px;
 			border: 0;
