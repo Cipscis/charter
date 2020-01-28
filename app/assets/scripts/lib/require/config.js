@@ -4,6 +4,7 @@ require.config({
 		'lib': '../lib',
 		'util': '../util',
 		'templates': '../../templates',
+		'data': '../../data',
 
 		'jquery': '../lib/jquery-3.1.1.min',
 		'templayed': '../lib/templayed',
