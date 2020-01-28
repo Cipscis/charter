@@ -453,7 +453,8 @@ h1, h2, h3, h4, h5, h6 {
 .code__entry {
   display: block; }
   .code__entry.table {
-    margin: 3px 0; }
+    margin: 3px 0;
+    border-collapse: collapse; }
     .code__entry.table td, .code__entry.table th {
       padding: 0 10px;
       border: 0;
