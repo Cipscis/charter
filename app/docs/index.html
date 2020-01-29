@@ -1485,7 +1485,7 @@ let cols = dataConfig.cols;
 let newZealandCities = rows.filter(
 	cols.COUNTRY, 'New Zealand'
 );
-console.log(Analyser.getCol(newZealandCities, cols.NAME));</code>
+console.log(newZealandCities.getCol(cols.NAME));</code>
 						</div>
 
 						<div class="docs-example__output-container">
@@ -1502,7 +1502,7 @@ let cols = dataConfig.cols;
 let citiesWithTrains = rows.filter(
 	cols.PUBLIC_TRANSPORT, 'Train'
 );
-console.log(Analyser.getCol(citiesWithTrains, cols.NAME));</code>
+console.log(citiesWithTrains.getCol(cols.NAME));</code>
 						</div>
 
 						<div class="docs-example__output-container">
@@ -1519,7 +1519,7 @@ let cols = dataConfig.cols;
 let australasiaCities = rows.filter(
 	cols.COUNTRY, ['New Zealand', 'Australia']
 );
-console.log(Analyser.getCol(australasiaCities, cols.NAME));</code>
+console.log(australasiaCities.getCol(cols.NAME));</code>
 						</div>
 
 						<div class="docs-example__output-container">
@@ -1536,7 +1536,7 @@ let cols = dataConfig.cols;
 let largerCities = rows.filter(
 	cols.POPULATION, a => a >= 300
 );
-console.log(Analyser.getCol(largerCities, cols.NAME));</code>
+console.log(largerCities.getCol(cols.NAME));</code>
 						</div>
 
 						<div class="docs-example__output-container">
@@ -1554,7 +1554,7 @@ let largeCapitalCities = rows.filter(
 	cols.POPULATION, a => a >= 300,
 	cols.CAPITAL, a => a === 'true'
 );
-console.log(Analyser.getCol(largeCapitalCities, cols.NAME));</code>
+console.log(largeCapitalCities.getCol(cols.NAME));</code>
 						</div>
 
 						<div class="docs-example__output-container">
@@ -1572,7 +1572,7 @@ let veryLargeOrCapitalCities = rows.filter( true,
 	cols.POPULATION, a => a >= 1000,
 	cols.CAPITAL, a => a === 'true'
 );
-console.log(Analyser.getCol(veryLargeOrCapitalCities, cols.NAME));</code>
+console.log(veryLargeOrCapitalCities.getCol(cols.NAME));</code>
 						</div>
 
 						<div class="docs-example__output-container">
@@ -1602,7 +1602,7 @@ let newZealandCapital = rows.filterAnd(
 	cols.COUNTRY, 'New Zealand',
 	cols.CAPITAL, a => a === 'true'
 );
-console.log(Analyser.getCol(newZealandCapital, cols.NAME));</code>
+console.log(newZealandCapital.getCol(cols.NAME));</code>
 						</div>
 
 						<div class="docs-example__output-container">
@@ -1632,7 +1632,7 @@ let largeOrCapitalCities = rows.filterOr(
 	cols.POPULATION, a => a >= 1000,
 	cols.CAPITAL, a => a === 'true'
 );
-console.log(Analyser.getCol(largeOrCapitalCities, cols.NAME));</code>
+console.log(largeOrCapitalCities.getCol(cols.NAME));</code>
 						</div>
 
 						<div class="docs-example__output-container">
