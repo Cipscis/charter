@@ -224,23 +224,6 @@ define(
 
 				// Set filters on rows object
 				Analyser._createRowFilterFunctions(dataConfig.rows, dataConfig.filters);
-				dataConfig.rows.filter = function () {
-					var args = [this].concat(Array.from(arguments));
-
-					return dataConfig.filters.filterRows.apply(this, args);
-				};
-
-				dataConfig.rows.filterOr = function () {
-					var args = [this].concat(Array.from(arguments));
-
-					return dataConfig.filters.filterRowsOr.apply(this, args);
-				};
-
-				dataConfig.rows.filterAnd = function () {
-					var args = [this].concat(Array.from(arguments));
-
-					return dataConfig.filters.filterRowsAnd.apply(this, args);
-				};
 
 				// Build enums
 				dataConfig.enums = Analyser._buildEnums(rows, fileConfig);
@@ -571,7 +554,10 @@ define(
 						}
 					}
 
-					return new AnalyserRows(filteredRows);
+					filteredRows = new AnalyserRows(filteredRows);
+					Analyser._createRowFilterFunctions(filteredRows, rows);
+
+					return filteredRows;
 				};
 
 				const filterRowsAnd = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
@@ -602,6 +588,14 @@ define(
 			},
 
 			_createRowFilterFunctions: function (rows, filters) {
+				if (filters instanceof AnalyserRows) {
+					filters = {
+						filterRows: filters.filter,
+						filterRowsAnd: filters.filterAnd,
+						filterRowsOr: filters.filterOr
+					};
+				}
+
 				rows.filter = function () {
 					var args = [this].concat(Array.from(arguments));
 
