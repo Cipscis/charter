@@ -68,9 +68,9 @@
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-dataconfig-enums">enums</a></li>
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters">filters</a>
 										<ol class="docs-nav__list">
-											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filterrows">filterRows</a></li>
-											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filterrowsand">filterRowsAnd</a></li>
-											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filterrowsor">filterRowsOr</a></li>
+											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filter">filter</a></li>
+											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filterand">filterAnd</a></li>
+											<li><a class="a docs-nav__item js-menu-link" href="#analyser-filters-filteror">filterOr</a></li>
 										</ol>
 									</li>
 								</ol>
@@ -399,6 +399,16 @@
 				<p>Through that object, you will have access to <code>rows</code> array, where each element is an array representing a row in the CSV, and a <code>cols</code> object you have defined for accessing specific columns.</p>
 
 				<p>You will also have access to a set of filter functions for filtering rows, which can make use of optional sets of aliases if appropriate for your data. See the <a href="#dataConfig">dataConfig</a> section for more information</p>
+
+				<h3>Row methods vs. Analyser methods</h3>
+
+				<p>Some methods documented here exist on the <code>rows</code> object made available through the <code>dataConfig</code> object. Each of these methods can also be called as a method of the <code>Analyser</code> object, by passing in the <code>rows</code> object as the first argument.</p>
+
+				<p>For example, the <code><a href="#analyser-getcol">getCol</a></code> function can be called as either <code>Analyser.getCol(rows, colNum)</code> or as <code>rows.getCol(colNum)</code></p>
+
+				<p>Filter methods may also be called in two ways. They are also exposed on the <code>rows</code> object, but alternatively they are also exposed via the <code>filters</code> property of the <code>dataConfig</code> object, where they have slightly different names and expect a <code>rows</code> object as their first argument. These are available for backwards compatability purposes.</p>
+
+				<p>Both variant ways of calling these functions are documented here. The form of <code>rows.getCol(colNum)</code> is preferred, whereas the <code>Analyser.getCol</code> variant is maintained for backwards compatability. This primary form is used in the examples.</p>
 			</div>
 
 			<section class="docs-method">
@@ -460,7 +470,7 @@ let exploreData = function (dataConfig) {
 
 	// Do stuff with the data here
 
-	let table = Analyser.createSubTableString(rows, cols);
+	let table = rows.createSubTableString(cols);
 	console.log(table);
 };
 
@@ -617,7 +627,7 @@ let analyseCombinedData = function (dataConfig) {
 
 	// Do stuff with the combined data from both files here
 
-	let table = Analyser.createSubTableString(rows, cols);
+	let table = rows.createSubTableString(cols);
 	console.log(table);
 };
 
@@ -777,7 +787,8 @@ console.log(cols);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-getcol">getCol</h4>
 
-					<code class="code code--block">getCol(rows, colNum)</code>
+					<code class="code code--block">rows.getCol(colNum)</code>
+					<code class="code code--block">Analyser.getCol(rows, colNum)</code>
 
 					<p>Returns a single array representing the values of a single column for a set of rows of processed data.</p>
 
@@ -793,7 +804,7 @@ console.log(cols);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let cityNames = Analyser.getCol(rows, cols.NAME);
+let cityNames = rows.getCol(cols.NAME);
 
 console.log(cityNames);</code>
 					</div>
@@ -808,7 +819,8 @@ console.log(cityNames);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-addcol">addCol</h4>
 
-					<code class="code code--block">addCol(rows, col)</code>
+					<code class="code code--block">rows.addCol(col)</code>
+					<code class="code code--block">Analyser.addCol(rows, col)</code>
 
 					<p>Adds a new column to the set of rows, and returns the index of the new column so it can be added to the <code>cols</code> object and used to continue accessing the new column.</p>
 
@@ -824,12 +836,12 @@ console.log(cityNames);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let previousYearPopulation = Analyser.getCol(rows, cols.POPULATION);
+let previousYearPopulation = rows.getCol(cols.POPULATION);
 
 previousYearPopulation.pop();
 rows.shift();
 
-cols.POPULATION_PREVIOUS = Analyser.addCol(rows, previousYearPopulation);
+cols.POPULATION_PREVIOUS = rows.addCol(previousYearPopulation);
 
 let subCols = {
 	NAME: cols.NAME,
@@ -837,7 +849,7 @@ let subCols = {
 	POP_PREV: cols.POPULATION_PREVIOUS
 };
 
-let table = Analyser.createSubTable(rows, subCols);
+let table = rows.createSubTable(subCols);
 console.table(table);</code>
 					</div>
 
@@ -851,7 +863,8 @@ console.table(table);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-getderivedcol">getDerivedCol</h4>
 
-					<code class="code code--block">getDerivedCol(rows, processFn, ...cols)</code>
+					<code class="code code--block">rows.getDerivedCol(processFn, ...cols)</code>
+					<code class="code code--block">Analyser.getDerivedCol(rows, processFn, ...cols)</code>
 
 					<p>Creates a column of data that is the result of passing an individual row and any number of optional values from specified columns into a processing function. This does not modify the existing <code>rows</code> data.</p>
 
@@ -871,12 +884,12 @@ console.table(table);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let getRawPopulation = function (rows) {
+let getRawPopulation = function (row) {
 	// The population column in the spreadsheet is in thousands
-	return rows[cols.POPULATION] * 1000;
+	return row[cols.POPULATION] * 1000;
 };
 
-let rawPopulation = Analyser.getDerivedCol(rows, getRawPopulation);
+let rawPopulation = rows.getDerivedCol(getRawPopulation);
 
 console.log(rawPopulation);</code>
 					</div>
@@ -891,7 +904,8 @@ console.log(rawPopulation);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-addderivedcol">addDerivedCol</h4>
 
-					<code class="code code--block">addDerivedCol(rows, processFn, ...cols)</code>
+					<code class="code code--block">rows.addDerivedCol(processFn, ...cols)</code>
+					<code class="code code--block">Analyser.addDerivedCol(rows, processFn, ...cols)</code>
 
 					<p>Creates a new column as per <code>getDerivedCol</code>, then passes it in to <code>addCol</code> and returns the index of the new column.</p>
 
@@ -903,19 +917,19 @@ console.log(rawPopulation);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let getRawPopulation = function (rows) {
+let getRawPopulation = function (row) {
 	// Population stored in thousands
-	return rows[cols.POPULATION] * 1000;
+	return row[cols.POPULATION] * 1000;
 };
 
-cols.POP_RAW = Analyser.addDerivedCol(rows, getRawPopulation);
+cols.POP_RAW = rows.addDerivedCol(getRawPopulation);
 
 let summaryCols = {
 	NAME: cols.NAME,
 	POP_RAW: cols.POP_RAW
 };
 
-let table = Analyser.createSubTable(rows, summaryCols);
+let table = rows.createSubTable(summaryCols);
 console.table(table);</code>
 					</div>
 
@@ -929,7 +943,8 @@ console.table(table);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-createsubtable">createSubTable</h4>
 
-					<code class="code code--block">createSubTable(rows, cols)</code>
+					<code class="code code--block">rows.createSubTable(cols)</code>
+					<code class="code code--block">Analyser.createSubTable(rows, cols)</code>
 
 					<p>Creates an object suitable for passing into <code>console.table</code>, using the rows in <code>rows</code> and the columns defined in <code>cols</code>. Depending on the size of your data, it may be useful to create a smaller <code>cols</code> object that does not contain every column to pass in here.</p>
 
@@ -950,7 +965,7 @@ let summaryCols = {
 	POPULATION: cols.POPULATION
 };
 
-let summaryTable = Analyser.createSubTable(rows, summaryCols);
+let summaryTable = rows.createSubTable(summaryCols);
 console.table(summaryTable);</code>
 					</div>
 
@@ -964,7 +979,8 @@ console.table(summaryTable);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-createsubtablestring">createSubTableString</h4>
 
-					<code class="code code--block">createSubTableString(rows, cols)</code>
+					<code class="code code--block">rows.createSubTableString(cols)</code>
+					<code class="code code--block">Analyser.createSubTableString(rows, cols)</code>
 
 					<p>Calls <code>createSubTable</code> and converts the result into a string that separates cells by tabs and rows by newlines, so it can be copied and pasted into a spreadsheet.</p>
 
@@ -981,7 +997,7 @@ let summaryCols = {
 	POPULATION: cols.POPULATION
 };
 
-let summaryTableString = Analyser.createSubTableString(rows, summaryCols);
+let summaryTableString = rows.createSubTableString(summaryCols);
 console.log(summaryTableString);</code>
 					</div>
 
@@ -995,7 +1011,8 @@ console.log(summaryTableString);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-getcolsummary">getColSummary</h4>
 
-					<code class="code code--block">getColSummary(rows, cols, aliasList)</code>
+					<code class="code code--block">rows.getColSummary(cols, aliasList)</code>
+					<code class="code code--block">Analyser.getColSummary(rows, cols, aliasList)</code>
 
 					<p>Returns an object containing a count of each time a value occurred in one or more columns, optionally counting values as being the same if specified in an optional set of aliases.</p>
 
@@ -1014,10 +1031,10 @@ console.log(summaryTableString);</code>
 let cols = dataConfig.cols;
 let aliases = dataConfig.aliases;
 
-let countrySummary = Analyser.getColSummary(rows, cols.COUNTRY);
+let countrySummary = rows.getColSummary(cols.COUNTRY);
 console.log(countrySummary);
 
-let countrySummaryWithAliases = Analyser.getColSummary(rows, cols.COUNTRY, aliases.COUNTRY);
+let countrySummaryWithAliases = rows.getColSummary(cols.COUNTRY, aliases.COUNTRY);
 console.log(countrySummaryWithAliases);</code>
 					</div>
 
@@ -1031,7 +1048,8 @@ console.log(countrySummaryWithAliases);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-getcolasdataseries">getColAsDataSeries</h4>
 
-					<code class="code code--block">getColAsDataSeries(rows, col, labels)</code>
+					<code class="code code--block">rows.getColAsDataSeries(col, labels)</code>
+					<code class="code code--block">Analyser.getColAsDataSeries(rows, col, labels)</code>
 
 					<p>Returns a <code>dataSeries</code> array as used by <a href="#Charter">Charter</a>. Each element in the output array will be the count of the number of rows containing a value in the specified column that matches the value in the element of the <code>labels</code> array at the same index.</p>
 
@@ -1049,9 +1067,9 @@ console.log(countrySummaryWithAliases);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let labels = Analyser.getCol(rows, cols.COUNTRY);
+let labels = rows.getCol(cols.COUNTRY);
 
-let dataSeries = Analyser.getColAsDataSeries(rows, cols.COUNTRY, labels);
+let dataSeries = rows.getColAsDataSeries(cols.COUNTRY, labels);
 console.log(dataSeries);</code>
 					</div>
 
@@ -1065,7 +1083,8 @@ console.log(dataSeries);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-getcomparisonsummary">getComparisonSummary</h4>
 
-					<code class="code code--block">getComparisonSummary(rows, headerCol, headerAliases, varCol, varAliases)</code>
+					<code class="code code--block">rows.getComparisonSummary(headerCol, headerAliases, varCol, varAliases)</code>
+					<code class="code code--block">Analyser.getComparisonSummary(rows, headerCol, headerAliases, varCol, varAliases)</code>
 
 					<p>Creates an object that can be used with <code>console.table</code> with the values of <code>headerCol</code> used in the header, and the values of <code>varCol</code> used for each row, with the cells denoting the number of times these values coincided.</p>
 
@@ -1088,7 +1107,7 @@ console.log(dataSeries);</code>
 let cols = dataConfig.cols;
 let aliases = dataConfig.aliases;
 
-let capitalTable = Analyser.getComparisonSummary(rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
+let capitalTable = rows.getComparisonSummary(cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
 
 console.table(capitalTable);</code>
 					</div>
@@ -1103,7 +1122,8 @@ console.table(capitalTable);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-getcomparisonsummarystring">getComparisonSummaryString</h4>
 
-					<code class="code code--block">getComparisonSummaryString(rows, headerCol, headerAliases, varCol, varAliases)</code>
+					<code class="code code--block">rows.getComparisonSummaryString(headerCol, headerAliases, varCol, varAliases)</code>
+					<code class="code code--block">Analyser.getComparisonSummaryString(rows, headerCol, headerAliases, varCol, varAliases)</code>
 
 					<p>Calls <code>getComparisonSummary</code> and converts the result into a string that separates cells by tabs and rows by newlines, so it can be copied and pasted into a spreadsheet.</p>
 
@@ -1116,7 +1136,7 @@ console.table(capitalTable);</code>
 let cols = dataConfig.cols;
 let aliases = dataConfig.aliases;
 
-let capitalTableString = Analyser.getComparisonSummaryString(rows, cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
+let capitalTableString = rows.getComparisonSummaryString(cols.COUNTRY, aliases.COUNTRY, cols.CAPITAL);
 
 console.log(capitalTableString);</code>
 					</div>
@@ -1425,18 +1445,23 @@ console.log(firstRowName);</code>
 				<div class="content">
 					<h4 class="docs-method__heading" id="analyser-filters">filters</h4>
 
-					<p><code>filters</code> is an object containing a set of filter functions that use the aliases from the <code>fileConfig</code> object used to process this data. It contains the following filter functions:</p>
+					<p>A set of filter functions are exposed on the <code>rows</code> object.</p>
+
+					<p>These functions are also exposed via the <code>filters</code> property on the <code>dataConfig</code> object, where they expect a <code>rows</code> object to be passed as their first argument.</p>
+
+					<p>These filter functions use the aliases from the <code>fileConfig</code> object used to process this data. The filter functions available are:</p>
 				</div>
 
 				<section>
 					<div class="content">
-						<h5 id="analyser-filters-filterrows">filterRows</h5>
+						<h5 id="analyser-filters-filter">filter</h5>
 
-						<code class="code code--block">filterRows(rows, orToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
+						<code class="code code--block">rows.filter(orToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
+						<code class="code code--block">dataConfig.filters.filterRows(rows, orToggle, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
 
 						<p>Filters a set of rows, using either an OR filter or an AND filter, by looking at the values of one or more specified columns. These column indices and values are passed as one or more pairs.</p>
 
-						<p>If a column was specified in the <code>arrayCols</code> object in the <code>fileConfig</code> that informed how this data was processed, <code>filterRows</code> will check all values in each of its cells, and if any of them match then the row will pass the filter.</p>
+						<p>If a column was specified in the <code>arrayCols</code> object in the <code>fileConfig</code> that informed how this data was processed, <code>filter</code> will check all values in each of its cells, and if any of them match then the row will pass the filter.</p>
 
 						<p>It returns a new <code>rows</code> array.</p>
 
@@ -1455,10 +1480,9 @@ console.log(firstRowName);</code>
 						<div class="docs-example__code-container">
 							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
-let filterRows = dataConfig.filters.filterRows;
 
 // Filtering a single column by a single value, using aliases
-let newZealandCities = filterRows(rows,
+let newZealandCities = rows.filter(
 	cols.COUNTRY, 'New Zealand'
 );
 console.log(Analyser.getCol(newZealandCities, cols.NAME));</code>
@@ -1473,10 +1497,9 @@ console.log(Analyser.getCol(newZealandCities, cols.NAME));</code>
 						<div class="docs-example__code-container">
 							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
-let filterRows = dataConfig.filters.filterRows;
 
 // Filtering an array column
-let citiesWithTrains = filterRows(rows,
+let citiesWithTrains = rows.filter(
 	cols.PUBLIC_TRANSPORT, 'Train'
 );
 console.log(Analyser.getCol(citiesWithTrains, cols.NAME));</code>
@@ -1491,10 +1514,9 @@ console.log(Analyser.getCol(citiesWithTrains, cols.NAME));</code>
 						<div class="docs-example__code-container">
 							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
-let filterRows = dataConfig.filters.filterRows;
 
 // Filtering a single column by multiple values
-let australasiaCities = filterRows(rows,
+let australasiaCities = rows.filter(
 	cols.COUNTRY, ['New Zealand', 'Australia']
 );
 console.log(Analyser.getCol(australasiaCities, cols.NAME));</code>
@@ -1509,10 +1531,9 @@ console.log(Analyser.getCol(australasiaCities, cols.NAME));</code>
 						<div class="docs-example__code-container">
 							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
-let filterRows = dataConfig.filters.filterRows;
 
 // Filtering with a function
-let largerCities = filterRows(rows,
+let largerCities = rows.filter(
 	cols.POPULATION, a => a >= 300
 );
 console.log(Analyser.getCol(largerCities, cols.NAME));</code>
@@ -1527,10 +1548,9 @@ console.log(Analyser.getCol(largerCities, cols.NAME));</code>
 						<div class="docs-example__code-container">
 							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
-let filterRows = dataConfig.filters.filterRows;
 
 // Applying multiple filters (AND)
-let largeCapitalCities = filterRows(rows,
+let largeCapitalCities = rows.filter(
 	cols.POPULATION, a => a >= 300,
 	cols.CAPITAL, a => a === 'true'
 );
@@ -1546,10 +1566,9 @@ console.log(Analyser.getCol(largeCapitalCities, cols.NAME));</code>
 						<div class="docs-example__code-container">
 							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
-let filterRows = dataConfig.filters.filterRows;
 
 // Applying multiple filters (OR)
-let veryLargeOrCapitalCities = filterRows(rows, true,
+let veryLargeOrCapitalCities = rows.filter( true,
 	cols.POPULATION, a => a >= 1000,
 	cols.CAPITAL, a => a === 'true'
 );
@@ -1564,11 +1583,12 @@ console.log(Analyser.getCol(veryLargeOrCapitalCities, cols.NAME));</code>
 
 				<section>
 					<div class="content">
-						<h5 id="analyser-filters-filterrowsand">filterRowsAnd</h5>
+						<h5 id="analyser-filters-filterand">filterAnd</h5>
 
-						<code class="code code--block">filterRowsAnd(rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
+						<code class="code code--block">rows.filterAnd(colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
+						<code class="code code--block">dataConfig.filters.filterRowsAnd(rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
 
-						<p>Identical to the <code>filterRows</code> function, but without the <code>andToggle</code> argument. Because this parameter of <code>filterRows</code> defaults to true, <code>filterRows</code> can be used in exactly the same way as <code>filterRowsAnd</code>.</p>
+						<p>Identical to the <code>filter</code> function, but without the <code>andToggle</code> argument. Because this parameter of <code>filter</code> defaults to true, <code>filter</code> can be used in exactly the same way as <code>filterAnd</code>.</p>
 
 						<p>(city example.csv)</p>
 					</div>
@@ -1577,9 +1597,8 @@ console.log(Analyser.getCol(veryLargeOrCapitalCities, cols.NAME));</code>
 						<div class="docs-example__code-container">
 							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
-let filterRowsAnd = dataConfig.filters.filterRowsAnd;
 
-let newZealandCapital = filterRowsAnd(rows,
+let newZealandCapital = rows.filterAnd(
 	cols.COUNTRY, 'New Zealand',
 	cols.CAPITAL, a => a === 'true'
 );
@@ -1594,11 +1613,12 @@ console.log(Analyser.getCol(newZealandCapital, cols.NAME));</code>
 
 				<section>
 					<div class="content">
-						<h5 id="analyser-filters-filterrowsor">filterRowsOr</h5>
+						<h5 id="analyser-filters-filteror">filterOr</h5>
 
-						<code class="code code--block">filterRowsOr(rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
+						<code class="code code--block">filterOr(colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
+						<code class="code code--block">dataConfig.filters.filterRowsOr(rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN)</code>
 
-						<p>Identical to the <code>filterRows</code> function, but without the <code>andToggle</code> argument and applying an OR filter.</p>
+						<p>Identical to the <code>filter</code> function, but without the <code>andToggle</code> argument and applying an OR filter.</p>
 
 						<p>(city example.csv)</p>
 					</div>
@@ -1607,9 +1627,8 @@ console.log(Analyser.getCol(newZealandCapital, cols.NAME));</code>
 						<div class="docs-example__code-container">
 							<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
-let filterRowsOr = dataConfig.filters.filterRowsOr;
 
-let largeOrCapitalCities = filterRowsOr(rows,
+let largeOrCapitalCities = rows.filterOr(
 	cols.POPULATION, a => a >= 1000,
 	cols.CAPITAL, a => a === 'true'
 );
@@ -1808,7 +1827,7 @@ return table;</code>
 						<code class="code code--block docs-example__code js-doc-example-code-chart">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let cityNames = Analyser.getCol(rows, cols.NAME);
+let cityNames = rows.getCol(cols.NAME);
 
 let chartData = {
 	title: 'City Populations',
@@ -1816,7 +1835,7 @@ let chartData = {
 	labels: cityNames,
 	dataSeries: [
 		{
-			dataPoints: Analyser.getCol(rows, cols.POPULATION)
+			dataPoints: rows.getCol(cols.POPULATION)
 		}
 	]
 };
@@ -1861,8 +1880,8 @@ return chart;</code>
 						<code class="code code--block docs-example__code js-doc-example-code-chart">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let years = Analyser.getCol(rows, cols.YEAR);
-let population = Analyser.getCol(rows, cols.POPULATION);
+let years = rows.getCol(cols.YEAR);
+let population = rows.getCol(cols.POPULATION);
 
 let chartData = {
 	title: 'Auckland city population over time',
@@ -1929,8 +1948,8 @@ return chart;</code>
 						<code class="code code--block docs-example__code js-doc-example-code-chart">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let years = Analyser.getCol(rows, cols.YEAR);
-let population = Analyser.getCol(rows, cols.POPULATION);
+let years = rows.getCol(cols.YEAR);
+let population = rows.getCol(cols.POPULATION);
 
 let chartData = {
 	title: 'Auckland city population over time',
@@ -1997,7 +2016,7 @@ return chart;</code>
 						<code class="code code--block docs-example__code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let cityNames = Analyser.getCol(rows, cols.NAME);
+let cityNames = rows.getCol(cols.NAME);
 
 let chartData = {
 	title: 'City Populations',
@@ -2005,7 +2024,7 @@ let chartData = {
 	labels: cityNames,
 	dataSeries: [
 		{
-			dataPoints: Analyser.getCol(rows, cols.POPULATION)
+			dataPoints: rows.getCol(cols.POPULATION)
 		}
 	]
 };
@@ -2052,7 +2071,7 @@ window.setTimeout(() => Charter.updateBarChart(chart[0], [1, 2, 3, 4, 5, 6, 7, 8
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let populations = Analyser.getCol(rows, cols.POPULATION);
+let populations = rows.getCol(cols.POPULATION);
 let totalPopulation = Stats.sum(populations);
 
 console.log(populations);
@@ -2083,7 +2102,7 @@ console.log(totalPopulation);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let populations = Analyser.getCol(rows, cols.POPULATION);
+let populations = rows.getCol(cols.POPULATION);
 let meanPopulation = Stats.mean(populations);
 
 console.log(populations);
@@ -2114,7 +2133,7 @@ console.log(meanPopulation);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let populations = Analyser.getCol(rows, cols.POPULATION);
+let populations = rows.getCol(cols.POPULATION);
 let medianPopulation = Stats.median(populations);
 
 console.log(populations);
@@ -2145,7 +2164,7 @@ console.log(medianPopulation);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let populations = Analyser.getCol(rows, cols.POPULATION);
+let populations = rows.getCol(cols.POPULATION);
 let populationVariance = Stats.variance(populations);
 
 console.log(populations);
@@ -2176,7 +2195,7 @@ console.log(populationVariance);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let populations = Analyser.getCol(rows, cols.POPULATION);
+let populations = rows.getCol(cols.POPULATION);
 let populationSD = Stats.sd(populations);
 
 console.log(populations);
@@ -2207,7 +2226,7 @@ console.log(populationSD);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let populations = Analyser.getCol(rows, cols.POPULATION);
+let populations = rows.getCol(cols.POPULATION);
 let populationMax = Stats.max(populations);
 
 console.log(populations);
@@ -2238,7 +2257,7 @@ console.log(populationMax);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let populations = Analyser.getCol(rows, cols.POPULATION);
+let populations = rows.getCol(cols.POPULATION);
 let min = Stats.min(populations);
 
 console.log(populations);
@@ -2297,8 +2316,8 @@ console.log(intRange);</code>
 						<code class="code code--block docs-example__code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let years = Analyser.getCol(rows, cols.YEAR);
-let population = Analyser.getCol(rows, cols.POPULATION);
+let years = rows.getCol(cols.YEAR);
+let population = rows.getCol(cols.POPULATION);
 
 let linearFit = Stats.linearLeastSquares(population);
 
@@ -2361,8 +2380,8 @@ $('#chart-area').append(chart);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let years = Analyser.getCol(rows, cols.YEAR);
-let population = Analyser.getCol(rows, cols.POPULATION);
+let years = rows.getCol(cols.YEAR);
+let population = rows.getCol(cols.POPULATION);
 
 let linearFit = Stats.linearLeastSquares(population);
 
@@ -2397,8 +2416,8 @@ console.log(r);</code>
 						<code class="code code--block docs-example__code js-doc-example-code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let years = Analyser.getCol(rows, cols.YEAR);
-let population = Analyser.getCol(rows, cols.POPULATION);
+let years = rows.getCol(cols.YEAR);
+let population = rows.getCol(cols.POPULATION);
 
 let linearFit = Stats.linearLeastSquares(population);
 
@@ -2433,8 +2452,8 @@ console.log(r2);</code>
 						<code class="code code--block docs-example__code">let rows = dataConfig.rows;
 let cols = dataConfig.cols;
 
-let years = Analyser.getCol(rows, cols.YEAR);
-let population = Analyser.getCol(rows, cols.POPULATION);
+let years = rows.getCol(cols.YEAR);
+let population = rows.getCol(cols.POPULATION);
 
 let smoothness = 5;
 let smoothed = Stats.smooth(population, smoothness);
@@ -2503,19 +2522,19 @@ while (((rows.length-1) % chunkSize) !== 0) {
 	rows.shift();
 }
 
-let lastYearPopulation = Analyser.getCol(rows, cols.POPULATION);
+let lastYearPopulation = rows.getCol(cols.POPULATION);
 
 // Remove last "last year population" and first year's row, so the
 // arrays line up as expected
 lastYearPopulation.pop();
 rows.shift();
 
-let years = Analyser.getCol(rows, cols.YEAR);
+let years = rows.getCol(cols.YEAR);
 
-cols.POPULATION_PREVIOUS = Analyser.addCol(rows, lastYearPopulation);
-cols.POPULATION_INCREASE = Analyser.addDerivedCol(rows, (row) => (row[cols.POPULATION] - row[cols.POPULATION_PREVIOUS]));
+cols.POPULATION_PREVIOUS = rows.addCol(lastYearPopulation);
+cols.POPULATION_INCREASE = rows.addDerivedCol((row) => (row[cols.POPULATION] - row[cols.POPULATION_PREVIOUS]));
 
-let populationIncrease = Analyser.getCol(rows, cols.POPULATION_INCREASE);
+let populationIncrease = rows.getCol(cols.POPULATION_INCREASE);
 let chunkedPopulationIncrease = Stats.chunk(populationIncrease, chunkSize);
 
 let yearSets = [];
