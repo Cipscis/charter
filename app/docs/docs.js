@@ -165,7 +165,7 @@ define(
 
 					// Create a deep copy so it can't be messed with
 					let filters = Object.assign({}, dataConfig.filters);
-					dataConfig = JSON.parse(JSON.stringify(dataConfig));
+					dataConfig = Object.assign({}, dataConfig);
 					dataConfig.filters = filters;
 
 					return dataConfig;
