@@ -5,7 +5,7 @@ define(
 	],
 
 	function (Parser, fileIO) {
-		class Rows extends Array {
+		class AnalyserRows extends Array {
 			constructor(sourceArray) {
 				super(...sourceArray);
 			}
@@ -205,7 +205,7 @@ define(
 				}
 
 				// Convert cells that are lists into arrays
-				dataConfig.rows = new Rows(rows);
+				dataConfig.rows = new AnalyserRows(rows);
 				for (let i = 0; i < dataConfig.rows.length; i++) {
 					let row = dataConfig.rows[i];
 
@@ -223,6 +223,7 @@ define(
 				}
 
 				// Set filters on rows object
+				Analyser._createRowFilterFunctions(dataConfig.rows, dataConfig.filters);
 				dataConfig.rows.filter = function () {
 					var args = [this].concat(Array.from(arguments));
 
@@ -314,7 +315,7 @@ define(
 
 				let combinedDataConfig = {
 					cols: {},
-					rows: [],
+					rows: new AnalyserRows([]),
 					aliases: {}
 				};
 
@@ -404,6 +405,7 @@ define(
 
 				// Create new filters using combined aliases
 				combinedDataConfig.filters = Analyser._getAliasFilters(combinedDataConfig.aliases);
+				Analyser._createRowFilterFunctions(combinedDataConfig.rows, combinedDataConfig.filters);
 
 				// Combine the enumsMaps, then build combined enums
 
@@ -569,7 +571,7 @@ define(
 						}
 					}
 
-					return new Rows(filteredRows);
+					return new AnalyserRows(filteredRows);
 				};
 
 				const filterRowsAnd = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
@@ -596,6 +598,26 @@ define(
 					filterRows: filterRows,
 					filterRowsAnd: filterRowsAnd,
 					filterRowsOr: filterRowsOr
+				};
+			},
+
+			_createRowFilterFunctions: function (rows, filters) {
+				rows.filter = function () {
+					var args = [this].concat(Array.from(arguments));
+
+					return filters.filterRows.apply(this, args);
+				};
+
+				rows.filterOr = function () {
+					var args = [this].concat(Array.from(arguments));
+
+					return filters.filterRowsOr.apply(this, args);
+				};
+
+				rows.filterAnd = function () {
+					var args = [this].concat(Array.from(arguments));
+
+					return filters.filterRowsAnd.apply(this, args);
 				};
 			},
 
