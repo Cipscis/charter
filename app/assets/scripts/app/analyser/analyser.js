@@ -5,6 +5,55 @@ define(
 	],
 
 	function (Parser, fileIO) {
+		class Rows extends Array {
+			constructor(sourceArray) {
+				super(...sourceArray);
+			}
+
+
+			getCol(colNum) {
+				return Analyser.getCol(this, colNum);
+			}
+
+
+			addCol(col) {
+				return Analyser.addCol(this, col);
+			}
+
+			getDerivedCol(processFn, ...cols) {
+				return Analyser.getDerivedCol(this, processFn, ...cols);
+			}
+
+			addDerivedCol(callback, ...cols) {
+				return Analyser.addDerivedCol(this, callback, ...cols);
+			}
+
+
+			createSubTable(cols, arraySeparator) {
+				return Analyser.createSubTable(this, cols, arraySeparator);
+			}
+
+			createSubTableString(cols) {
+				return Analyser.createSubTableString(this, cols);
+			}
+
+			getColSummary(cols, aliasList) {
+				return Analyser.getColSummary(this, cols, aliasList);
+			}
+
+			getColAsDataSeries(col, labels) {
+				return Analyser.getColAsDataSeries(this, col, labels);
+			}
+
+			getComparisonSummary(headerCol, headerAliases, varCol, varAliases) {
+				return Analyser.getComparisonSummary(this, headerCol, headerAliases, varCol, varAliases);
+			}
+
+			getComparisonSummaryString(headerCol, headerAliases, varCol, varAliases) {
+				return Analyser.getComparisonSummaryString(this, headerCol, headerAliases, varCol, varAliases);
+			}
+		}
+
 		const Analyser = {
 			/////////////////////
 			// FILE PROCESSING //
@@ -156,7 +205,7 @@ define(
 				}
 
 				// Convert cells that are lists into arrays
-				dataConfig.rows = rows.concat();
+				dataConfig.rows = new Rows(rows);
 				for (let i = 0; i < dataConfig.rows.length; i++) {
 					let row = dataConfig.rows[i];
 
@@ -172,6 +221,25 @@ define(
 						}
 					}
 				}
+
+				// Set filters on rows object
+				dataConfig.rows.filter = function () {
+					var args = [this].concat(Array.from(arguments));
+
+					return dataConfig.filters.filterRows.apply(this, args);
+				};
+
+				dataConfig.rows.filterOr = function () {
+					var args = [this].concat(Array.from(arguments));
+
+					return dataConfig.filters.filterRowsOr.apply(this, args);
+				};
+
+				dataConfig.rows.filterAnd = function () {
+					var args = [this].concat(Array.from(arguments));
+
+					return dataConfig.filters.filterRowsAnd.apply(this, args);
+				};
 
 				// Build enums
 				dataConfig.enums = Analyser._buildEnums(rows, fileConfig);
@@ -501,7 +569,7 @@ define(
 						}
 					}
 
-					return filteredRows;
+					return new Rows(filteredRows);
 				};
 
 				const filterRowsAnd = function (rows, colIndex1, values1, colIndex2, values2, colIndexN, valuesN) {
@@ -654,6 +722,24 @@ define(
 			//////////////////////////////
 			// TRANSFORMING INFORMATION //
 			//////////////////////////////
+			addCol: function (rows, col) {
+				// Edits the passed rows array to add an extra column
+				// to it, then returns the index of that new column
+
+				if (rows.length !== col.length) {
+					console.error('Cannot add col to rows unless their length matches');
+				}
+
+				let colIndex = rows[0].length;
+
+				for (let i = 0; i < rows.length; i++) {
+					let row = rows[i];
+					row.push(col[i]);
+				}
+
+				return colIndex;
+			},
+
 			getDerivedCol: function (rows, processFn, ...cols) {
 				// Creates an array analogous to a column as returns
 				// by the getCol function, where its output is the
@@ -674,24 +760,6 @@ define(
 				}
 
 				return derivedCol;
-			},
-
-			addCol: function (rows, col) {
-				// Edits the passed rows array to add an extra column
-				// to it, then returns the index of that new column
-
-				if (rows.length !== col.length) {
-					console.error('Cannot add col to rows unless their length matches');
-				}
-
-				let colIndex = rows[0].length;
-
-				for (let i = 0; i < rows.length; i++) {
-					let row = rows[i];
-					row.push(col[i]);
-				}
-
-				return colIndex;
 			},
 
 			addDerivedCol: function (rows, callback, ...cols) {
