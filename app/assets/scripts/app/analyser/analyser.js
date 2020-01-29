@@ -555,7 +555,9 @@ define(
 					}
 
 					filteredRows = new AnalyserRows(filteredRows);
-					Analyser._createRowFilterFunctions(filteredRows, rows);
+					filteredRows.filter = rows.filter;
+					filteredRows.filterAnd = rows.filterAnd;
+					filteredRows.filterOr = rows.filterOr;
 
 					return filteredRows;
 				};
@@ -588,14 +590,6 @@ define(
 			},
 
 			_createRowFilterFunctions: function (rows, filters) {
-				if (filters instanceof AnalyserRows) {
-					filters = {
-						filterRows: filters.filter,
-						filterRowsAnd: filters.filterAnd,
-						filterRowsOr: filters.filterOr
-					};
-				}
-
 				rows.filter = function () {
 					var args = [this].concat(Array.from(arguments));
 
