@@ -1,0 +1,354 @@
+<html>
+<head>
+	<title>Test Codebook - Taser PCA</title>
+	<script src="/charter/app/assets/scripts/lib/require/require.js" type="text/javascript"></script>
+	<script src="/charter/app/assets/scripts/lib/require/config.js" type="text/javascript"></script>
+
+	<link rel="stylesheet" href="/charter/app/assets/css/style.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+	<script type="text/javascript">
+		require(['codebook']);
+	</script>
+
+	<div class="layout">
+		<div class="content">
+			<h1>Test Codebook - Taser PCA</h1>
+
+			<div class="panel">
+				<p>This is the test page for what I'm tentatively calling a <strong>codebook</strong> - a page of annotated code that both shows the code used to produce certain figures and graphics in a reusable way, and explains what the code is doing.</p>
+
+				<p>This test example looks at the number of times Police used tasers on people who were less than <strong>assaultive</strong>, from July to December 2017.</p>
+
+				<p>The primary information to get across the source of the data. This should include both where the data came from - with links whenever possible - and information on how it was considered.</p>
+
+				<p>In this case, the source of this data is NZ Police's response to an OIA request on FYI: <a href="https://fyi.org.nz/request/8236-tactical-options-reporting-data-july-december-2017#incoming-27622">Tactical Options Reporting Data July-December 2017</a></p>
+
+				<p>However, the file sent by Police is an XSLX file, but the file being loaded into the code is a CSV file. This CSV was produced by exporting the XSLX as a CSV through Google Drive.</p>
+			</div>
+
+			<h2>Data source</h2>
+
+			<p>The data source is an XSLX file released by NZ Police under the Official Information Act: <a href="https://fyi.org.nz/request/8236-tactical-options-reporting-data-july-december-2017#incoming-27622">Tactical Options Reporting Data July-December 2017</a></p>
+
+			<p>The data was converted from XSLX to <a href="/assets/data/Tactical Options 2017-07 - 2017-12 raw.csv">CSV</a> using Google Drive.</p>
+
+			<h2>Reading the data</h2>
+
+			<p>Columns of interest relate to demographics and taser usage.</p>
+		</div>
+
+<code class="code code--block js-codebook__code js-codebook__source" data-codebook-set="tor2017b">const cols = Analyser.getColNumbers({
+	TACTICS: 'Y',
+
+	AGE: 'I',
+	GENDER: 'J',
+	ETHNICITY: 'K',
+	ARMED: 'W',
+
+	TASER_1_PCA: 'DF',
+	TASER_1_METHOD: 'DI',
+	TASER_1_EFFECT: 'DS',
+
+	TASER_2_PCA: 'DT',
+	TASER_2_METHOD: 'DW',
+	TASER_2_EFFECT: 'EG',
+
+	TASER_3_PCA: 'EH',
+	TASER_3_METHOD: 'EK',
+	TASER_3_EFFECT: 'EU'
+});
+</code>
+
+		<div class="content">
+			<p>The <code class="code">TACTICS</code> column can contain multiple values, which are separated by newline characters.</p>
+		</div>
+
+<code class="code code--block js-codebook__code js-codebook__source" data-codebook-set="tor2017b">const arrayCols = {
+	[cols.TACTICS]: '\n'
+};</code>
+
+		<div class="content">
+			<p>During the time covered by this data, events where a taser was used could involve up to three uses of a taser. This means there are three sets of columns related to each aspect of taser use.</p>
+
+			<p>The values used in each of these columns are the same. For example, <code class="code">TASER_1_PCA</code> can contain the same values as <code class="code">TASER_2_PCA</code> and <code class="code">TASER_3_PCA</code>. These </p>
+		</div>
+
+<code class="code code--block js-codebook__code js-codebook__source" data-codebook-set="tor2017b">const enumsMap = {
+	TASER_PCA: [cols.TASER_1_PCA, cols.TASER_2_PCA, cols.TASER_3_PCA],
+	TASER_METHOD: [cols.TASER_1_METHOD, cols.TASER_2_METHOD, cols.TASER_3_METHOD],
+	TASER_EFFECT: [cols.TASER_1_EFFECT, cols.TASER_2_EFFECT, cols.TASER_3_EFFECT]
+};</code>
+
+		<div class="content">
+			<p>The data contains information about ethnicity. Because a person can belong to multiple ethnic groups, some recoding is necessary. For example, if a person is recorded as <code class="code">Maori / European</code> then they should count as both Māori <em>and</em> Pākehā.</p>
+
+			<p>Aliases are also required to combine single groups that have been coded inconsistently, such as <code class="code">Pacific Island</code> and <code class="code">Pacific Islander</code>.</p>
+		</div>
+
+<code class="code code--block js-codebook__code js-codebook__source" data-codebook-set="tor2017b">const aliases = {
+	ETHNICITY: [
+		[
+			'Pacific', // Not represented in data, but used as a label
+			'Pacific Island',
+			'Pacific Islander',
+			'Other - European/Pacific Islander',
+			'Other - Maori/Polynesian',
+			'Other - Papau New Guinea',
+			'Other - Samoan'
+		],
+		[
+			'African',
+			'Native African (or cultural group of African origin)'
+		],
+		[
+			'Pākehā', // Not represented in data, but used as a label
+			'European',
+			'Maori / European',
+			'Other - European/Pacific Islander'
+		],
+		[
+			'Māori', // Not represented in data, but used as a label
+			'Maori',
+			'Maori / European',
+			'Other - Maori/Polynesian'
+		]
+	]
+};
+</code>
+
+		<div class="content">
+			<p>For reference, the values coded for ethnicity in the source data are:</p>
+		</div>
+
+<code class="code code--block js-codebook__code" data-codebook-set="tor2017b" data-codebook-output="tor2017b-ethnicity-summary">log(rows.getColSummary(cols.ETHNICITY));</code>
+
+		<samp class="code code--block js-codebook__output" id="tor2017b-ethnicity-summary"></samp>
+
+		<div class="content">
+			<p>The first row of the CSV is a header row, which should be ignored.</p>
+		</div>
+
+<code class="code code--block js-codebook__code js-codebook__source" data-codebook-set="tor2017b">const headerRows = 1;
+</code>
+
+		<div class="content">
+			<p>Load the file and start analysing it:</p>
+		</div>
+
+<code class="code code--block js-codebook__code js-codebook__source" data-codebook-set="tor2017b">const fileConfig = {
+	headerRows,
+	cols,
+	arrayCols,
+	aliases,
+	enumsMap
+};
+
+Analyser.loadFile('/assets/data/Tactical Options 2017-07 - 2017-12 raw.csv', fileConfig, analyseData);</code>
+
+		<div class="content">
+			<h2>Analysing the data</h2>
+
+			<h3>PCA</h3>
+
+			<p>The "PCA" columns in the data refer to "Perceived cumulative assessment", and is part of the "TENR" risk assessment model used by Police. This brief summary page of Police's <a href="https://fyi.org.nz/request/5014/response/16479/attach/5/Tactical%20Options%20Framework.pdf" target="_blank">Tactical Options Framework</a>, released under the Official Information Act, lists the categories available:</p>
+
+			<blockquote>
+				<p>There are five categories in the PCA, which are represented in the TOF [Tactical Options Framework] – cooperative, passive resistance, active resistance, assaultive, GBH or death.</p>
+
+				<cite><a href="https://fyi.org.nz/request/5014/response/16479/attach/5/Tactical%20Options%20Framework.pdf" target="_blank">Tactical Options Framework | NZ Police</a></cite>
+			</blockquote>
+
+			<p>First, look at how often each PCA category was recorded when a taser was used:</p>
+		</div>
+
+<code class="code code--block js-codebook__code" data-codebook-set="tor2017b" data-codebook-output="tor2017b-pca-summary">log('Taser use 1:');
+log(rows.getColSummary(cols.TASER_1_PCA));
+
+log('Taser use 2:');
+log(rows.getColSummary(cols.TASER_2_PCA));
+
+log('Taser use 3:');
+log(rows.getColSummary(cols.TASER_3_PCA));</code>
+
+		<samp class="code code--block js-codebook__output" id="tor2017b-pca-summary"></samp>
+
+		<div class="content">
+			<p>We can immediately see that there were no third taser deployments recorded in this data, so we can ignore the set of <code class="code">TASER_3</code> columns.</p>
+
+			<p>Only 14 events involved the use of a taser twice. All others involved only a single use.</p>
+
+			<p>Police used tasers against a person who was in the "Cooperative" category 13 times, against a person who was in the "Passive Resistant" category 27 times, and against a person who was in the "Active Resistant" category 51 times.</p>
+
+			<h3>Context: Police Policy</h3>
+
+			<p>In January 2017, Police released their <a href="https://fyi.org.nz/request/5014/response/16479/attach/6/TASER.pdf" target="_blank">TASER (Electronic Control Devices) version 9.0</a> under the Official Information Act. Page 4 of the document describes an important principle regarding the use of tasers:</p>
+
+			<blockquote>
+				<p><b>Important principle</b></p>
+
+				<p>An overriding principle guiding the employment of TASER is that it can only be applied in situations within and beyond the assaultive range, as outlined in the Tactical Options Framework.</p>
+
+				<cite><a href="https://fyi.org.nz/request/5014/response/16479/attach/6/TASER.pdf" target="_blank">TASER (Electronic Control Devices) version 9.0 | NZ Police</a> p4</cite>
+			</blockquote>
+
+			<p>Police also released a separate <a href="https://fyi.org.nz/request/8308/response/28129/attach/11/Hanna%20Mark%2011.7.2018%20Taser%20manual.pdf" target="_blank">TASER (Electronic Control Devices)</a> document uner the Official Information Act in September 2018, which clarified further:</p>
+
+			<blockquote>
+				<p>Always use a TASER in a manner consistent with the 'Tactical Options Framework' and <b>never</b> 'use' in situations below the assaultive range, e.g. active or passive resistant.</p>
+
+				<cite><a href="https://fyi.org.nz/request/8308/response/28129/attach/11/Hanna%20Mark%2011.7.2018%20Taser%20manual.pdf" target="_blank">TASER (Electronic Control Devices) | NZ Police</a> p9</cite>
+			</blockquote>
+
+			<p>Elsewhere in the document, it is clarified that "use" refers to the discharge or contact stun methods of deployment:</p>
+
+			<blockquote>
+				<h3>Warnings</h3>
+
+				<p>To encourage de-escalation and to warn others nearby, unless impractical or unsafe to do so, you should give a verbal warning in conjunction with the show or use of a TASER.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th colspan="2">In conjunction with:</th>
+							<th>Verbal warnings</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><b>Show</b></td>
+							<td>presentation, laser painting, and arcing</td>
+							<td><b>"TASER"</b> (with a verbal warning.)</td>
+						</tr>
+						<tr>
+							<td><b>Use</b></td>
+							<td>discharge or contact sun</td>
+							<td><b>"TASER, TASER, TASER"!</b></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3>Showing and using the TASER</h3>
+
+				<p>A TASER may be shown or used operationally ot effect the required purpose in these ways:</p>
+
+				<table>
+					<tbody>
+						<tr>
+							<td rowspan="6"><b>Show Force</b></td>
+							<td><b>Presentation</b></td>
+							<td>Drawing and presenting the device at a subject as a visual deterrent, in conjunction with a verbal warning.</td>
+						</tr>
+						<tr>
+							<td><b>Laser painting</b></td>
+							<td>Turning the device on and overlaying the laser sighting system of the TASER on a subject as a visual deterrent, in conjunction with a verbal warning.</td>
+						</tr>
+						<tr>
+							<td><b>Arcing</b></td>
+							<td>Activating the device as a visual deterrent, in conjunction with a verbal warning.</td>
+						</tr>
+						<tr>
+							<td><b>Contact stun</b></td>
+							<td>
+								<p>Activating the TASER while the device is directly applied to the body of the subject. (Arc)</p>
+
+								<p><b>Note</b>: Contact stuns should only be applied in situations where the operator finds themselves in close proximity to the subject and it is necessary to use force to create distance in order to discharge or apply alternative tactical options and/or considerations.</p>
+							</td>
+						</tr>
+						<tr>
+							<td><b>Discharge</b></td>
+							<td>
+								<p>Application by firing two probes over a distance from a cartridge attached to the TASER, or subsequent applications of electrical current via the probes (Trigger or Arc) which are in contact with the subject after firing, in conjunction with a verbal warning.</p>
+
+								<p><b>Important</b>: Both probes must hit the target. This makes distance, correct aiming and target selection critically important.</p>
+							</td>
+						</tr>
+						<tr>
+							<td><b>Follow up contact stun</b></td>
+							<td>
+								<p>Activating the TASER, immediately following a probe discharge by directly applying the device to the body of the subject.</p>
+
+								<p>This method increases the area of the body affected by electrical current and is used where a discharge fails to create neuro-muscular incapacitation (NMI) due to limited probe spread or a miss/disconnect of a probe.</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<cite><a href="https://fyi.org.nz/request/8308/response/28129/attach/11/Hanna%20Mark%2011.7.2018%20Taser%20manual.pdf" target="_blank">TASER (Electronic Control Devices) | NZ Police</a> pp7-8</cite>
+			</blockquote>
+
+			<p>This document also clarifies further that the "show" methods of presentation are allowed when a person is beneath the "Assaultive" threshold in some cases:</p>
+
+			<blockquote>
+				<table>
+					<thead>
+						<tr>
+							<th>Term</th>
+							<th>Definition</th>
+							<th>Applying the Tactical Options Framework</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="3">&hellip;</td>
+						</tr>
+						<tr>
+							<td><b>To "show"</b></td>
+							<td>Presentation, laser painting or arcing.</td>
+							<td>An operator may show a TASER as a deterrent in situations below the assaultive range on occasions where their perceived cumulative assessment (PCA) is that it is necessary because the situation has the potential to escalate to within or beyond the assaultive range.</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<cite><a href="https://fyi.org.nz/request/8308/response/28129/attach/11/Hanna%20Mark%2011.7.2018%20Taser%20manual.pdf" target="_blank">TASER (Electronic Control Devices) | NZ Police</a> p5</cite>
+			</blockquote>
+
+			<h3>Method of deployment</h3>
+
+			<p>Of the 91 events where police used a taser against someone below the "Assaultive" threshold, how many were discharges or contact stuns?</p>
+
+			<p>Looking separately at cases where a taser was used against people below the <strong>Assaultive</strong> threshold, how often was each method of deployment recorded?</p>
+		</div>
+
+<code class="code code--block js-codebook__code" data-codebook-set="tor2017b" data-codebook-output="tor2017b-method-pca">let belowAssaultive = rows.filter(cols.TASER_1_PCA, ['Cooperative', 'Passive Resistant', 'Active Resistant']);
+let assaultiveAndAbove = rows.filter(cols.TASER_1_PCA, ['Assaultive', 'GBH']);
+
+log('Taser deployment method used below \'Assaultive\':');
+log(belowAssaultive.getColSummary(cols.TASER_1_METHOD));
+
+log('Taser deployment method used at \'Assaultive\' and above:');
+log(assaultiveAndAbove.getColSummary(cols.TASER_1_METHOD));</code>
+
+		<samp class="code code--block js-codebook__output" id="tor2017b-method-pca"></samp>
+
+		<div class="content">
+			<p>It's worth noting that "Arching" is a typo in Police's data, and should have been recorded as "Arcing".</p>
+
+			<p>Immediately, it is clear that four of the events recorded in this database describe an unequivocal breach of Police policy. Officers are never allowed to discharge a taser on someone who is below the "Assaultive" threshold. Let's take a closer look at those events.</p>
+
+			<h3>Specific Events</h3>
+		</div>
+
+<code class="code code--block js-codebook__code" data-codebook-set="tor2017b">let badDischarges = belowAssaultive.filter(cols.TASER_1_METHOD, 'Discharge');</code>
+
+		<div class="content">
+			<p>Who were the people who were subjected to this force?</p>
+		</div>
+
+<code class="code code--block js-codebook__code" data-codebook-set="tor2017b" data-codebook-output="tor2017b-bad-discharges-demographics">badDischarges.forEach(event => log({
+	AGE: event[cols.AGE],
+	GENDER: event[cols.GENDER],
+	ETHNICITY: event[cols.ETHNICITY],
+	ARMED: event[cols.ARMED]
+}));</code>
+
+<samp class="code code--block js-codebook__output" id="tor2017b-bad-discharges-demographics"></samp>
+
+		<div class="content">
+			<p>Four men, two Māori and two Pākeha, of varied ages. One of them was armed, the other three were not.</p>
+		</div>
+	</div>
+</body>
+</html>
