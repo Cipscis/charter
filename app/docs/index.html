@@ -1288,7 +1288,7 @@ let defaultCols = {};
 
 					<p><code>enumsMap</code> (optional) is an object where each property, which must share its name with a column as defined in the <code>cols</code> object, is an array of column indices. This map is used when creating the <code>enums</code> object available when analysing data, and tells the processor that enums from the columns in each array should be combined into the same set.</p>
 
-					<p>In this example, with data from ```city example.csv```, instead of collecting a separate set of enums for both the <code>MAYOR_2012</code> and <code>MAYOR_2018</code> columns, Analyser collects a single set of enums labelled <code>MAYOR</code>. This way there is a single list, and values that exist in both <code>MAYOR_2012</code> and <code>MAYOR_2018</code> columns, such as "Dave Cull", exist only once in the combined set of enums.</p>
+					<p>In this example, with data from <code>city example.csv</code>, instead of collecting a separate set of enums for both the <code>MAYOR_2012</code> and <code>MAYOR_2018</code> columns, Analyser collects a single set of enums labelled <code>MAYOR</code>. This way there is a single list, and values that exist in both <code>MAYOR_2012</code> and <code>MAYOR_2018</code> columns, such as "Dave Cull", exist only once in the combined set of enums.</p>
 
 					<p>The enums that are collected in data processing this way can be useful in generating labels for graphs, for example.</p>
 
