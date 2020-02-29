@@ -1,8 +1,8 @@
 define(
 	[
-		'Charter/Charter',
-		'Analyser/Analyser',
-		'Stats/Stats'
+		'charter/charter',
+		'analyser/analyser',
+		'stats/stats'
 	],
 
 	function (Charter, Analyser, Stats) {
