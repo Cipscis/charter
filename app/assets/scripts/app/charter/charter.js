@@ -1,11 +1,11 @@
 import templayed from './lib/templayed.js';
 import Stats from './stats.js';
 
-import tableTemplate from '../../../templates/table.js';
-import barChartTemplate from '../../../templates/bar-chart.js';
-import barChartHTemplate from '../../../templates/bar-chart-h.js';
-import lineGraphTemplate from '../../../templates/line-graph.js';
-import scatterPlotTemplate from '../../../templates/scatter-plot.js';
+import tableTemplate from './templates/table.js';
+import barChartTemplate from './templates/bar-chart.js';
+import barChartHTemplate from './templates/bar-chart-h.js';
+import lineGraphTemplate from './templates/line-graph.js';
+import scatterPlotTemplate from './templates/scatter-plot.js';
 
 const numericAxisDefaults = {
 	values: 5, // Will always fit when max is a multiple of 10
