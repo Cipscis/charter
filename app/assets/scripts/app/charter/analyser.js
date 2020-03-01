@@ -1,5 +1,5 @@
 import Parser from './parser.js';
-import fileIO from '../fileio/fileio.js';
+import fileIO from './lib/fileio.js';
 
 class AnalyserRows extends Array {
 	constructor(sourceArray) {
