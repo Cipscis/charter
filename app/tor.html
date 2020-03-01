@@ -1,8 +1,6 @@
 <html class="dark-mode">
 <head>
 	<title>NZ Police Tactical Options Reporting</title>
-	<script src="/charter/app/assets/scripts/lib/require/require.js" type="text/javascript"></script>
-	<script src="/charter/app/assets/scripts/lib/require/config.js" type="text/javascript"></script>
 
 	<link rel="stylesheet" href="/charter/app/assets/css/style.css" />
 
@@ -39,9 +37,7 @@
 	</style>
 </head>
 <body>
-	<script type="text/javascript">
-		require(['tor']);
-	</script>
+	<script type="module" src="/charter/app/assets/scripts/app/tor.js"></script>
 
 	<script type="text/template" class="js-tor-options-template">
 		<div class="hidden-md">
