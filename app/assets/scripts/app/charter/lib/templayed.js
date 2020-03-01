@@ -10,7 +10,7 @@ if (typeof(templayed) == "undefined") {
 // * $Date: {date} $
 // *
 
-templayed = function(template, vars) {
+var templayed = function(template, vars) {
 
   var get = function(path, i) {
     i = 1; path = path.replace(/\.\.\//g, function() { i++; return ''; });
@@ -43,3 +43,5 @@ templayed = function(template, vars) {
 templayed.version = "{version}";
 
 }
+
+export default templayed;

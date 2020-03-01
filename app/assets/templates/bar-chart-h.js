@@ -1,4 +1,4 @@
-<div class="chart{{#showTooltips}} show-tooltips{{/showTooltips}} js-chart"
+export default `<div class="chart{{#showTooltips}} show-tooltips{{/showTooltips}} js-chart"
 	data-charter-type="bar-horizontal"
 	data-charter-axis-min="{{dependentAxis.data.min}}"
 	data-charter-axis-max="{{dependentAxis.data.max}}"
@@ -76,4 +76,4 @@
 			{{/stacked}}
 		</ul>
 	</div>
-</div>
+</div>`;
