@@ -1,4 +1,4 @@
-<table>
+export default `<table>
 	<thead>
 		<tr>
 			{{#headers}}
@@ -15,4 +15,4 @@
 			</tr>
 		{{/rows}}
 	</tbody>
-</table>
+</table>`;
