@@ -7,7 +7,7 @@ import Stats from './charter/stats.js';
 
 import workingDays from '../util/workingDays.js'
 
-import optionsTemplate from '../../templates/options.js';
+import optionsTemplate from './charter/templates/options.js';
 
 const selectors = {
 	agencyFilter: '.js-agency-filter',
