@@ -54,6 +54,7 @@
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-footerrows">footerRows</a></li>
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-cols">cols</a></li>
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-arraycols">arrayCols</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-defaultcolvalues">defaultColValues</a></li>
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-defaultcols">defaultCols</a></li>
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-aliases">aliases</a></li>
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-enumsmap">enumsMap</a></li>
@@ -459,6 +460,7 @@ import Stats from './charter/stats.js';</code>
 		MAYOR_2018: 'G'
 	}),
 	arrayCols: {},
+	defaultColValues: {},
 	defaultCols: {},
 	aliases: {
 		COUNTRY: [
@@ -470,6 +472,8 @@ import Stats from './charter/stats.js';</code>
 
 fileConfig.arrayCols[fileConfig.cols.PUBLIC_TRANSPORT] = ',';
 fileConfig.arrayCols[fileConfig.cols.MAYOR_2018] = ',';
+
+fileConfig.defaultColValues[fileConfig.cols.CAPITAL] = 'No';
 
 fileConfig.defaultCols[fileConfig.cols.CAPITAL] = false;
 
@@ -1243,6 +1247,27 @@ let capitalTableString = Analyser.saveComparisonSummaryCsv('Capital cities.csv',
 
 let arrayCols = {};
 	arrayCols[fileConfig.cols.PUBLIC_TRANSPORT] = ',';</code>
+
+					</div>
+				</div>
+			</section>
+
+			<section class="docs-method">
+				<div class="content">
+					<h4 class="docs-method__heading" id="analyser-fileconfig-defaultcolvalues">defaultColValues</h4>
+
+					<p><code>defaultColValues</code> is an object where each element's key is the index of a column, and its value is any value.</p>
+
+					<p>It represents the default values in each column of a CSV which should be ignored. For example, if the character "-" is used to represent 0 in data counting a number of incidents, then that value should be ignored. The <code>defaultColValues</code> object can be used in conjunction with <a href="#analyser-fileconfig-defaultcols">defaultCols</a> to assign a useful value to these cells in cases where they should not just be ignored.</p>
+
+					<p>If a column is set as an array column, any specified default value will be ignored.</p>
+				</div>
+
+				<div class="docs-example docs-example--code-only">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code docs-example--code-only">
+let defaultCols = {};
+	defaultCols[fileConfig.cols.CAPITAL] = false;</code>
 
 					</div>
 				</div>
