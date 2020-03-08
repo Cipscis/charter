@@ -163,6 +163,9 @@ const Analyser = {
 		// defaultCols = {};
 		// defaultCols[cols.VALUE] = 0;
 
+		// defaultColValues = {};
+		// defaultColValues[cols.VALUE] = '-';
+
 		// aliases = {
 		// 	ETHNICITY: [
 		// 		[
@@ -208,6 +211,18 @@ const Analyser = {
 			for (let j in fileConfig.arrayCols) {
 				row[j] = (row[j] + '').trim().split(fileConfig.arrayCols[j] || ' ');
 			}
+
+			// Remove default values from specified columns
+			for (let j in fileConfig.defaultColValues) {
+				if (j in fileConfig.arrayCols) {
+					continue;
+				}
+				if ((row[j] + '') === (fileConfig.defaultColValues[j] + '')) {
+					row[j] = '';
+				}
+			}
+
+			// Add default values to empty cells in default cols
 			for (let j in fileConfig.defaultCols) {
 				if (j in fileConfig.arrayCols) {
 					continue;
