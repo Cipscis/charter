@@ -1,4 +1,4 @@
-export default `<div class="chart js-chart">
+export default `<div class="chart {{#hasXLabel}}chart--has-x-label {{/hasXLabel}}{{#hasYLabel}}chart--has-y-label {{/hasYLabel}}js-chart">
 	<span class="chart__title js-chart-title">{{{title}}}</span>
 	{{#showLegend}}
 		<dl class="chart__legend">
@@ -10,6 +10,9 @@ export default `<div class="chart js-chart">
 	{{/showLegend}}
 
 	<div class="chart__area">
+		{{#dependentAxis.label}}
+			<span class="chart__axis--v-label">{{.}}</span>
+		{{/dependentAxis.label}}
 		<ul class="chart__axis--v">
 			{{#dependentAxis.values}}
 				<li class="chart__axis-item js-chart-axis-label" style="bottom: {{percentage}}%;">
@@ -24,6 +27,9 @@ export default `<div class="chart js-chart">
 			{{/dependentAxis.gridlines}}
 		</ul>
 
+		{{#independentAxis.label}}
+			<span class="chart__axis--h-label">{{.}}</span>
+		{{/independentAxis.label}}
 		<ul class="chart__axis--h">
 			{{#independentAxis.values}}
 				<li class="chart__axis-item js-chart-axis-label" style="left: {{percentage}}%;">

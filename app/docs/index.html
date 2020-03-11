@@ -1773,11 +1773,11 @@ console.log(largeOrCapitalCities.getCol(cols.NAME));</code>
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
 						<code class="code code--block docs-example__code">{
+	label: 'Axis title',
+
 	values: 5,
 	valuesAt: [],
 	gridlines: null,
-
-	showTooltips: false,
 
 	toFixed: 0,
 	percentage: false,
@@ -1787,7 +1787,26 @@ console.log(largeOrCapitalCities.getCol(cols.NAME));</code>
 	min: 0,
 	max: null
 }</code>
-					</div>
+				</div>
+
+				<div class="content">
+					<p><code>label</code> is a string that will be used for the label of the axis.</p>
+
+					<p><code>values</code> is an integer, representing the number of values to show on the axis. This number excludes the minimum value, which will always be shown. These values will be evenly spread between the maxiumum and the minimum. <code>values</code> must be at least 1, which would result in only the minimum and maximum values being shown.</p>
+
+					<p><code>valuesAt</code> is an array that can be used to specify specific values should be shown on the axis. These values are displayed in addition to those already displayed based on the <code>values</code> option.</p>
+
+					<p><code>gridlines</code> is an integer, representing the number of evenly gridlines to be displayed. By default, this will be the same as the value of <code>values</code>. Additional values inserted via the <code>valuesAt</code> option will always get their own gridline, regardless of this option.</p>
+
+					<p><code>toFixed</code> is an integer, representing the number of significant figures to display for the numbers in the graph.</p>
+
+					<p><code>percentage</code> is a boolean, representing whether or not the numbers in the graph should be treated as percentages. If true, numbers between 0 and 1 will be treated as though they were between 0% and 100%, and the labels will be updated accordingly.</p>
+
+					<p><code>roundTo</code> is a number, which all the values labeled on the axis should be round to. By default, it will be calculated as the power of 10 at the same order of magnitude as the maximum value. For example, if the largest value is 4,841, then <code>roundTo</code> would automatically be set to 1,000.</p>
+
+					<p><code>min</code> is the minimum number to display on the axis. If set to null, it will be calculated based on the data displayed in the graph.</p>
+
+					<p><code>max</code> is the maximum number to display on the axis. By default, or if set to null, it will be calculated based on the data displayed in the graph.</p>
 				</div>
 			</section>
 
@@ -1799,6 +1818,8 @@ console.log(largeOrCapitalCities.getCol(cols.NAME));</code>
 				<div class="docs-example docs-example--code-only">
 					<div class="docs-example__code-container">
 						<code class="code code--block docs-example__code">{
+	label: 'Axis title',
+
 	valuesEvery: 1,
 	valuesSkip: 0,
 
@@ -1806,6 +1827,18 @@ console.log(largeOrCapitalCities.getCol(cols.NAME));</code>
 	gridlinesSkip: null
 }</code>
 					</div>
+				</div>
+
+				<div class="content">
+					<p><code>label</code> is a string that will be used for the label of the axis.</p>
+
+					<p><code>valuesEvery</code> is an integer, representing the rate at which a label should be shown for each value along the axis. If set to 1, all values will have a label. If set to 2, only every second value will have a label.</p>
+
+					<p><code>valuesSkip</code> is an integer, representing the number of labels to skip at the start of the axis. Not supported for bar graphs.</p>
+
+					<p><code>gridlinesEvery</code> is an integer, representing the rate at which gridlines should be shown for each value along the axis. If set to null, its value will be inherited from <code>valuesEvery</code>.</p>
+
+					<p><code>gridlinesSkip</code> is an integer, representing the number of gridlines to skip at the start of the axis. If set to null, its value will be inherited from <code>valuesSkip</code>. Not supported for bar graphs.</p>
 				</div>
 			</section>
 
@@ -1877,6 +1910,7 @@ let chartData = {
 };
 
 let dependentAxisConfig = {
+	label: 'Population',
 	horizontal: true,
 	roundTo: 100,
 	max: 6000,
@@ -1938,12 +1972,14 @@ let chartData = {
 };
 
 let dependentAxisConfig = {
+	label: 'Population',
 	values: 5,
 	roundTo: 1000000,
 	min: null
 };
 
 let independentAxisConfig = {
+	label: 'Time',
 	valuesEvery: 2
 };
 
