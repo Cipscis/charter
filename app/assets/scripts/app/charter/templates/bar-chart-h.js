@@ -1,4 +1,4 @@
-export default `<div class="chart{{#showTooltips}} show-tooltips{{/showTooltips}} js-chart"
+export default `<div class="chart {{#showTooltips}}show-tooltips {{/showTooltips}}{{#hasXLabel}}chart--has-x-label {{/hasXLabel}}{{#hasYLabel}}chart--has-y-label {{/hasYLabel}}js-chart"
 	data-charter-type="bar-horizontal"
 	data-charter-axis-min="{{dependentAxis.data.min}}"
 	data-charter-axis-max="{{dependentAxis.data.max}}"
@@ -16,6 +16,9 @@ export default `<div class="chart{{#showTooltips}} show-tooltips{{/showTooltips}
 	{{/showLegend}}
 
 	<div class="chart__area">
+		{{#dependentAxis.label}}
+			<span class="chart__axis--h-label">{{.}}</span>
+		{{/dependentAxis.label}}
 		<ul class="chart__axis--h">
 			{{#dependentAxis.values}}
 				<li class="chart__axis-item js-chart-axis-label" style="left: {{percentage}}%;">

@@ -6,7 +6,7 @@ $axis-height: 30px;
 
 $axis-color: $grey--light;
 $axis-text-size: 16px;
-$gridline-color: $grey;
+$gridline-color: $grey--lighter;
 
 $data-color: $grey--light;
 
@@ -26,6 +26,21 @@ $z-legend: 4;
 .chart {
 	position: relative;
 	width: 100%;
+}
+
+// Create extra space for axis labels
+.chart--has-x-label {
+	padding-bottom: 40px;
+	@include bp("md") {
+		padding-bottom: $axis-text-size * 2;
+	}
+}
+
+.chart--has-y-label {
+	padding-left: 10px;
+	@include bp("md") {
+		padding-left: $axis-text-size * 2;
+	}
 }
 
 .chart__title {
@@ -135,6 +150,38 @@ $z-legend: 4;
 		font-size: $axis-text-size;
 		line-height: $axis-text-size;
 	}
+}
+
+.chart__axis--v-label {
+	position: absolute;
+	top: calc(50% - #{$axis-text-size/2});
+	transform-origin: 50% 50%;
+	transform: translate(0, -50%) rotate(-90deg);
+	margin-left: -3em;
+
+	font-size: 10px;
+	@include bp("s") {
+		font-size: 2.35vw;
+	}
+	@include bp("md") {
+		font-size: $axis-text-size;
+	}
+	line-height: 1;
+}
+
+.chart__axis--h-label {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 100%);
+
+	font-size: 10px;
+	@include bp("s") {
+		font-size: 2.35vw;
+	}
+	@include bp("md") {
+		font-size: $axis-text-size;
+	}
+	line-height: 1;
 }
 
 ///////////////

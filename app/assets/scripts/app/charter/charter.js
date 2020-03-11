@@ -8,12 +8,12 @@ import lineGraphTemplate from './templates/line-graph.js';
 import scatterPlotTemplate from './templates/scatter-plot.js';
 
 const numericAxisDefaults = {
+	label: '',
+
 	values: 5, // Will always fit when max is a multiple of 10
 	valuesAt: [],
 	// When gridlines is set to null, it interhits its value from values
 	gridlines: null,
-
-	showTooltips: false,
 
 	toFixed: 0,
 	percentage: false,
@@ -28,6 +28,8 @@ const numericAxisDefaults = {
 };
 
 const qualitativeAxisDefaults = {
+	label: '',
+
 	// Show every N values on the axis
 	valuesEvery: 1,
 	// Skip N values at the start before showing them
@@ -329,8 +331,13 @@ const Charter = {
 
 		let axis = {
 			values: [],
-			gridlines: []
+			gridlines: [],
+			label: []
 		};
+
+		if (axisConfig.label) {
+			axis.label.push(axisConfig.label);
+		}
 
 		let max = axisConfig.max;
 		let min = axisConfig.min;
@@ -428,8 +435,13 @@ const Charter = {
 
 		let axis = {
 			values: [],
-			gridlines: []
+			gridlines: [],
+			label: []
 		};
+
+		if (axisConfig.label) {
+			axis.label.push(axisConfig.label);
+		}
 
 		if (axisConfig.gridlinesEvery !== 0) {
 			for (let i = axisConfig.gridlinesSkip; i < chartData.labels.length; i += axisConfig.gridlinesEvery) {
@@ -724,6 +736,12 @@ const Charter = {
 		chartData = Charter._getValuePercentages(chartData, dependentAxisConfig);
 		chartData = Charter._getDisplayValues(chartData, dependentAxisConfig);
 
+		if (dependentAxisConfig.horizontal) {
+			chartData.hasXLabel = !!chartData.dependentAxis.label;
+		} else {
+			chartData.hasYLabel = !!chartData.dependentAxis.label;
+		}
+
 		chartData.dataSeriesByLabel = Charter._getDataSeriesByLabel(chartData.labels, chartData.dataSeries);
 
 		let $chart = templayed(dependentAxisConfig.horizontal ? barChartHTemplate : barChartTemplate)(chartData);
@@ -776,6 +794,9 @@ const Charter = {
 
 		// Create display values to show on axes and tooltips
 		chartData = Charter._getDisplayValues(chartData, independentAxisConfig);
+
+		chartData.hasXLabel = !!chartData.independentAxis.label;
+		chartData.hasYLabel = !!chartData.dependentAxis.label;
 
 		// Render chart with specified template
 		let $chart = templayed(template)(chartData);
