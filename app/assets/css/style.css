@@ -2,6 +2,18 @@
   position: relative;
   width: 100%; }
 
+.chart--has-x-label {
+  padding-bottom: 40px; }
+  @media (min-width: 768px) {
+    .chart--has-x-label {
+      padding-bottom: 32px; } }
+
+.chart--has-y-label {
+  padding-left: 10px; }
+  @media (min-width: 768px) {
+    .chart--has-y-label {
+      padding-left: 32px; } }
+
 .chart__title {
   display: block;
   font-weight: bold;
@@ -82,6 +94,34 @@
     font-size: 16px;
     line-height: 16px; }
 
+.chart__axis--v-label {
+  position: absolute;
+  top: calc(50% - 8px);
+  transform-origin: 50% 50%;
+  transform: translate(0, -50%) rotate(-90deg);
+  margin-left: -3em;
+  font-size: 10px;
+  line-height: 1; }
+  @media (min-width: 425px) {
+    .chart__axis--v-label {
+      font-size: 2.35vw; } }
+  @media (min-width: 768px) {
+    .chart__axis--v-label {
+      font-size: 16px; } }
+
+.chart__axis--h-label {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  font-size: 10px;
+  line-height: 1; }
+  @media (min-width: 425px) {
+    .chart__axis--h-label {
+      font-size: 2.35vw; } }
+  @media (min-width: 768px) {
+    .chart__axis--h-label {
+      font-size: 16px; } }
+
 .chart__gridlines--h,
 .chart__gridlines--v {
   display: flex;
@@ -103,13 +143,13 @@
     position: absolute;
     left: 0;
     right: 0;
-    border-top: 1px solid #666; }
+    border-top: 1px solid #ccc; }
 
 .chart__gridlines--v .chart__gridlines-item {
   position: absolute;
   top: -1px;
   bottom: 0;
-  border-right: 1px solid #666; }
+  border-right: 1px solid #ccc; }
 
 .chart__legend {
   z-index: 4;
