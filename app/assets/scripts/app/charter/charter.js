@@ -736,10 +736,19 @@ const Charter = {
 		chartData = Charter._getValuePercentages(chartData, dependentAxisConfig);
 		chartData = Charter._getDisplayValues(chartData, dependentAxisConfig);
 
+		chartData.independentAxis = {
+			label: []
+		};
+		if (independentAxisConfig && independentAxisConfig.label) {
+			chartData.independentAxis.label.push(independentAxisConfig.label);
+		}
+
 		if (dependentAxisConfig.horizontal) {
 			chartData.hasXLabel = !!chartData.dependentAxis.label;
+			chartData.hasYLabel = !!chartData.independentAxis.label;
 		} else {
 			chartData.hasYLabel = !!chartData.dependentAxis.label;
+			chartData.hasXLabel = !!chartData.independentAxis.label;
 		}
 
 		chartData.dataSeriesByLabel = Charter._getDataSeriesByLabel(chartData.labels, chartData.dataSeries);

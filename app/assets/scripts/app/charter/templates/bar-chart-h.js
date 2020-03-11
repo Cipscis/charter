@@ -33,6 +33,9 @@ export default `<div class="chart {{#showTooltips}}show-tooltips {{/showTooltips
 			{{/dependentAxis.gridlines}}
 		</ul>
 
+		{{#independentAxis.label}}
+			<span class="chart__axis--v-label">{{.}}</span>
+		{{/independentAxis.label}}
 		<ul class="chart__axis--v">
 		</ul>
 
