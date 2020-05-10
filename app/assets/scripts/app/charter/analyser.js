@@ -8,45 +8,55 @@ class AnalyserRows extends Array {
 
 
 	getCol(colNum) {
-		return Analyser.getCol(this, colNum);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.getCol.apply(this, args);
 	}
 
 
 	addCol(col) {
-		return Analyser.addCol(this, col);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.addCol.apply(this, args);
 	}
 
 	getDerivedCol(processFn, ...cols) {
-		return Analyser.getDerivedCol(this, processFn, ...cols);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.getDerivedCol.apply(this, args);
 	}
 
 	addDerivedCol(callback, ...cols) {
-		return Analyser.addDerivedCol(this, callback, ...cols);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.addDerivedCol.apply(this, args);
 	}
 
 
 	createSubTable(cols, arraySeparator) {
-		return Analyser.createSubTable(this, cols, arraySeparator);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.createSubTable.apply(this, args);
 	}
 
 	createSubTableString(cols) {
-		return Analyser.createSubTableString(this, cols);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.createSubTableString.apply(this, args);
 	}
 
 	getColSummary(cols, aliasList) {
-		return Analyser.getColSummary(this, cols, aliasList);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.getColSummary.apply(this, args);
 	}
 
 	getColAsDataSeries(col, labels) {
-		return Analyser.getColAsDataSeries(this, col, labels);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.getColAsDataSeries.apply(this, args);
 	}
 
 	getComparisonSummary(headerCol, headerAliases, varCol, varAliases) {
-		return Analyser.getComparisonSummary(this, headerCol, headerAliases, varCol, varAliases);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.getComparisonSummary.apply(this, args);
 	}
 
 	getComparisonSummaryString(headerCol, headerAliases, varCol, varAliases) {
-		return Analyser.getComparisonSummaryString(this, headerCol, headerAliases, varCol, varAliases);
+		let args = [this].concat(Array.from(arguments));
+		return Analyser.getComparisonSummaryString.apply(this, args);
 	}
 }
 
@@ -1014,6 +1024,7 @@ const Analyser = {
 
 		// Also optionally takes a set of aliases for one or both columns
 
+		console.log(Array.from(arguments));
 		if (arguments.length === 3) {
 			// No aliases specified
 			varCol = headerAliases;
