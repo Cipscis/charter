@@ -281,6 +281,13 @@
   width: 80%;
   margin: 0 auto;
   transition: height 0.5s; }
+  .chart__bar-groups--v .chart__bar-area::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: 5px; }
 
 .chart__bar-groups--v.chart__bar-groups--histogram .chart__bar-area {
   width: 100%; }
@@ -316,6 +323,13 @@
   .chart__bar-groups--h .chart__bar-area {
     height: 80%;
     transition: width 0.5s; }
+    .chart__bar-groups--h .chart__bar-area::before {
+      content: "";
+      position: absolute;
+      left: 100%;
+      top: 0;
+      bottom: 0;
+      width: 5px; }
   .chart__bar-groups--h.chart__bar-groups--histogram .chart__bar-area {
     height: 100%; }
   .chart__bar-groups--h .chart__bar-label {
