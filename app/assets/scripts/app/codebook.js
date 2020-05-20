@@ -9,7 +9,8 @@ const selectors = {
 
 const dataSelectors = {
 	set: 'data-codebook-set',
-	output: 'data-codebook-output'
+	log: 'data-codebook-log',
+	chart: 'data-codebook-chart'
 };
 
 const module = {
@@ -61,17 +62,20 @@ const module = {
 		let code = set.code.reduce(module._combineCode, '');
 		let source = set.source.reduce(module._combineCode, '');
 
-		let fileLoadedFnFactory = new Function('Charter', 'Analyser', 'Stats', '_log', `return function (data) {
+		let fileLoadedFnFactory = new Function('Charter', 'Analyser', 'Stats', '_log', '_chart', `return function (data) {
 'use strict';
 let _$log = null;
 let log = function () {};
+
+let _$chart = null;
+let chart = function () {};
 
 let rows = data.rows;
 let cols = data.cols;
 
 ${code}
 }`);
-		let fileLoadedFn = fileLoadedFnFactory(Charter, Analyser, Stats, module._logOutput);
+		let fileLoadedFn = fileLoadedFnFactory(Charter, Analyser, Stats, module._logOutput, module._chartOutput);
 
 		let loadSrcFn = new Function ('Charter', 'Analyser', 'Stats', 'analyseData', source);
 
@@ -81,18 +85,28 @@ ${code}
 	_combineCode: function (allCode, $newCode) {
 		let newCode = module._decodeHtml($newCode.innerHTML);
 
-		let outputId = $newCode.getAttribute(dataSelectors.output);
-		if (outputId) {
-			let $output = document.getElementById(outputId);
-
-			newCode = `_$log = document.getElementById('${outputId}');
+		let logId = $newCode.getAttribute(dataSelectors.log);
+		if (logId) {
+			newCode = `_$log = document.getElementById('${logId}');
 log = function (output) {
-_log(output, _$log);
+	_log(output, _$log);
 };
 
 ${newCode}
 
 log = function () {};`;
+		}
+
+		let chartId = $newCode.getAttribute(dataSelectors.chart);
+		if (chartId) {
+			newCode = `_$chart = document.getElementById('${chartId}');
+chart = function (output) {
+	_chart(output, _$chart);
+};
+
+${newCode}
+
+chart = function () {};`;
 		}
 
 		let combinedCode = `${allCode}\n${newCode}`;
@@ -107,6 +121,12 @@ log = function () {};`;
 			}
 
 			$log.innerHTML += output + '\n';
+		}
+	},
+
+	_chartOutput: function (output, $chart) {
+		if ($chart) {
+			$chart.innerHTML = output;
 		}
 	},
 
