@@ -1024,7 +1024,6 @@ const Analyser = {
 
 		// Also optionally takes a set of aliases for one or both columns
 
-		console.log(Array.from(arguments));
 		if (arguments.length === 3) {
 			// No aliases specified
 			varCol = headerAliases;
