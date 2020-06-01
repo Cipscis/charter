@@ -42,11 +42,11 @@ const Stats = {
 	sd: (values) => Math.sqrt(Stats.variance(values)),
 
 	max: function (values) {
-		let maxValue = values[0];
+		let maxValue = parseFloat(values[0]);
 
 		for (let i = 1; i < values.length; i++) {
-			let value = values[i];
-			if (value > maxValue) {
+			let value = parseFloat(values[i]);
+			if (value > maxValue || isNaN(maxValue)) {
 				maxValue = value;
 			}
 		}
@@ -55,11 +55,11 @@ const Stats = {
 	},
 
 	min: function (values) {
-		let minValue = values[0];
+		let minValue = parseFloat(values[0]);
 
 		for (let i = 1; i < values.length; i++) {
-			let value = values[i];
-			if (value < minValue) {
+			let value = parseFloat(values[i]);
+			if (value < minValue || isNaN(minValue)) {
 				minValue = value;
 			}
 		}
