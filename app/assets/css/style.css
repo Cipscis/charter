@@ -273,6 +273,8 @@
     flex-grow: 0; }
   .chart__bar-groups--v .chart__bar-group-bars--stacked .chart__bar-area {
     height: 100%; }
+  .chart__bar-groups--v .chart__bar-group-bars--stacked .chart__bar:nth-child(n+2) .chart__bar-area::before {
+    display: none; }
 
 .chart__bar-groups--v .chart__bar {
   align-items: flex-end; }
@@ -317,6 +319,8 @@
       flex-grow: 0; }
     .chart__bar-groups--h .chart__bar-group-bars--stacked .chart__bar-area {
       width: 100%; }
+    .chart__bar-groups--h .chart__bar-group-bars--stacked .chart__bar:nth-child(n+2) .chart__bar-area::before {
+      display: none; }
   .chart__bar-groups--h .chart__bar {
     width: 100%;
     align-items: center; }
