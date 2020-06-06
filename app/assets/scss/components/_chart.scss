@@ -239,11 +239,12 @@ $z-legend: 4;
 		display: table;
 		clear: both;
 	}
+
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .chart__legend-name {
-	float: left;
-
 	width: calc(100% - #{$axis-text-size});
 	padding-left: $axis-text-size / 2;
 	margin-bottom: $axis-text-size / 2;
@@ -251,8 +252,6 @@ $z-legend: 4;
 }
 
 .chart__legend-indicator {
-	clear: left;
-	float: left;
 	margin: 0;
 	background: $data-color;
 	border: 1px solid $black;
