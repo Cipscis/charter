@@ -422,6 +422,7 @@ $z-legend: 4;
 		top: -5px;
 		left: 50%;
 		transform: translateX(-50%) translateY(-100%);
+		min-width: 100%;
 	}
 }
 
@@ -487,6 +488,7 @@ $z-legend: 4;
 		top: 50%;
 		left: 100%;
 		transform: translateX(5px) translateY(-50%);
+		min-height: 100%;
 	}
 }
 
