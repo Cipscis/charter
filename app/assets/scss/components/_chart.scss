@@ -375,6 +375,11 @@ $z-legend: 4;
 		.chart__bar-area {
 			height: 100%;
 		}
+		.chart__bar:nth-child(n+2) {
+			.chart__bar-area::before {
+				display: none;
+			}
+		}
 	}
 
 	.chart__bar {
@@ -436,6 +441,11 @@ $z-legend: 4;
 		}
 		.chart__bar-area {
 			width: 100%;
+		}
+		.chart__bar:nth-child(n+2) {
+			.chart__bar-area::before {
+				display: none;
+			}
 		}
 	}
 
