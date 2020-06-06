@@ -933,7 +933,8 @@ body {
 .chart__bar-groups--v .chart__bar-tooltip {
   top: -5px;
   left: 50%;
-  transform: translateX(-50%) translateY(-100%); }
+  transform: translateX(-50%) translateY(-100%);
+  min-width: 100%; }
 
 .chart__bar-groups--h {
   flex-direction: column; }
@@ -973,7 +974,8 @@ body {
   .chart__bar-groups--h .chart__bar-tooltip {
     top: 50%;
     left: 100%;
-    transform: translateX(5px) translateY(-50%); }
+    transform: translateX(5px) translateY(-50%);
+    min-height: 100%; }
 
 .chart__points {
   position: absolute;
