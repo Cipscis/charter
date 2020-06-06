@@ -781,22 +781,21 @@ body {
 
 .chart__legend {
   z-index: 4;
-  margin: 0; }
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap; }
   .chart__legend:after {
     content: "";
     display: table;
     clear: both; }
 
 .chart__legend-name {
-  float: left;
   width: calc(100% - 16px);
   padding-left: 8px;
   margin-bottom: 8px;
   line-height: 1; }
 
 .chart__legend-indicator {
-  clear: left;
-  float: left;
   margin: 0;
   background: #999;
   border: 1px solid #000;
