@@ -58,6 +58,7 @@
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-defaultcols">defaultCols</a></li>
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-aliases">aliases</a></li>
 									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-enumsmap">enumsMap</a></li>
+									<li><a class="a docs-nav__item js-menu-link" href="#analyser-fileconfig-uniqueCols">uniqueCols</a></li>
 								</ol>
 							</li>
 							<li><a class="a docs-nav__item js-menu-link" href="#analyser-dataconfig">dataConfig</a>
@@ -1390,6 +1391,26 @@ Analyser.loadFile(baseUrl + 'docs/data/city example.csv', fileConfig, exploreDat
 		'Bus', 'Train', 'Ferry', 'Cable Car'
 	]
 }</samp>
+					</div>
+				</div>
+			</section>
+
+			<section class="docs-method">
+				<div class="content">
+					<h4 class="docs-method__heading" id="analyser-fileconfig-uniqueCols">uniqueCols</h4>
+
+					<p><code>uniqueCols</code> (optional) is an array where each element is the index of a column. All columns included in this array will not have their enums gathered.</p>
+
+					<p>This is particularly useful for ID columns, as well as columns that may not have unique values between each column but still do not need to be collated, such as columns containing dates.</p>
+				</div>
+
+				<div class="docs-example docs-example--code-only">
+					<div class="docs-example__code-container">
+						<code class="code code--block docs-example__code">let uniqueCols = [
+	fileConfig.cols.NAME,
+	fileConfig.cols.MAYOR,
+	fileConfig.cols.POPULATION
+];</code>
 					</div>
 				</div>
 			</section>

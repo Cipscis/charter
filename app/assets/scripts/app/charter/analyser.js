@@ -196,6 +196,7 @@ const Analyser = {
 		fileConfig.aliases = fileConfig.aliases || {};
 		fileConfig.arrayCols = fileConfig.arrayCols || {};
 		fileConfig.enumsMap = fileConfig.enumsMap || {};
+		fileConfig.uniqueCols = fileConfig.uniqueCols || [];
 
 		let dataConfig = {};
 		dataConfig.cols = fileConfig.cols;
@@ -257,10 +258,14 @@ const Analyser = {
 
 		for (let col in config.cols) {
 
-			// Don't collect enums for columns specified in enumsMap
+			// Don't collect enums for columns specified in uniqueCols or enumsMap
 			let collect = true;
+			if (config.uniqueCols.includes(config.cols[col])) {
+				collect = false;
+				break;
+			}
 			for (let enumCol in config.enumsMap) {
-				if (config.enumsMap[enumCol].indexOf(config.cols[col]) !== -1) {
+				if (config.enumsMap[enumCol].includes(config.cols[col])) {
 					collect = false;
 					break;
 				}
