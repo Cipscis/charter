@@ -422,8 +422,32 @@ const Analyser = {
 		combinedDataConfig.filters = Analyser._getAliasFilters(combinedDataConfig.aliases);
 		Analyser._createRowFilterFunctions(combinedDataConfig.rows, combinedDataConfig.filters);
 
-		// Combine the enumsMaps, then build combined enums
+		// Combine uniqueCols
+		combinedDataConfig.uniqueCols = [];
+		for (let i = 0; i < dataConfigs.length; i++) {
+			let dataConfig = dataConfigs[i];
 
+			for (let j in dataConfig.uniqueCols) {
+				let originalCol = dataConfig.uniqueCols[j];
+				let originalColName = undefined;
+				for (let k in dataConfig.cols) {
+					if (dataConfig.cols[l] === originalCol) {
+						originalColName = l;
+						break;
+					}
+				}
+
+				if (originalColName) {
+					let originalColIndex = combinedDataConfig.cols[originalColName];
+
+					if (combinedDataConfig.uniqueCols.indexOf(originalColIndex) === -1) {
+						combinedDataConfig.uniqueCols.push(combinedDataConfig.cols[originalColName]);
+					}
+				}
+			}
+		}
+
+		// Combine the enumsMaps, then build combined enums
 		combinedDataConfig.enumsMap = {};
 		for (let i = 0; i < dataConfigs.length; i++) {
 			let dataConfig = dataConfigs[i];
