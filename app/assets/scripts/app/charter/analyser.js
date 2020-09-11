@@ -3,7 +3,13 @@ import fileIO from './lib/fileio.js';
 
 class AnalyserRows extends Array {
 	constructor(sourceArray) {
-		super(...sourceArray);
+		// Don't use spread operator as it will cause a
+		// stack overflow error with very large arrays
+		// super(...sourceArray);
+		super(sourceArray.length);
+		for (let i = 0; i < sourceArray.length; i++) {
+			this[i] = sourceArray[i];
+		}
 	}
 
 
