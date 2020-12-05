@@ -268,7 +268,6 @@ const Analyser = {
 			let collect = true;
 			if (config.uniqueCols.includes(config.cols[col])) {
 				collect = false;
-				break;
 			}
 			for (let enumCol in config.enumsMap) {
 				if (config.enumsMap[enumCol].includes(config.cols[col])) {
