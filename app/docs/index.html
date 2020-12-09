@@ -438,6 +438,8 @@ import Stats from './charter/stats.js';</code>
 
 					<p>When converting numbers, it will assume the <code>.</code> character is used as a decimal point, and the <code>,</code> character may be used when representing numbers as a string but will be ignored. Some cultures use these characters differently when representing numbers, for example three hundred thousand and a quarter could be represented as <code>300.000,25</code>. This form of numeric representation is <strong>not supported</strong>, so if it is used in your data be sure to convert it before processing it with Analyser.</p>
 
+					<p>The strings "true" and "false" will also be converted to the JavaScript equivalent boolean values <code>true</code> and <code>false</code>, but any other strings (such as "True") will not be converted.</p>
+
 					<p><code>fileInfo</code> arguments are either a string representing the URL of a CSV file to load or a <code>File</code> object.</p>
 
 					<p><code>fileConfig</code> arguments are a JavaScript object containing information on how the data should be processed. See the <a href="#analyser-fileconfig">fileConfig</a> section for more information.</p>
