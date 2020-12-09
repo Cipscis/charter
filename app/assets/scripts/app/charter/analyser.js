@@ -505,19 +505,19 @@ const Analyser = {
 
 		let data = Parser.parse(csv);
 
-		Analyser._extractCellNumbers(data);
+		Analyser._extractCellValues(data);
 
 		if (callback && typeof callback === 'function') {
 			callback(data);
 		}
 	},
 
-	_extractCellNumbers: function (csv) {
-		// Use _extractNumber on each cell
+	_extractCellValues: function (csv) {
+		// Use _extractValue on each cell
 
 		for (let i = 0; i < csv.length; i++) {
 			for (let j = 0; j < csv[i].length; j++) {
-				csv[i][j] = Analyser._extractNumber(csv[i][j]);
+				csv[i][j] = Analyser._extractValue(csv[i][j]);
 			}
 		}
 	},
