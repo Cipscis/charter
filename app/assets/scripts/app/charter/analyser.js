@@ -522,6 +522,18 @@ const Analyser = {
 		}
 	},
 
+	_extractValue: function (string) {
+		// Convert strings to booleans or numbers where possible
+
+		if (string === 'true') {
+			return true;
+		} else if (string === 'false') {
+			return false;
+		} else {
+			return Analyser._extractNumber(string);
+		}
+	},
+
 	_extractNumber: function (string) {
 		// Convert strings to numbers where possible
 
@@ -1089,8 +1101,8 @@ const Analyser = {
 			comparisonSummary[i] = {};
 			for (let j in headerSummary) {
 				comparisonSummary[i][j] = filters.filterRows(rows,
-					varCol, Analyser._extractNumber(i),
-					headerCol, Analyser._extractNumber(j)
+					varCol, Analyser._extractValue(i),
+					headerCol, Analyser._extractValue(j)
 				).length;
 			}
 		}
