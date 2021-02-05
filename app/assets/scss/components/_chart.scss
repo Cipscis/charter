@@ -26,6 +26,8 @@ $z-legend: 4;
 .chart {
 	position: relative;
 	width: 100%;
+
+	page-break-inside: avoid;
 }
 
 // Create extra space for axis labels
@@ -259,6 +261,9 @@ $z-legend: 4;
 	width: $axis-text-size;
 	height: $axis-text-size;
 	margin-bottom: $axis-text-size / 2;
+
+	color-adjust: exact;
+	-webkit-print-color-adjust: exact;
 }
 
 //////////
@@ -297,6 +302,9 @@ $z-legend: 4;
 		flex: 1 1 0%;
 		height: 100%;
 		display: flex;
+
+		color-adjust: exact;
+		-webkit-print-color-adjust: exact;
 	}
 
 	.chart__bar-area {
